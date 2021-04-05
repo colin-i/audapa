@@ -22,23 +22,32 @@ def reset(b,combo):
 		config.write(configfile)
 	combo[0].set_child(combo[1])
 def sets(b,combo):
-	bx=Gtk.Box()
-	bx.set_orientation(Gtk.Orientation.VERTICAL)
+	bx=Gtk.Grid(hexpand=True)
+	t=colorLabel("Font Color")
+	bx.attach(t,0,0,1,1)
 	en=colorEntry(color)
-	bx.append(en)
+	bx.attach(en,1,0,1,1)
 	b=Gtk.Button.new_with_label("Done")
 	b.connect('clicked', reset, combo)
-	bx.append(b)
+	bx.attach(b,0,1,2,1)
 	combo[0].set_child(bx)
 
-def colorEntry(b):
-	en=Gtk.Entry.new_with_buffer(b)
+def colorLabel(t):
+	a=Gtk.Label()#halign=Gtk.Align.START
+	z="<span"#p is error
 	if (c:=color.get_text()):
-		cont=en.get_style_context()
+		z+=" color='"+c+"'"
+	z+=">"+t+"</span>"
+	a.set_markup(z)
+	return a
+def colorEntry(b):
+	a=Gtk.Entry(buffer=b,hexpand=True)
+	if (c:=color.get_text()):
+		cont=a.get_style_context()
 		p=Gtk.CssProvider()
 		p.load_from_data (b"entry { color: "+c.encode()+b"; }")
 		cont.add_provider(p,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-	return en
+	return a
 
 def start():
 	config = configparser.ConfigParser()
