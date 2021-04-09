@@ -17,7 +17,7 @@ def start(b,ready):
 		# create pyaudio stream
 		stream = audio.open(format = bits,rate = rate,channels = chans,
 			input = True,
-			frames_per_buffer=4096, # 2^12 samples for buffer
+			frames_per_buffer=rate, # one second of samples
 			stream_callback=callback)
 		wavefile = wave.open('test1.wav','wb')
 		wavefile.setnchannels(chans)
