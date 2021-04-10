@@ -5,6 +5,7 @@ setup(name=pkname,
 	version='1.0.0',
 	packages=[pkname],
 	#optionals
+	python_requires='>=3.8',
 	install_requires=["PyGObject>=3.40","appdirs>=1.4.3","PyAudio>=0.2.11",
 		"Wave>=0.0.2"],
 	description='Audio',

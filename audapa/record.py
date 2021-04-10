@@ -1,6 +1,10 @@
 import pyaudio
 import wave
 
+from time import time
+
+from . import sets
+
 wavefile=None
 
 def callback(in_data, frame_count, time_info, status):
@@ -19,7 +23,8 @@ def start(b,ready):
 			input = True,
 			frames_per_buffer=rate, # one second of samples
 			stream_callback=callback)
-		wavefile = wave.open('test1.wav','wb')
+		w=sets.get_data_file(str(int(time()))+".wav")
+		wavefile = wave.open(w,'wb')
 		wavefile.setnchannels(chans)
 		wavefile.setsampwidth(audio.get_sample_size(bits))
 		wavefile.setframerate(rate)
@@ -34,6 +39,7 @@ def stop():
 	stream.close()
 	audio.terminate()
 	# close the file
+	global wavefile
 	wavefile.close()
 	wavefile=None
 def terminate():

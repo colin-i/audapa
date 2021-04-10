@@ -5,13 +5,22 @@ import configparser
 
 from . import loop
 
+pkgname='audapa'
 import appdirs
 import os.path
 import pathlib
+
+def get_config_dir():
+	return pathlib.Path(appdirs.user_config_dir(pkgname))
+get_config_dir().mkdir(exist_ok=True)
 def get_config_file():
-	p=pathlib.Path(appdirs.user_config_dir('audapa'))
-	p.mkdir(exist_ok=True)
-	return os.path.join(p,'config.ini')
+	return os.path.join(get_config_dir(),'config.ini')
+
+def get_data_dir():
+	return pathlib.Path(appdirs.user_data_dir(pkgname))
+get_data_dir().mkdir(exist_ok=True)
+def get_data_file(f):
+	return os.path.join(get_data_dir(),f)
 
 class colorLabel(Gtk.Label):
 	def __init__(self,t):
@@ -30,7 +39,7 @@ class colorButton(Gtk.Button):
 	def _set_color_(self,t):
 		self.get_child()._set_color_(t)
 class colorEntry(Gtk.Entry):
-	def __init__(self,b):
+	def __init__(self,b=Gtk.EntryBuffer()):
 		Gtk.Entry.__init__(self,buffer=b,hexpand=True)
 		if (c:=color.get_text()):
 			cont=self.get_style_context()
@@ -61,7 +70,7 @@ def sets(b,combo):
 	bx.attach(b,0,1,2,1)
 	combo[0].set_child(bx)
 
-def start():
+def init():
 	config = configparser.ConfigParser()
 	if(config.read(get_config_file())):
 		c=config['conf']
