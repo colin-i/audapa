@@ -6,6 +6,7 @@ from . import loop
 from . import sets
 from . import record
 from . import play
+from . import draw
 
 def cl(b,d):
 	d.stop(False)
@@ -26,6 +27,6 @@ while loop.n:
 	bx.append(play.entry)
 	bx.append(play.button)
 	box.append(bx)
-	box.append(Gtk.DrawingArea())
+	box.append(draw.area)
 	win.set_child(box)
 	loop.main.run()

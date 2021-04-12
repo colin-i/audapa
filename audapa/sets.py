@@ -48,6 +48,8 @@ class colorEntry(Gtk.Entry):
 			cont.add_provider(p,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
 color=Gtk.EntryBuffer()
+def get_color():
+	return color.get_text()
 
 def reset(b,di):
 	config = configparser.ConfigParser()
@@ -62,7 +64,7 @@ def reset(b,di):
 		loop.stop(True)
 def sets(b,combo):
 	bx=Gtk.Grid(hexpand=True)
-	t=colorLabel("Font Color")
+	t=colorLabel("Font/Stroke Color")
 	bx.attach(t,0,0,1,1)
 	en=colorEntry(color)
 	bx.attach(en,1,0,1,1)
