@@ -4,6 +4,7 @@ import wave
 from gi.repository import GLib
 
 from . import sets
+from . import draw
 
 wavefile=None
 output=0x23F5
@@ -34,10 +35,17 @@ def launch():
 	global audio,stream,wavefile,timer
 	wavefile=wave.open(entry.get_text(),'rb')
 	audio = pyaudio.PyAudio() # create pyaudio instantiation
+	sampwidth=wavefile.getsampwidth()
+	format = audio.get_format_from_width(sampwidth)
+	channels = wavefile.getnchannels()
+	n=wavefile.getnframes()
+	data = wavefile.readframes(n)
+	wavefile.rewind()#for playing
+	draw.prepare(format,sampwidth,channels,data,n)
 	# create pyaudio stream
-	stream = audio.open(format = audio.get_format_from_width(wavefile.getsampwidth()),
+	stream = audio.open(format=format,
 		rate = wavefile.getframerate(),
-		channels = wavefile.getnchannels(),
+		channels=channels,
 		output = True,
 		stream_callback=callback)
 	start()
