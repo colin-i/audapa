@@ -37,14 +37,15 @@ def launch():
 	audio = pyaudio.PyAudio() # create pyaudio instantiation
 	sampwidth=wavefile.getsampwidth()
 	format = audio.get_format_from_width(sampwidth)
+	rate = wavefile.getframerate()
 	channels = wavefile.getnchannels()
 	n=wavefile.getnframes()
 	data = wavefile.readframes(n)
 	wavefile.rewind()#for playing
-	draw.prepare(format,sampwidth,channels,data,n)
+	draw.prepare(format,sampwidth,channels,data,n,rate)
 	# create pyaudio stream
 	stream = audio.open(format=format,
-		rate = wavefile.getframerate(),
+		rate=rate,
 		channels=channels,
 		output = True,
 		stream_callback=callback)
