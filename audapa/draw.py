@@ -63,6 +63,7 @@ def prepare(format,sampwidth,channels,data,n):
 	if fm.islower():
 		p-=1
 	draw.set_draw_func (draw_cont,2**p,None)
+	calculate2(area.get_width(),area.get_height(),draw,n)#switching files
 	draw.queue_draw()
 
 def painthor(cr,n,y,ratio):
