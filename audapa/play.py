@@ -8,7 +8,8 @@ from . import draw
 
 wavefile=None
 output=0x23F5
-	
+timer=0
+
 def activate(en,d):
 	terminate()
 	launch()
@@ -32,7 +33,7 @@ def callback(in_data, frame_count, time_info, status):
 	return (data, pyaudio.paContinue)
 
 def launch():
-	global audio,stream,wavefile,timer
+	global audio,stream,wavefile
 	wavefile=wave.open(entry.get_text(),'rb')
 	audio = pyaudio.PyAudio() # create pyaudio instantiation
 	sampwidth=wavefile.getsampwidth()
@@ -47,16 +48,20 @@ def launch():
 	stream = audio.open(format=format,
 		rate=rate,
 		channels=channels,
-		output = True,
+		output = True,start=False,
 		stream_callback=callback)
-	start()
-	timer=GLib.timeout_add_seconds(1,is_act,None)
 def start():
 	stream.start_stream()
 	button._set_color_(chr(0x23F8))
+	global timer
+	timer=GLib.timeout_add_seconds(1,is_act,None)
 def pause():
 	stream.stop_stream()	
 	button._set_color_(chr(output))
+	global timer
+	if timer:
+		GLib.source_remove(timer)
+		timer=0
 def stop():
 	# stop the stream, close it, terminate the pyaudio instantiation
 	pause()
@@ -66,14 +71,12 @@ def stop():
 	global wavefile
 	wavefile.close()
 	wavefile=None
-	GLib.source_remove(timer)
 def terminate():
 	if wavefile:
 		stop()
 
 def is_act(d):
 	if not stream.is_active():
-		if not stream.is_stopped():
-			stop()
-			return False
+		stop()
+		return False
 	return True
