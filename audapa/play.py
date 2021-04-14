@@ -43,13 +43,10 @@ def launch():
 	n=wavefile.getnframes()
 	data = wavefile.readframes(n)
 	wavefile.rewind()#for playing
-	draw.prepare(format,sampwidth,channels,data,n,rate)
+	draw.prepare(format,sampwidth,channels,data,n)
 	# create pyaudio stream
-	stream = audio.open(format=format,
-		rate=rate,
-		channels=channels,
-		output = True,start=False,
-		stream_callback=callback)
+	stream = audio.open(format=format,rate=rate,channels=channels,
+		output = True,start=False,stream_callback=callback)
 def start():
 	stream.start_stream()
 	button._set_color_(chr(0x23F8))
