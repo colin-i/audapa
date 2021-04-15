@@ -7,12 +7,15 @@ from . import sets
 from . import record
 from . import play
 from . import draw
+from . import drawscroll
 
 def cl(b,d):
 	d.stop(False)
 
 sets.init()
 play.init()
+drawscroll.win.set_vexpand(True)
+drawscroll.win.set_child(draw.area)
 win = Gtk.Window()
 win.set_decorated(False)#such a heavy load here if True
 win.maximize()
@@ -27,7 +30,6 @@ while loop.n:
 	bx.append(play.entry)
 	bx.append(play.button)
 	box.append(bx)
-	draw.area.set_vexpand(True)
-	box.append(draw.area)
+	box.append(drawscroll.win)
 	win.set_child(box)
 	loop.main.run()
