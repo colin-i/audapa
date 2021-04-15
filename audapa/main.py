@@ -27,6 +27,7 @@ while loop.n:
 	bx.append(play.entry)
 	bx.append(play.button)
 	box.append(bx)
+	draw.area.set_vexpand(True)
 	box.append(draw.area)
 	win.set_child(box)
 	loop.main.run()

@@ -22,12 +22,8 @@ def draw_none(widget,cr,width,height,d,u):
 		cr.line_to(x,height)
 	cr.stroke()
 def draw_cont(widget,cr,width,height,signedsampsize,d):
-	if calculate1(width,height,widget):
-		widget.queue_draw()
-		return
 	n=len(samples)
-	if calculate2(width,height,widget,n):
-		widget.queue_draw()
+	if calculate(n):
 		return
 	co=Gdk.RGBA()
 	if co.parse(sets.get_color()):
@@ -35,13 +31,13 @@ def draw_cont(widget,cr,width,height,signedsampsize,d):
 	cr.set_line_width(0.5)
 	if width>=height:
 		y=height/2
-		painthor(cr,n,y,height/signedsampsize)
+		painthor(cr,width,y,height/signedsampsize)
 	else:
 		x=width/2
-		paintver(cr,n,x,width/signedsampsize)
+		paintver(cr,height,x,width/signedsampsize)
 	cr.stroke()
 
-area=Gtk.ScrolledWindow(vexpand=True)
+area=Gtk.ScrolledWindow()
 draw=Gtk.DrawingArea()
 draw.set_draw_func (draw_none,None,None)
 area.set_child(draw)
@@ -63,8 +59,7 @@ def prepare(format,sampwidth,channels,data,n):
 	if fm.islower():
 		p-=1
 	draw.set_draw_func (draw_cont,2**p,None)
-	calculate2(area.get_width(),area.get_height(),draw,n)#switching files
-	draw.queue_draw()
+	calculate(n)#switching files
 
 def painthor(cr,n,y,ratio):
 	for i in range(0,n):
@@ -79,33 +74,24 @@ def paintver(cr,n,x,ratio):
 		c=ratio*z+x
 		cr.line_to(c,i)
 
-def calculate1(w,h,d):
-	wd=d.get_content_width()
-	hg=d.get_content_height()
-	if (wd==0) and (hg==0):
-		return False
-	if wd<w or hg<h:
-		d.set_content_width(0)
-		d.set_content_height(0)
-		return True
-	return False
-def calculate2(w,h,d,n):
-	wd=d.get_content_width()
-	hg=d.get_content_height()
-	if wd==w and hg==h:
-		return False
+def calculate(n):
+	w=area.get_width()
+	h=area.get_height()
 	if w>=h:
 		if n<w:
 			n=w
-		elif n>30000:
-			n=30000#because that is the maximum size of an X window
-		d.set_content_width(n)
-		d.set_content_height(h)
-		return True
-	if n<h:
-		n=h
-	elif n>30000:
-		n=30000
-	d.set_content_width(w)
-	d.set_content_height(n)
-	return True
+		#30000 maximum size of an X window
+		elif n>(mx:=(w*2)):
+			n=mx
+		if draw.get_width()!=n or draw.get_height()!=h:
+			draw.set_size_request(n,h)
+			return True
+	else:
+		if n<h:
+			n=h
+		elif n>(mx:=(h*2)):
+			n=mx
+		if draw.get_width()!=w or draw.get_height()!=n:
+			draw.set_size_request(w,n)
+			return True
+	return False
