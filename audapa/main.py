@@ -8,20 +8,20 @@ from . import record
 from . import play
 from . import draw
 from . import drawscroll
+from . import r_offset
 
 def cl(b,d):
 	d.stop(False)
 
 sets.init()
-play.init()
-drawscroll.win.set_vexpand(True)
-drawscroll.win.set_child(draw.area)
 win = Gtk.Window()
 win.set_decorated(False)#such a heavy load here if True
 win.maximize()
 win.show()
 input=0x1F399
 while loop.n:
+	play.init()
+	drawscroll.init()
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	bx=Gtk.Box()
 	bx.append(sets.colorButton(chr(input), record.start, input))
@@ -31,5 +31,6 @@ while loop.n:
 	bx.append(play.button)
 	box.append(bx)
 	box.append(drawscroll.win)
+	box.append(r_offset.init())
 	win.set_child(box)
 	loop.main.run()

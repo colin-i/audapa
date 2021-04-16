@@ -1,8 +1,9 @@
 from gi.repository import Gtk
 
 from . import draw
+from . import r_offset
 
-win=Gtk.ScrolledWindow()
+#win
 #size
 
 def calculate(n):
@@ -54,4 +55,11 @@ def edge(wn,pos,d):
 			draw.offset-=h
 			wn.get_vadjustment().set_value(h)
 			draw.area.queue_draw()
-win.connect('edge-reached',edge,None)
+
+def init():
+	global win
+	win=Gtk.ScrolledWindow(vexpand=True)
+	win.set_child(draw.init())
+	win.connect('edge-reached',edge,None)
+	win.get_hadjustment().connect('value-changed',r_offset.cgd,None)
+	win.get_vadjustment().connect('value-changed',r_offset.cgd,None)

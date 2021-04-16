@@ -25,8 +25,8 @@ def get_data_file(f):
 class colorLabel(Gtk.Label):
 	def __init__(self,t):
 		Gtk.Label.__init__(self)
-		self._set_color_(t)
-	def _set_color_(self,t):
+		self._set_text_(t)
+	def _set_text_(self,t):
 		z="<span"#p is error
 		if (c:=color.get_text()):
 			z+=" color='"+c+"'"
@@ -36,8 +36,8 @@ class colorButton(Gtk.Button):
 	def __init__(self,t,f,d):
 		Gtk.Button.__init__(self,child=colorLabel(t))
 		self.connect('clicked',f,d)
-	def _set_color_(self,t):
-		self.get_child()._set_color_(t)
+	def _set_text_(self,t):
+		self.get_child()._set_text_(t)
 class colorEntry(Gtk.Entry):
 	def __init__(self,b=Gtk.EntryBuffer()):
 		Gtk.Entry.__init__(self,buffer=b,hexpand=True)

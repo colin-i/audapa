@@ -29,10 +29,10 @@ def start(b,ready):
 		wavefile.setsampwidth(audio.get_sample_size(bits))
 		wavefile.setframerate(rate)
 		#visual
-		b._set_color_(chr(0x23F9))
+		b._set_text_(chr(0x23F9))
 		return
 	stop()
-	b._set_color_(chr(ready))
+	b._set_text_(chr(ready))
 def stop():
 	# stop the stream, close it, terminate the pyaudio instantiation
 	stream.stop_stream()

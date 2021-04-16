@@ -40,21 +40,21 @@ def launch():
 	format = audio.get_format_from_width(sampwidth)
 	rate = wavefile.getframerate()
 	channels = wavefile.getnchannels()
-	n=wavefile.getnframes()
-	data = wavefile.readframes(n)
+	draw.length=wavefile.getnframes()
+	data = wavefile.readframes(draw.length)
 	wavefile.rewind()#for playing
-	draw.prepare(format,sampwidth,channels,data,n)
+	draw.prepare(format,sampwidth,channels,data)
 	# create pyaudio stream
 	stream = audio.open(format=format,rate=rate,channels=channels,
 		output = True,start=False,stream_callback=callback)
 def start():
 	stream.start_stream()
-	button._set_color_(chr(0x23F8))
+	button._set_text_(chr(0x23F8))
 	global timer
 	timer=GLib.timeout_add_seconds(1,is_act,None)
 def pause():
 	stream.stop_stream()	
-	button._set_color_(chr(output))
+	button._set_text_(chr(output))
 	global timer
 	if timer:
 		GLib.source_remove(timer)

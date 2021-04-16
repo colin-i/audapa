@@ -5,7 +5,9 @@ from gi.repository import Gtk,Gdk
 
 from . import sets
 from . import drawscroll
+from . import r_offset
 
+#area
 samples=[]
 offset=0
 #size
@@ -44,28 +46,31 @@ def draw_cont(widget,cr,width,height,signedsampsize,d):
 		paintver(cr,x,width/signedsampsize)
 	cr.stroke()
 
-area=Gtk.DrawingArea()
-area.set_draw_func (draw_none,None,None)
+def init():
+	global area
+	area=Gtk.DrawingArea()
+	area.set_draw_func (draw_none,None,None)
+	return area
 
 formats={pyaudio.paInt16:'h',pyaudio.paUInt8:'B',pyaudio.paInt8:'b',
 	pyaudio.paFloat32:'f',pyaudio.paInt32:'i'}
 
-def prepare(format,sampwidth,channels,data,n):
+def prepare(format,sampwidth,channels,data):
 	blockAlign=sampwidth*channels
 	fm=formats[format]
 	scan='<'+fm*channels
-	tot=n*blockAlign
-	global samples,length
+	tot=length*blockAlign
+	global samples
 	samples=[]
 	for offset in range(0, tot, blockAlign):
 		s=wave.struct.unpack(scan, data[offset:offset+blockAlign])
 		samples.append(s)
-	length=len(samples)
+	r_offset.total._set_text_(str(length))
 	p=8*sampwidth
 	if fm.islower():
 		p-=1
 	area.set_draw_func (draw_cont,2**p,None)
-	drawscroll.calculate(n)
+	drawscroll.calculate(length)
 
 def painthor(cr,y,ratio):
 	for i in range(0,size):
