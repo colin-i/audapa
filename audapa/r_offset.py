@@ -13,7 +13,9 @@ def init():
 	total.set_hexpand(True)
 	b.append(text)
 	b.append(total)
-	return b 
+	return b
+
+cged=lambda a: text._set_text_(str(draw.offset+int(a.get_value())))
 
 def cgd(a,d):
-	text._set_text_(str(draw.offset+int(a.get_value())))
+	cged(a)
