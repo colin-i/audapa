@@ -18,6 +18,7 @@ def calculate(n):
 				n=w+1
 		if d.get_width()!=n or d.get_height()!=h:
 			d.set_size_request(n,h)
+			r_offset.cnged(win.get_hadjustment(),w)
 			return True
 	else:
 		if n>(size:=(h*f)):
@@ -27,6 +28,7 @@ def calculate(n):
 				n=h+1
 		if d.get_width()!=w or d.get_height()!=n:
 			d.set_size_request(w,n)
+			r_offset.cnged(win.get_vadjustment(),h)
 			return True
 	return False
 

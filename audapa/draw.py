@@ -5,7 +5,6 @@ from gi.repository import Gtk,Gdk
 
 from . import sets
 from . import drawscroll
-from . import r_offset
 
 #area
 samples=[]
@@ -65,7 +64,6 @@ def prepare(format,sampwidth,channels,data):
 	for offset in range(0, tot, blockAlign):
 		s=wave.struct.unpack(scan, data[offset:offset+blockAlign])
 		samples.append(s)
-	r_offset.total._set_text_(str(length))
 	p=8*sampwidth
 	if fm.islower():
 		p-=1
