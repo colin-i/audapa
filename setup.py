@@ -13,7 +13,6 @@ setup(name=pkname,
 	author='bot',
 	author_email='costin.botescu@gmail.com',
 	license='MIT',
-	zip_safe=False,
 	entry_points = {
 		'console_scripts': [pkname+'='+pkname+'.main:main']
 	}
