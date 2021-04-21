@@ -3,15 +3,17 @@ from gi.repository import Gtk
 
 from . import draw
 from . import sets
+from . import seloff
 
 def init():
-	b=Gtk.Box()
+	b=Gtk.Box(homogeneous=True)
 	global atleft,atright
 	atleft=sets.colorLabel("0")
+	atleft.set_halign(Gtk.Align.START)
 	atright=sets.colorLabel("0")
 	atright.set_halign(Gtk.Align.END)
-	atright.set_hexpand(True)
 	b.append(atleft)
+	b.append(seloff.init())
 	b.append(atright)
 	return b
 
