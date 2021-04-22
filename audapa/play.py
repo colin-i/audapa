@@ -5,6 +5,7 @@ from gi.repository import GLib
 
 from . import sets
 from . import draw
+from . import seloff
 
 wavefile=None
 output=0x23F5
@@ -35,6 +36,7 @@ def callback(in_data, frame_count, time_info, status):
 def launch():
 	global audio,stream,wavefile
 	wavefile=wave.open(entry.get_text(),'rb')
+	seloff.open()
 	audio = pyaudio.PyAudio() # create pyaudio instantiation
 	sampwidth=wavefile.getsampwidth()
 	format = audio.get_format_from_width(sampwidth)
@@ -68,6 +70,7 @@ def stop():
 	global wavefile
 	wavefile.close()
 	wavefile=None
+	seloff.close()
 def terminate():
 	if wavefile:
 		stop()

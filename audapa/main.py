@@ -3,33 +3,23 @@ gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
 
 from . import loop
+
 from . import sets
-from . import record
 from . import play
-from . import draw
 from . import drawscroll
 from . import r_offset
-
-def cl(b,d):
-	d.stop(False)
+from . import bar
 
 sets.init()
 win = Gtk.Window()
 win.set_decorated(False)#such a heavy load here if True
 win.maximize()
 win.show()
-input=0x1F399
 while loop.n:
 	play.init()
 	drawscroll.init()
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-	bx=Gtk.Box()
-	bx.append(sets.colorButton(chr(input), record.start, input))
-	bx.append(sets.colorButton(chr(0x2699), sets.sets, [win,box]))
-	bx.append(sets.colorButton("X", cl, loop))
-	bx.append(play.entry)
-	bx.append(play.button)
-	box.append(bx)
+	box.append(bar.init(win,box))
 	box.append(drawscroll.win)
 	box.append(r_offset.init())
 	win.set_child(box)
