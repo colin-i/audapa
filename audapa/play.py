@@ -70,7 +70,6 @@ def stop():
 	global wavefile
 	wavefile.close()
 	wavefile=None
-	seloff.close()
 def terminate():
 	if wavefile:
 		stop()

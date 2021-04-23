@@ -5,13 +5,15 @@ from gi.repository import Gtk,Gdk
 
 from . import sets
 from . import drawscroll
+from . import play
 
 #area
 
-samples=[]
 offset=0
-#size
 #length
+
+#samples
+#size
 
 def draw_none(widget,cr,width,height,d,u):
 	co=Gdk.RGBA()
@@ -51,6 +53,13 @@ def init():
 	area=Gtk.DrawingArea()
 	area.set_draw_func (draw_none,None,None)
 	return area
+def close():
+	global offset,length
+	offset=0
+	length=0
+	area.set_draw_func (draw_none,None,None)
+	drawscroll.calculate(0)
+	play.stop()
 
 formats={pyaudio.paInt16:'h',pyaudio.paUInt8:'B',pyaudio.paInt8:'b',
 	pyaudio.paFloat32:'f',pyaudio.paInt32:'i'}
@@ -62,8 +71,8 @@ def prepare(format,sampwidth,channels,data):
 	tot=length*blockAlign
 	global samples
 	samples=[]
-	for offset in range(0, tot, blockAlign):
-		s=wave.struct.unpack(scan, data[offset:offset+blockAlign])
+	for i in range(0, tot, blockAlign):
+		s=wave.struct.unpack(scan, data[i:i+blockAlign])
 		samples.append(s)
 	p=8*sampwidth
 	if fm.islower():
