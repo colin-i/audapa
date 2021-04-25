@@ -32,7 +32,7 @@ def open():
 	bar.box.append(stop)
 def close(s,b):
 	if control:
-		b.emit("clicked")
+		b.emit(sets._click_)
 	bar.box.remove(b)
 	bar.box.remove(s)
 	start._set_text_("0")
