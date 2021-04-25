@@ -1,16 +1,22 @@
 
 from gi.repository import Gtk
 
-from . import draw
 from . import sets
+from . import draw
 from . import seloff
 
+class inttext(sets.colorLabel):
+	def _get_(self):
+		return int(self.get_text())
+	def _set_(self,t):
+		self._set_text_(str(t))
+
 def init():
-	b=Gtk.Box(homogeneous=True)
 	global atleft,atright
-	atleft=sets.colorLabel("0")
+	b=Gtk.Box(homogeneous=True)
+	atleft=inttext("0")
 	atleft.set_halign(Gtk.Align.START)
-	atright=sets.colorLabel("0")
+	atright=inttext("0")
 	atright.set_halign(Gtk.Align.END)
 	b.append(atleft)
 	b.append(seloff.init())
@@ -26,3 +32,18 @@ def cged(a):
 	cnged(a,int(a.get_page_size()))
 def cgd(a,d):
 	cged(a)
+
+def calculate(p):
+	pos=atleft._get_()+p
+	st=seloff.start._get_()
+	en=seloff.end._get_()
+	if st==0 and en==0:
+		seloff.start._set_(pos)
+		seloff.end._set_(pos)
+		return
+	n=abs(st-pos)
+	m=abs(en-pos)
+	if m<n or (m==n and en<pos):
+		seloff.end._set_(pos)
+		return
+	seloff.start._set_(pos)
