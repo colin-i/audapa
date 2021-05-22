@@ -28,6 +28,7 @@ def press(g,n,x,y,d):
 def open():
 	button=sets.colorButton(on,toggle,draw.area)
 	bar.box.append(button)
+	global stop
 	stop=sets.colorButton("x",close,button)
 	bar.box.append(stop)
 def close(s,b):

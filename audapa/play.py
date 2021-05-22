@@ -72,7 +72,7 @@ def stop():
 	wavefile=None
 def terminate():
 	if wavefile:
-		stop()
+		seloff.stop.emit(sets._click_)
 
 def is_act(d):
 	if not stream.is_active():

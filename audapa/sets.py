@@ -51,6 +51,8 @@ class colorEntry(Gtk.Entry):
 color=Gtk.EntryBuffer()
 def get_color():
 	return color.get_text()
+def get_fgcolor():
+	return "red"
 
 def reset(b,di):
 	config = configparser.ConfigParser()

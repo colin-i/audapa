@@ -8,6 +8,7 @@ if test.returncode:
 import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk,GLib,Gdk
+import cairo
 
 test=subprocess.run([sys.executable,'-m','pip','install','PyAudio>=0.2.11'])
 if test.returncode:

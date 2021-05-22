@@ -6,8 +6,10 @@ setup(name=pkname,
 	packages=[pkname],
 	#optionals
 	python_requires='>=3.8',
-	install_requires=["PyGObject>=3.40","appdirs>=1.4.3","PyAudio>=0.2.11",
-		"Wave>=0.0.2"],
+	install_requires=[
+		"pycairo>=1.20.0","PyGObject>=3.40",
+		"appdirs>=1.4.3",
+		"PyAudio>=0.2.11","Wave>=0.0.2"],
 	description='Audio',
 	url='https://github.com/colin-i/audaparta',
 	author='bot',

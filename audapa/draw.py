@@ -2,18 +2,20 @@ import pyaudio
 import wave
 
 from gi.repository import Gtk,Gdk
+import cairo
 
 from . import sets
 from . import drawscroll
 from . import play
+from . import seloff
 
 #area
-
 offset=0
 #length
-
 #samples
 #size
+
+#sigsampsize,surface,ostore,wstore,hstore
 
 def draw_none(widget,cr,width,height,d,u):
 	co=Gdk.RGBA()
@@ -33,24 +35,24 @@ def draw_cont(widget,cr,width,height,signedsampsize,d):
 	n=length-offset
 	if drawscroll.calculate(n):
 		return
-	co=Gdk.RGBA()
-	if co.parse(sets.get_color()):
-		cr.set_source_rgb(co.red,co.green,co.blue)
-	cr.set_line_width(0.5)
-	global size
-	if width>=height:
-		y=height/2
-		size=min(width,n)
-		painthor(cr,y,height/signedsampsize)
-	else:
-		x=width/2
-		size=min(height,n)
-		paintver(cr,x,width/signedsampsize)
-	cr.stroke()
+	global ostore,wstore,hstore
+	if ostore!=offset or wstore!=width or hstore!=height:
+		ostore=offset
+		wstore=width
+		hstore=height
+		sz=min(width,n) if drawscroll.landscape else min(height,n)
+		unsel(0,sz)
+		start=seloff.start._get_()
+		end=seloff.end._get_()
+		if start<(offset+sz) and end>offset:
+			sel(max(start,offset),min(end,offset+sz))
+	cr.set_source_surface (surface, 0, 0)
+	cr.paint ()
 
 def init():
 	global area
 	area=Gtk.DrawingArea()
+	area.connect_after ("resize", resize_cb, None)
 	area.set_draw_func (draw_none,None,None)
 	return area
 def close():
@@ -77,18 +79,41 @@ def prepare(format,sampwidth,channels,data):
 	p=8*sampwidth
 	if fm.islower():
 		p-=1
-	area.set_draw_func (draw_cont,2**p,None)
+	global ostore,wstore,hstore,sigsampsize
+	ostore=-1
+	wstore=-1
+	hstore=-1
+	sigsampsize=2**p
+	area.set_draw_func (draw_cont,None,None)
 	drawscroll.calculate(length)
 
-def painthor(cr,y,ratio):
-	for i in range(0,size):
+def resize_cb(a,w,h,d):
+	global surface
+	surface = a.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,w,h)
+
+def paintland(cr,y,ratio,a,b):
+	for i in range(a,b):
 		cr.move_to(i,y)
 		z=samples[i][0]
 		r=ratio*z+y
 		cr.line_to(i,r)
-def paintver(cr,x,ratio):
-	for i in range(0,size):
+def paintport(cr,x,ratio,a,b):
+	for i in range(a,b):
 		cr.move_to(x,i)
 		z=samples[i][0]
 		c=ratio*z+x
 		cr.line_to(c,i)
+def sel(a,b):
+	paint(a,b,sets.get_fgcolor())
+def unsel(a,b):
+	paint(a,b,sets.get_color())
+def paint(a,b,clr):
+	cr=cairo.Context(surface)
+	cr.set_line_width(0.5)#this at start?nothing
+	co=Gdk.RGBA()
+	if co.parse(clr):
+		cr.set_source_rgb(co.red,co.green,co.blue)
+	if drawscroll.landscape:
+		paintland(cr,hstore/2,hstore/sigsampsize,a,b)
+	else:
+		paintport(cr,wstore/2,wstore/sigsampsize,a,b)

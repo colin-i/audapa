@@ -44,6 +44,15 @@ def calculate(p):
 	n=abs(st-pos)
 	m=abs(en-pos)
 	if m<n or (m==n and en<pos):
+		if en<pos:
+			draw.sel(en,pos)
+		else:
+			draw.unsel(pos,en)
 		seloff.end._set_(pos)
-		return
-	seloff.start._set_(pos)
+	else:
+		if pos<st:
+			draw.sel(pos,st)
+		else:
+			draw.unsel(st,pos)
+		seloff.start._set_(pos)
+	draw.area.queue_draw()
