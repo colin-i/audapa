@@ -37,15 +37,16 @@ def draw_cont(widget,cr,width,height,signedsampsize,d):
 		return
 	global ostore,wstore,hstore
 	if ostore!=offset or wstore!=width or hstore!=height:
+		global size
 		ostore=offset
 		wstore=width
 		hstore=height
-		sz=min(width,n) if drawscroll.landscape else min(height,n)
-		unsel(0,sz)
+		size=min(width,n) if drawscroll.landscape else min(height,n)
+		unsel(0,size)
 		start=seloff.start._get_()
 		end=seloff.end._get_()
-		if start<(offset+sz) and end>offset:
-			sel(max(start,offset),min(end,offset+sz))
+		if start<(offset+size) and end>offset:
+			sel(max(start,offset),min(end,offset+size))
 	cr.set_source_surface (surface, 0, 0)
 	cr.paint ()
 
@@ -117,3 +118,4 @@ def paint(a,b,clr):
 		paintland(cr,hstore/2,hstore/sigsampsize,a,b)
 	else:
 		paintport(cr,wstore/2,wstore/sigsampsize,a,b)
+	cr.stroke()
