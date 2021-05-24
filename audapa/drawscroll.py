@@ -39,23 +39,23 @@ def edge(wn,pos,d):
 		if x<draw.length:
 			draw.offset+=size
 			r_offset.cged(win.get_hadjustment())
-			draw.area.queue_draw()
+			draw.redraw()
 	elif pos==Gtk.PositionType.BOTTOM:
 		y=draw.offset+draw.size
 		if y<draw.length:
 			draw.offset+=size
 			r_offset.cged(win.get_vadjustment())
-			draw.area.queue_draw()
+			draw.redraw()
 	elif pos==Gtk.PositionType.LEFT:
 		if draw.offset>0:
 			draw.offset-=min(size,draw.offset)#can be unfixed
 			r_offset.cged(win.get_hadjustment())
-			draw.area.queue_draw()
+			draw.redraw()
 	else:
 		if draw.offset>0:
 			draw.offset-=min(size,draw.offset)
 			r_offset.cged(win.get_vadjustment())
-			draw.area.queue_draw()
+			draw.redraw()
 
 def init():
 	global win
