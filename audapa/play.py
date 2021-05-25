@@ -9,6 +9,7 @@ from . import seloff
 
 wavefile=None
 output=0x23F5
+timer=0
 
 def activate(en,d):
 	terminate()
@@ -51,9 +52,17 @@ def launch():
 def start():
 	stream.start_stream()
 	button._set_text_(chr(0x23F8))
-def pause():
+	global timer
+	timer=GLib.timeout_add_seconds(1,is_act,None)
+def pausing():
 	stream.stop_stream()
 	button._set_text_(chr(output))
+def pause():
+	pausing()
+	global timer
+	if timer:
+		GLib.source_remove(timer)
+		timer=0
 def stop():
 	# stop the stream, close it, terminate the pyaudio instantiation
 	pause()
@@ -66,3 +75,12 @@ def stop():
 def terminate():
 	if wavefile:
 		seloff.stop.emit(sets._click_)
+
+def is_act(d):
+	if not stream.is_active():
+		pausing()
+		global timer
+		timer=0
+		wavefile.rewind()
+		return False
+	return True
