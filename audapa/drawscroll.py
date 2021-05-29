@@ -3,6 +3,8 @@ from gi.repository import Gtk
 from . import draw
 from . import r_offset
 
+#size,landscape,win
+
 def calculate(n):
 	w=win.get_width()
 	h=win.get_height()
@@ -33,29 +35,26 @@ def calculate(n):
 			return True
 	return False
 
+def forward(a,b):
+	n=draw.offset+draw.size
+	if n<draw.length:
+		draw.offset+=a
+		r_offset.cged(b)
+		draw.redraw()
+def backward(a,b):
+	if draw.offset>0:
+		draw.offset-=a
+		r_offset.cged(b)
+		draw.redraw()
 def edge(wn,pos,d):
 	if pos==Gtk.PositionType.RIGHT:
-		x=draw.offset+draw.size
-		if x<draw.length:
-			draw.offset+=size
-			r_offset.cged(win.get_hadjustment())
-			draw.redraw()
+		forward(size,win.get_hadjustment())
 	elif pos==Gtk.PositionType.BOTTOM:
-		y=draw.offset+draw.size
-		if y<draw.length:
-			draw.offset+=size
-			r_offset.cged(win.get_vadjustment())
-			draw.redraw()
+		forward(size,win.get_vadjustment())
 	elif pos==Gtk.PositionType.LEFT:
-		if draw.offset>0:
-			draw.offset-=min(size,draw.offset)#can be unfixed
-			r_offset.cged(win.get_hadjustment())
-			draw.redraw()
+		backward(min(size,draw.offset),win.get_hadjustment())
 	else:
-		if draw.offset>0:
-			draw.offset-=min(size,draw.offset)
-			r_offset.cged(win.get_vadjustment())
-			draw.redraw()
+		backward(min(size,draw.offset),win.get_vadjustment())
 
 def init():
 	global win
@@ -64,3 +63,15 @@ def init():
 	win.connect('edge-overshot',edge,None)
 	win.get_hadjustment().connect('value-changed',r_offset.cgd,None)
 	win.get_vadjustment().connect('value-changed',r_offset.cgd,None)
+
+def move(b,next):
+	if landscape:
+		a=int(win.get_width()/2)
+		b=win.get_hadjustment()
+	else:
+		a=int(win.get_height()/2)
+		b=win.get_vadjustment()
+	if next:
+		forward(a,b)
+	else:
+		backward(a,b)
