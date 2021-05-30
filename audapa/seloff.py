@@ -34,10 +34,10 @@ def open():
 	stop=sets.colorButton("x",close,{'b':button,'list':lst})
 	bar.box.append(stop)
 	lst.append(stop)
-	b=sets.colorButton("&gt;",drawscroll.move,True)
+	b=sets.colorButton("&lt;",drawscroll.move,False)
 	bar.box.append(b)
 	lst.append(b)
-	b=sets.colorButton("&lt;",drawscroll.move,False)
+	b=sets.colorButton("&gt;",drawscroll.move,True)
 	bar.box.append(b)
 	lst.append(b)
 def close(s,d):
