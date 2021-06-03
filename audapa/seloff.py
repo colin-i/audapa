@@ -26,20 +26,21 @@ def press(g,n,x,y,d):
 	r_offset.calculate(int(x if drawscroll.landscape else y))
 
 def open():
+	global stop,moveleft,moveright
 	lst=[]
 	button=sets.colorButton(on,toggle,draw.area)
 	bar.box.append(button)
 	lst.append(button)
-	global stop
 	stop=sets.colorButton("x",close,{'b':button,'list':lst})
 	bar.box.append(stop)
 	lst.append(stop)
-	b=sets.colorButton("&lt;",drawscroll.move,False)
-	bar.box.append(b)
-	lst.append(b)
-	b=sets.colorButton("&gt;",drawscroll.move,True)
-	bar.box.append(b)
-	lst.append(b)
+	moveleft=sets.colorButton("&lt;",drawscroll.move,False)
+	bar.box.append(moveleft)
+	lst.append(moveleft)
+	moveright=sets.colorButton("&gt;",drawscroll.move,True)
+	bar.box.append(moveright)
+	lst.append(moveright)
+	drawscroll.open()
 def close(s,d):
 	b=d['b']
 	if control:
@@ -49,6 +50,7 @@ def close(s,d):
 	start._set_text_("0")
 	end._set_text_("0")
 	draw.close()
+	drawscroll.close()
 
 def toggle(b,a):
 	global control

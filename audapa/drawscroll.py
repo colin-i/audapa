@@ -1,7 +1,9 @@
-from gi.repository import Gtk
+from gi.repository import Gtk,Gdk
 
 from . import draw
 from . import r_offset
+from . import seloff
+from . import sets
 
 #size,landscape,win
 
@@ -75,3 +77,19 @@ def move(b,next):
 		forward(a,b)
 	else:
 		backward(a,b)
+
+def open():
+	global control
+	control=Gtk.EventControllerKey()
+	control.connect("key-pressed",eve,None)
+	win.add_controller(control)
+def close():
+	win.remove_controller(control)
+def eve(controller,keyval,keycode,state,d):
+	if keyval==Gdk.KEY_period or keyval==Gdk.KEY_greater:
+		seloff.moveright.emit(sets._click_)
+		return True
+	elif keyval==Gdk.KEY_comma or keyval==Gdk.KEY_less:
+		seloff.moveleft.emit(sets._click_)
+		return True
+	return False
