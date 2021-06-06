@@ -88,8 +88,8 @@ def prepare(format,sampwidth,channels,data):
 		p-=1
 	global ostore,wstore,hstore,sigsampsize
 	ostore=-1
-	wstore=-1
-	hstore=-1
+	#wstore=-1 one flag is enaugh
+	#hstore=-1
 	sigsampsize=2**p
 	area.set_draw_func (draw_cont,None,None)
 	drawscroll.calculate(length)
