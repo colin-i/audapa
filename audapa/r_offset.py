@@ -33,8 +33,9 @@ def cged(a):
 def cgd(a,d):
 	cged(a)
 
-def calculate(p):
-	pos=atleft._get_()+p
+def calculate(pos):
+	#pos is is relative to draw
+	pos+=draw.offset
 	st=seloff.start._get_()
 	en=seloff.end._get_()
 	if st==0 and en==0:

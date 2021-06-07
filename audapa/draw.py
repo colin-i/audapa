@@ -42,7 +42,7 @@ def draw_cont(widget,cr,width,height,signedsampsize,d):
 		wstore=width
 		hstore=height
 		size=min(width,n) if drawscroll.landscape else min(height,n)
-		unsel(0,size)
+		unsel(offset,offset+size)
 		draw_sel()
 	cr.set_source_surface (surface, 0, 0)
 	cr.paint ()
@@ -100,16 +100,18 @@ def resize_cb(a,w,h,d):
 
 def paintland(cr,y,ratio,a,b):
 	for i in range(a,b):
-		cr.move_to(i,y)
+		j=i-offset
+		cr.move_to(j,y)
 		z=samples[i][0]
 		r=ratio*z+y
-		cr.line_to(i,r)
+		cr.line_to(j,r)
 def paintport(cr,x,ratio,a,b):
 	for i in range(a,b):
-		cr.move_to(x,i)
+		j=i-offset
+		cr.move_to(x,j)
 		z=samples[i][0]
 		c=ratio*z+x
-		cr.line_to(c,i)
+		cr.line_to(c,j)
 def sel(a,b):
 	paint(a,b,sets.get_fgcolor())
 def unsel(a,b):

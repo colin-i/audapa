@@ -6,6 +6,7 @@ from . import bar
 from . import draw
 from . import r_offset
 from . import drawscroll
+from . import delete
 
 on='+'
 off='-'
@@ -31,15 +32,19 @@ def open():
 	button=sets.colorButton(on,toggle,draw.area)
 	bar.box.append(button)
 	lst.append(button)
-	stop=sets.colorButton("x",close,{'b':button,'list':lst})
-	bar.box.append(stop)
-	lst.append(stop)
+	b=sets.colorButton(chr(0x2421),delete.act,None)
+	bar.box.append(b)
+	lst.append(b)
 	moveleft=sets.colorButton("&lt;",drawscroll.move,False)
 	bar.box.append(moveleft)
 	lst.append(moveleft)
 	moveright=sets.colorButton("&gt;",drawscroll.move,True)
 	bar.box.append(moveright)
 	lst.append(moveright)
+	stop=sets.colorButton("x",close,{'b':button,'list':lst})
+	bar.box.append(stop)
+	lst.append(stop)
+	#
 	drawscroll.open()
 def close(s,d):
 	b=d['b']
@@ -47,10 +52,12 @@ def close(s,d):
 		b.emit(sets._click_)
 	for x in d['list']:
 		bar.box.remove(x)
-	start._set_text_("0")
-	end._set_text_("0")
+	reset()
 	draw.close()
 	drawscroll.close()
+def reset():
+	start._set_text_("0")
+	end._set_text_("0")
 
 def toggle(b,a):
 	global control
