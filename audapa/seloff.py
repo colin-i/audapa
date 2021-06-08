@@ -7,6 +7,7 @@ from . import draw
 from . import r_offset
 from . import drawscroll
 from . import delete
+from . import play
 
 on='+'
 off='-'
@@ -26,24 +27,20 @@ def init():
 def press(g,n,x,y,d):
 	r_offset.calculate(int(x if drawscroll.landscape else y))
 
+def add(a,b,c,lst):
+	d=sets.colorButton(a,b,c)
+	bar.box.append(d)
+	lst.append(d)
+	return d
 def open():
 	global stop,moveleft,moveright
 	lst=[]
-	button=sets.colorButton(on,toggle,draw.area)
-	bar.box.append(button)
-	lst.append(button)
-	b=sets.colorButton(chr(0x2421),delete.act,None)
-	bar.box.append(b)
-	lst.append(b)
-	moveleft=sets.colorButton("&lt;",drawscroll.move,False)
-	bar.box.append(moveleft)
-	lst.append(moveleft)
-	moveright=sets.colorButton("&gt;",drawscroll.move,True)
-	bar.box.append(moveright)
-	lst.append(moveright)
-	stop=sets.colorButton("x",close,{'b':button,'list':lst})
-	bar.box.append(stop)
-	lst.append(stop)
+	button=add(on,toggle,draw.area,lst)
+	add(chr(0x2421),delete.act,None,lst)
+	add(chr(0x1f5ce),play.save,None,lst)#4be
+	moveleft=add("&lt;",drawscroll.move,False,lst)
+	moveright=add("&gt;",drawscroll.move,True,lst)
+	stop=add("x",close,{'b':button,'list':lst},lst)
 	#
 	drawscroll.open()
 def close(s,d):

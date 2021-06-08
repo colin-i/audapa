@@ -70,13 +70,9 @@ def close():
 	drawscroll.calculate(0)
 	play.stop()
 
-formats={pyaudio.paInt16:'h',pyaudio.paUInt8:'B',pyaudio.paInt8:'b',
-	pyaudio.paFloat32:'f',pyaudio.paInt32:'i'}
-
 def prepare(format,sampwidth,channels,data):
 	blockAlign=sampwidth*channels
-	fm=formats[format]
-	scan='<'+fm*channels
+	scan,fm=play.scan(sampwidth,channels)
 	tot=length*blockAlign
 	global samples
 	samples=[]

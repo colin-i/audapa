@@ -84,3 +84,22 @@ def is_act(d):
 		wavefile.rewind()
 		return False
 	return True
+
+def scan(sampwidth,channels):
+	formats={pyaudio.paInt16:'h',pyaudio.paUInt8:'B',pyaudio.paInt8:'b',
+		pyaudio.paFloat32:'f',pyaudio.paInt32:'i'}
+	format = audio.get_format_from_width(sampwidth)
+	fm=formats[format]
+	return ['<'+fm*channels,fm]
+
+def save(b,d):
+	with wave.open(entry.get_text(),'wb') as file:
+		c=wavefile.getnchannels()
+		file.setnchannels(c)
+		s=wavefile.getsampwidth()
+		file.setsampwidth(s)
+		file.setframerate(wavefile.getframerate())
+		#.setparams((1, 4, Fs, 0, 'NONE', 'not compressed'))
+		sc=scan(s,c)[0]
+		b=b"".join((wave.struct.pack(sc,i[0]) for i in draw.samples))
+		file.writeframes(b)#writeframesraw
