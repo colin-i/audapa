@@ -18,6 +18,10 @@ offset=0
 #sigsampsize,surface,ostore,wstore,hstore
 
 def draw_none(widget,cr,width,height,d,u):
+	if width==0:
+		p=widget.get_parent()
+		widget.set_size_request(p.get_width(),p.get_height())
+		return
 	co=Gdk.RGBA()
 	if co.parse(sets.get_color()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
@@ -61,7 +65,9 @@ def init():
 	area=Gtk.DrawingArea()
 	area.connect_after ("resize", resize_cb, None)
 	area.set_draw_func (draw_none,None,None)
-	return area
+	cont=Gtk.Fixed()#without this wrap draw_none width will be fine
+	cont.put(area,0,0)
+	return cont
 def close():
 	global offset,length
 	offset=0

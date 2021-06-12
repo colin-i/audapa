@@ -9,6 +9,7 @@ from . import play
 from . import drawscroll
 from . import r_offset
 from . import bar
+from . import forms
 
 sets.init()
 win = Gtk.Window()
@@ -21,6 +22,7 @@ while loop.n:
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	box.append(bar.init(win,box))
 	box.append(drawscroll.win)
+	box.append(forms.init())
 	box.append(r_offset.init())
 	win.set_child(box)
 	loop.main.run()
