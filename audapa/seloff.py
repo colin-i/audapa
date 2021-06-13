@@ -8,9 +8,10 @@ from . import r_offset
 from . import drawscroll
 from . import delete
 from . import play
+from . import forms
 
 on='+'
-off='-'
+#off='-'
 control=None
 
 def init():
@@ -43,6 +44,7 @@ def open():
 	stop=add("x",close,{'b':button,'list':lst},lst)
 	#
 	drawscroll.open()
+	forms.open()
 def close(s,d):
 	b=d['b']
 	if control:
@@ -52,6 +54,7 @@ def close(s,d):
 	reset()
 	draw.close()
 	drawscroll.close()
+	forms.close()
 def reset():
 	start._set_text_("0")
 	end._set_text_("0")
@@ -66,4 +69,4 @@ def toggle(b,a):
 		control = Gtk.GestureClick()
 		control.connect("pressed",press,None)
 		a.add_controller(control)
-		b._set_text_(off)
+		b._set_text_('-')

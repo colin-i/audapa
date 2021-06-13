@@ -18,8 +18,8 @@ offset=0
 #sigsampsize,surface,ostore,wstore,hstore
 
 def draw_none(widget,cr,width,height,d,u):
-	if width==0:
-		p=widget.get_parent()
+	if width<drawscroll.win.get_width():
+		p=drawscroll.win
 		widget.set_size_request(p.get_width(),p.get_height())
 		return
 	co=Gdk.RGBA()
@@ -75,8 +75,7 @@ def close():
 	area.set_draw_func (draw_none,None,None)
 	drawscroll.calculate(0)
 	play.stop()
-
-def prepare(format,sampwidth,channels,data):
+def open(format,sampwidth,channels,data):
 	blockAlign=sampwidth*channels
 	scan,fm=play.scan(sampwidth,channels)
 	tot=length*blockAlign

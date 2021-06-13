@@ -17,6 +17,7 @@ def activate(en,d):
 def toggle(b,d):
 	if not wavefile:
 		launch()
+		start()
 		return
 	if stream.is_stopped():
 		start()
@@ -36,7 +37,6 @@ def callback(in_data, frame_count, time_info, status):
 def launch():
 	global audio,stream,wavefile
 	wavefile=wave.open(entry.get_text(),'rb')
-	seloff.open()
 	audio = pyaudio.PyAudio() # create pyaudio instantiation
 	sampwidth=wavefile.getsampwidth()
 	format = audio.get_format_from_width(sampwidth)
@@ -45,10 +45,12 @@ def launch():
 	draw.length=wavefile.getnframes()
 	data = wavefile.readframes(draw.length)
 	wavefile.rewind()#for playing
-	draw.prepare(format,sampwidth,channels,data)
 	# create pyaudio stream
 	stream = audio.open(format=format,rate=rate,channels=channels,
 		output = True,start=False,stream_callback=callback)
+	#open
+	seloff.open()
+	draw.open(format,sampwidth,channels,data)
 def start():
 	stream.start_stream()
 	button._set_text_(chr(0x23F8))
