@@ -36,7 +36,7 @@ def add(a,b,c,lst):
 def open():
 	global stop,moveleft,moveright
 	lst=[]
-	button=add(on,toggle,draw.area,lst)
+	button=add(on,toggle,draw.cont,lst)
 	add(chr(0x2421),delete.act,None,lst)
 	add(chr(0x1f5ce),play.save,None,lst)#4be
 	moveleft=add("&lt;",drawscroll.move,False,lst)

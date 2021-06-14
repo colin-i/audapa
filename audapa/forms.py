@@ -3,6 +3,7 @@ from gi.repository import Gtk
 
 from . import sets
 from . import draw
+from . import point
 
 #button
 control=None
@@ -11,7 +12,7 @@ on=chr(0x25a1)
 def init():
 	b=Gtk.Box(homogeneous=True)#,hexpand=True nothing
 	global button
-	button=sets.colorButton(on,toggle,draw.area)
+	button=sets.colorButton(on,toggle,draw.cont)
 	button.set_sensitive(False)
 	button.set_halign(Gtk.Align.CENTER)
 	b.append(button)
@@ -38,4 +39,4 @@ def toggle(b,a):
 		b._set_text_(chr(0x25a0))
 
 def press(g,n,x,y,d):
-	pass
+	draw.cont.put(point.struct(),x,y)

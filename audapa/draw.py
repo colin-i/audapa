@@ -9,7 +9,7 @@ from . import drawscroll
 from . import play
 from . import seloff
 
-#area
+#area,cont
 offset=0
 #length
 #samples
@@ -18,10 +18,6 @@ offset=0
 #sigsampsize,surface,ostore,wstore,hstore
 
 def draw_none(widget,cr,width,height,d,u):
-	if width<drawscroll.win.get_width():
-		p=drawscroll.win
-		widget.set_size_request(p.get_width(),p.get_height())
-		return
 	co=Gdk.RGBA()
 	if co.parse(sets.get_color()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
@@ -61,13 +57,15 @@ def redraw():
 	area.queue_draw()
 
 def init():
-	global area
+	global area,cont
 	area=Gtk.DrawingArea()
 	area.connect_after ("resize", resize_cb, None)
 	area.set_draw_func (draw_none,None,None)
-	cont=Gtk.Fixed()#without this wrap draw_none width will be fine
-	cont.put(area,0,0)
-	return cont
+	over=Gtk.Overlay()
+	over.set_child(area)
+	cont=Gtk.Fixed()#fixed is not tracking window default-width
+	over.add_overlay(cont)
+	return over
 def close():
 	global offset,length
 	offset=0
