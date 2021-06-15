@@ -25,6 +25,11 @@ def close():
 	if control:
 		button.emit(sets._click_)
 	button.set_sensitive(False)
+	x=draw.cont.get_first_child()
+	while x:
+		y=x.get_next_sibling()
+		draw.cont.remove(x)
+		x=y
 
 def toggle(b,a):
 	global control
