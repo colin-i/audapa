@@ -39,4 +39,4 @@ def toggle(b,a):
 		b._set_text_(chr(0x25a0))
 
 def press(g,n,x,y,d):
-	draw.cont.put(point.struct(),x,y)
+	point.struct(x,y)

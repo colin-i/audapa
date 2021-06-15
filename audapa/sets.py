@@ -55,19 +55,24 @@ def get_color():
 fgcolor=Gtk.EntryBuffer(text="red")
 def get_fgcolor():
 	return fgcolor.get_text()
+fgcolor2=Gtk.EntryBuffer(text="green")
+def get_fgcolor2():
+	return fgcolor2.get_text()
 
 def add(bx,tx,x,n):
 	t=colorLabel(tx)
 	bx.attach(t,0,n,1,1)
 	en=colorEntry(x)
 	bx.attach(en,1,n,1,1)
+	return n+1
 def sets(b,combo):
 	bx=Gtk.Grid(hexpand=True)
-	add(bx,"Font/Stroke Color",color,0)
-	add(bx,"Foreground Color",fgcolor,1)
+	n=add(bx,"Font/Stroke Color",color,0)
+	n=add(bx,"Foreground Color",fgcolor,n)
+	n=add(bx,"Foreground Color2",fgcolor2,n)
 	b=colorButton("Done", reset, {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
-	bx.attach(b,0,2,2,1)
+	bx.attach(b,0,n,2,1)
 	combo[0].set_child(bx)
 
 def init():
@@ -76,6 +81,7 @@ def init():
 		c=config['conf']
 		color.set_text(c['color'],-1)
 		fgcolor.set_text(c['fgcolor'],-1)
+		fgcolor2.set_text(c['fgcolor2'],-1)
 
 def reset(b,di):
 	config = configparser.ConfigParser()
@@ -83,6 +89,7 @@ def reset(b,di):
 	c=config['conf']
 	c['color']=color.get_text()
 	c['fgcolor']=fgcolor.get_text()
+	c['fgcolor2']=fgcolor2.get_text()
 	with open(get_config_file(), "w") as configfile:
 		config.write(configfile)
 	if di['t']['cl']==c['color']:
