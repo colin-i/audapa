@@ -8,6 +8,7 @@ from . import sets
 from . import drawscroll
 from . import play
 from . import seloff
+from . import forms
 
 #area,cont
 offset=0
@@ -42,6 +43,7 @@ def draw_cont(widget,cr,width,height,signedsampsize,d):
 		wstore=width
 		hstore=height
 		size=min(width,n) if drawscroll.landscape else min(height,n)
+		forms.clear()
 		unsel(offset,offset+size)
 		draw_sel()
 	cr.set_source_surface (surface, 0, 0)

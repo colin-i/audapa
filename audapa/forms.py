@@ -25,6 +25,9 @@ def close():
 	if control:
 		button.emit(sets._click_)
 	button.set_sensitive(False)
+	clear()
+
+def clear():
 	x=draw.cont.get_first_child()
 	while x:
 		y=x.get_next_sibling()
