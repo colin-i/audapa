@@ -26,6 +26,7 @@ def close():
 		button.emit(sets._click_)
 	button.set_sensitive(False)
 	clear()
+	point.points.clear()
 
 def clear():
 	x=draw.cont.get_first_child()
