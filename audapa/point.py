@@ -14,6 +14,7 @@ class struct(Gtk.DrawingArea):
 		self.set_size_request(2*const,2*const)
 		draw.cont.put(self,x-const,y-const)
 		#
+		x+=draw.offset
 		self._offset_=x
 		for p in points:
 			if x<p._offset_:
