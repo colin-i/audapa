@@ -43,7 +43,6 @@ def draw_cont(widget,cr,width,height,signedsampsize,d):
 		wstore=width
 		hstore=height
 		size=min(width,n) if drawscroll.landscape else min(height,n)
-		forms.clear()
 		unsel(offset,offset+size)
 		draw_sel()
 	cr.set_source_surface (surface, 0, 0)
@@ -54,6 +53,7 @@ def draw_sel():
 	if start<(offset+size) and end>offset:
 		sel(max(start,offset),min(end,offset+size))
 def redraw():
+	forms.clear()
 	global surface
 	surface = area.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,wstore,hstore)
 	area.queue_draw()

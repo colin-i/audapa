@@ -3,6 +3,7 @@ from gi.repository import Gtk,Gdk
 
 from . import sets
 from . import draw
+from . import drawscroll
 
 const=6
 points=[]
@@ -14,10 +15,10 @@ class struct(Gtk.DrawingArea):
 		self.set_size_request(2*const,2*const)
 		draw.cont.put(self,x-const,y-const)
 		#
-		x+=draw.offset
-		self._offset_=x
+		z=draw.offset+(x if drawscroll.landscape else y)
+		self._offset_=z
 		for p in points:
-			if x<p._offset_:
+			if z<p._offset_:
 				points.insert(points.index(p),self)
 				return
 		points.append(self)
