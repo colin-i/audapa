@@ -40,7 +40,7 @@ def redraw():
 		if draw.offset<points[i]._offset_:
 			continue
 		for j in range(i,points.length):
-			if draw.offset+draw.length<points[j]._offset_:
+			if draw.offset+draw.size<points[j]._offset_:
 				break
 			points[j]._put_()
 		break
