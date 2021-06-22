@@ -13,12 +13,16 @@ class struct(Gtk.DrawingArea):
 		Gtk.DrawingArea.__init__(self)
 		self.set_draw_func(self._draw_,None,None)
 		self.set_size_request(2*const,2*const)
-		draw.cont.put(self,x-const,y-const)
 		#
-		z=draw.offset+(x if drawscroll.landscape else y)
-		self._offset_=z
+		if drawscroll.landscape:
+			self._offset_=draw.offset+x
+			self._height_=(sampsize*y/hstore)-(hstore*baseline)
+		else:
+			self._offset_=draw.offset+y
+			self._height_=(sampsize*x/wstore)-(wstore*baseline)
+		self._put_()
 		for p in points:
-			if z<p._offset_:
+			if self._offset_<p._offset_:
 				points.insert(points.index(p),self)
 				return
 		points.append(self)
@@ -28,3 +32,9 @@ class struct(Gtk.DrawingArea):
 			cr.set_source_rgb(co.red,co.green,co.blue)
 		cr.rectangle(0,0,width,height)
 		cr.stroke()
+	def _put_():
+		if drawscroll.landscape:
+			y=_height_*hstore/sampsize
+		else:
+			y=_height_*hstore/sampsize
+		draw.cont.put(self,self._offset_-draw.offset-const,y-const)

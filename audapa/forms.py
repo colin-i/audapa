@@ -34,6 +34,16 @@ def clear():
 		y=x.get_next_sibling()
 		draw.cont.remove(x)
 		x=y
+def redraw():
+	clear()
+	for i in range (0,points.length):
+		if draw.offset<points[i]._offset_:
+			continue
+		for j in range(i,points.length):
+			if draw.offset+draw.length<points[j]._offset_:
+				break
+			points[j]._put_()
+		break
 
 def toggle(b,a):
 	global control

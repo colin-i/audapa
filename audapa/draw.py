@@ -16,7 +16,7 @@ offset=0
 #samples
 #size
 
-#sigsampsize,surface,ostore,wstore,hstore
+#sampsize,baseline,surface,ostore,wstore,hstore
 
 def draw_none(widget,cr,width,height,d,u):
 	co=Gdk.RGBA()
@@ -32,7 +32,7 @@ def draw_none(widget,cr,width,height,d,u):
 		cr.move_to(x,0)
 		cr.line_to(x,height)
 	cr.stroke()
-def draw_cont(widget,cr,width,height,signedsampsize,d):
+def draw_cont(widget,cr,width,height,d,d2):
 	n=length-offset
 	if drawscroll.calculate(n):
 		return
@@ -53,7 +53,7 @@ def draw_sel():
 	if start<(offset+size) and end>offset:
 		sel(max(start,offset),min(end,offset+size))
 def redraw():
-	forms.clear()
+	forms.redraw()
 	global surface
 	surface = area.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,wstore,hstore)
 	area.queue_draw()
@@ -84,18 +84,17 @@ def open(format,sampwidth,channels,data):
 	for i in range(0, tot, blockAlign):
 		s=wave.struct.unpack(scan, data[i:i+blockAlign])
 		samples.append(s)
-	p=8*sampwidth
-	if fm.islower():
-		p-=1
-	global ostore,wstore,hstore,sigsampsize
+	global ostore,wstore,hstore,sampsize,baseline
 	ostore=-1
 	#wstore=-1 one flag is enaugh
 	#hstore=-1
-	sigsampsize=2**p
+	sampsize=2**(8*sampwidth)
+	baseline=1 if fm.islower() else 0
 	area.set_draw_func (draw_cont,None,None)
 	drawscroll.calculate(length)
 
 def resize_cb(a,w,h,d):
+	forms.redraw()
 	global surface
 	surface = a.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,w,h)
 
@@ -124,7 +123,7 @@ def paint(a,b,clr):
 	if co.parse(clr):
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	if drawscroll.landscape:
-		paintland(cr,hstore/2,hstore/sigsampsize,a,b)
+		paintland(cr,hstore*baseline,hstore/sampsize,a,b)
 	else:
-		paintport(cr,wstore/2,wstore/sigsampsize,a,b)
+		paintport(cr,wstore*baseline,wstore/sampsize,a,b)
 	cr.stroke()
