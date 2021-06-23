@@ -4,6 +4,7 @@ from gi.repository import Gtk
 from . import sets
 from . import draw
 from . import point
+from . import drawscroll
 
 #button
 control=None
@@ -36,13 +37,15 @@ def clear():
 		x=y
 def redraw():
 	clear()
-	for i in range (0,points.length):
-		if draw.offset<points[i]._offset_:
+	sz=len(point.points)
+	for i in range (0,sz):
+		if draw.offset<point.points[i]._offset_:
 			continue
-		for j in range(i,points.length):
-			if draw.offset+draw.size<points[j]._offset_:
-				break
-			points[j]._put_()
+		for j in range(i,sz):
+			if draw.offset+(draw.wstore if drawscroll.landscape
+				else draw.hstore)<point.points[j]._offset_:
+				return
+			point.points[j]._put_()
 		break
 
 def toggle(b,a):

@@ -16,10 +16,10 @@ class struct(Gtk.DrawingArea):
 		#
 		if drawscroll.landscape:
 			self._offset_=draw.offset+x
-			self._height_=(sampsize*y/hstore)-(hstore*baseline)
+			self._height_=(draw.sampsize*y/draw.hstore)-(draw.hstore*draw.baseline)
 		else:
 			self._offset_=draw.offset+y
-			self._height_=(sampsize*x/wstore)-(wstore*baseline)
+			self._height_=(draw.sampsize*x/draw.wstore)-(draw.wstore*draw.baseline)
 		self._put_()
 		for p in points:
 			if self._offset_<p._offset_:
@@ -34,7 +34,7 @@ class struct(Gtk.DrawingArea):
 		cr.stroke()
 	def _put_():
 		if drawscroll.landscape:
-			y=_height_*hstore/sampsize
+			y=_height_*draw.hstore/draw.sampsize
 		else:
-			y=_height_*hstore/sampsize
+			y=_height_*draw.hstore/draw.sampsize
 		draw.cont.put(self,self._offset_-draw.offset-const,y-const)
