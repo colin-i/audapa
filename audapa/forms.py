@@ -35,18 +35,18 @@ def clear():
 		y=x.get_next_sibling()
 		draw.cont.remove(x)
 		x=y
-def redraw():
+def redraw(w,h):
 	clear()
 	sz=len(point.points)
 	for i in range (0,sz):
-		if draw.offset<point.points[i]._offset_:
+		if point.points[i]._offset_<draw.offset:
 			continue
 		for j in range(i,sz):
-			if draw.offset+(draw.wstore if drawscroll.landscape
-				else draw.hstore)<point.points[j]._offset_:
+			if draw.offset+(w if drawscroll.landscape
+				else h)<point.points[j]._offset_:
 				return
-			point.points[j]._put_()
-		break
+			point.points[j]._put_(w,h)
+		return
 
 def toggle(b,a):
 	global control

@@ -7,13 +7,15 @@ from . import sets
 
 #size,landscape,win
 
+def set_landscape():
+	global landscape
+	landscape=win.get_width()>=win.get_height()
 def calculate(n):
 	w=win.get_width()
 	h=win.get_height()
 	d=draw.area
-	global size,landscape
 	f=3
-	landscape=w>=h
+	global size
 	if landscape:
 		#30000 maximum size of an X window
 		if n>(size:=(w*f)):

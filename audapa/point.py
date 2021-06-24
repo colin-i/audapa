@@ -16,11 +16,12 @@ class struct(Gtk.DrawingArea):
 		#
 		if drawscroll.landscape:
 			self._offset_=draw.offset+x
-			self._height_=(draw.sampsize*y/draw.hstore)-(draw.hstore*draw.baseline)
+			self._height_=draw.sampsize*y/draw.hstore
 		else:
 			self._offset_=draw.offset+y
-			self._height_=(draw.sampsize*x/draw.wstore)-(draw.wstore*draw.baseline)
-		self._put_()
+			self._height_=draw.sampsize*x/draw.wstore
+		self._height_-=draw.sampsize*draw.baseline
+		self._put_(draw.wstore,draw.hstore)
 		for p in points:
 			if self._offset_<p._offset_:
 				points.insert(points.index(p),self)
@@ -32,9 +33,13 @@ class struct(Gtk.DrawingArea):
 			cr.set_source_rgb(co.red,co.green,co.blue)
 		cr.rectangle(0,0,width,height)
 		cr.stroke()
-	def _put_():
+	def _put_(self,w,h):
+		z=self._offset_-draw.offset-const
 		if drawscroll.landscape:
-			y=_height_*draw.hstore/draw.sampsize
-		else:
-			y=_height_*draw.hstore/draw.sampsize
-		draw.cont.put(self,self._offset_-draw.offset-const,y-const)
+			y=self._height_*h/draw.sampsize
+			y+=h*draw.baseline-const
+			draw.cont.put(self,z,y)
+			return
+		y=self._height_*w/draw.sampsize
+		y+=w*draw.baseline-const
+		draw.cont.put(self,y,z)

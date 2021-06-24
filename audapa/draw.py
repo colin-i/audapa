@@ -53,7 +53,7 @@ def draw_sel():
 	if start<(offset+size) and end>offset:
 		sel(max(start,offset),min(end,offset+size))
 def redraw():
-	forms.redraw()
+	forms.redraw(wstore,hstore)
 	global surface
 	surface = area.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,wstore,hstore)
 	area.queue_draw()
@@ -89,12 +89,13 @@ def open(format,sampwidth,channels,data):
 	#wstore=-1 one flag is enaugh
 	#hstore=-1
 	sampsize=2**(8*sampwidth)
-	baseline=1 if fm.islower() else 0
+	baseline=(1/2) if fm.islower() else 0
 	area.set_draw_func (draw_cont,None,None)
 	drawscroll.calculate(length)
 
 def resize_cb(a,w,h,d):
-	forms.redraw()
+	drawscroll.set_landscape()
+	forms.redraw(w,h)
 	global surface
 	surface = a.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,w,h)
 
