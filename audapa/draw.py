@@ -61,7 +61,6 @@ def redraw():
 def init():
 	global area,cont
 	area=Gtk.DrawingArea()
-	area.connect_after ("resize", resize_cb, None)
 	area.set_draw_func (draw_none,None,None)
 	over=Gtk.Overlay()
 	over.set_child(area)
@@ -72,6 +71,7 @@ def close():
 	global offset,length
 	offset=0
 	length=0
+	area.disconnect(res_id)
 	area.set_draw_func (draw_none,None,None)
 	drawscroll.calculate(0)
 	play.stop()
@@ -90,7 +90,10 @@ def open(format,sampwidth,channels,data):
 	#hstore=-1
 	sampsize=2**(8*sampwidth)
 	baseline=(1/2) if fm.islower() else 0
+	global res_id
+	res_id=area.connect_after ("resize", resize_cb, None)
 	area.set_draw_func (draw_cont,None,None)
+	drawscroll.set_landscape()
 	drawscroll.calculate(length)
 
 def resize_cb(a,w,h,d):
