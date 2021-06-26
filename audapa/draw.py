@@ -68,7 +68,7 @@ def init():
 	over.add_overlay(cont)
 	return over
 def close():
-	global offset,length
+	global offset,length#for r_offset
 	offset=0
 	length=0
 	area.disconnect(res_id)

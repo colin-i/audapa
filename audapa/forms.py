@@ -5,6 +5,7 @@ from . import sets
 from . import draw
 from . import point
 from . import drawscroll
+from . import pbox
 
 #button
 control=None
@@ -21,6 +22,7 @@ def init():
 
 def open():
 	button.set_sensitive(True)
+	point.lastselect=None
 
 def close():
 	if control:
@@ -28,6 +30,7 @@ def close():
 	button.set_sensitive(False)
 	clear()
 	point.points.clear()
+	pbox.close()
 
 def clear():
 	x=draw.cont.get_first_child()
