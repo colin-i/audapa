@@ -12,10 +12,10 @@ points=[]
 class struct(Gtk.DrawingArea):
 	def __init__(self,x,y):
 		Gtk.DrawingArea.__init__(self)
-		control = Gtk.GestureClick()
-		control.connect("pressed",self._press_,None)
-		self.add_controller(control)
-		control.emit("pressed",0,0,0)
+		self._control_ = Gtk.GestureClick()
+		self._control_.connect("pressed",self._press_,None)
+		self.add_controller(self._control_)
+		self._control_.emit("pressed",0,0,0)
 		#
 		self.set_size_request(2*const,2*const)
 		#
@@ -62,3 +62,5 @@ class struct(Gtk.DrawingArea):
 			pbox.open()
 		lastselect=self
 		self.set_draw_func(self._draw_cont_,None,None)
+	def _remove_(self):
+		self.remove_controller(self._control_)

@@ -4,18 +4,26 @@ from gi.repository import Gtk
 from . import sets
 from . import seloff
 from . import forms
+from . import point
 
 box=None
 
 def open():
 	global box
 	box=Gtk.Box(halign=Gtk.Align.CENTER)
-	box.append(sets.colorButton(seloff.char_delete,toggle,None))
+	box.append(sets.colorButton(seloff.char_delete,delete,None))
 	forms.button.get_parent().append(box)
 
 def close():
+	global box
 	if box:
 		forms.button.get_parent().remove(box)
+		box=None
+		point.lastselect=None
 
-def toggle(b,d):
-	pass
+def delete(b,d):
+	p=point.lastselect
+	p._remove_()
+	point.points.remove(p)
+	p.get_parent().remove(p)
+	close()

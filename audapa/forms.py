@@ -28,8 +28,11 @@ def close():
 	if control:
 		button.emit(sets._click_)
 	button.set_sensitive(False)
+	sz=len(point.points)
+	for i in range(0,sz):
+		p=point.points.pop()
+		p._remove_()
 	clear()
-	point.points.clear()
 	pbox.close()
 
 def clear():
