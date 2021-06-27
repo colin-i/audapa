@@ -12,6 +12,8 @@ def open():
 	global box
 	box=Gtk.Box(halign=Gtk.Align.CENTER)
 	box.append(sets.colorButton(seloff.char_delete,delete,None))
+	box.append(sets.colorButton('&lt;',left,None))
+	box.append(sets.colorButton('&gt;',right,None))
 	forms.button.get_parent().append(box)
 
 def close():
@@ -27,3 +29,8 @@ def delete(b,d):
 	point.points.remove(p)
 	p.get_parent().remove(p)
 	close()
+
+def left(b,d):
+	pass
+def right(b,d):
+	pass
