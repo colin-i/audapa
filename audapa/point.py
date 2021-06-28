@@ -10,14 +10,18 @@ const=6
 points=[]
 
 class struct(Gtk.DrawingArea):
-	def __init__(self,x,y):
+	def __init__(self,*args):
 		Gtk.DrawingArea.__init__(self)
 		self._control_ = Gtk.GestureClick()
 		self._control_.connect("pressed",self._press_,None)
 		self.add_controller(self._control_)
 		self._control_.emit("pressed",0,0,0)
-		#
 		self.set_size_request(2*const,2*const)
+		#
+		if len(args)==0:
+			return
+		x=args[0]
+		y=args[1]
 		#
 		if drawscroll.landscape:
 			self._offset_=draw.offset+x
@@ -26,7 +30,7 @@ class struct(Gtk.DrawingArea):
 			self._offset_=draw.offset+y
 			self._height_=draw.sampsize*x/draw.wstore
 		self._height_-=draw.sampsize*draw.baseline
-		self._put_(draw.wstore,draw.hstore)
+		self._put_fix_()
 		for p in points:
 			if self._offset_<p._offset_:
 				points.insert(points.index(p),self)
@@ -44,6 +48,8 @@ class struct(Gtk.DrawingArea):
 			cr.set_source_rgb(co.red,co.green,co.blue)
 		cr.rectangle(0,0,width,height)
 		cr.fill()
+	def _put_fix_(self):
+		self._put_(draw.wstore,draw.hstore)
 	def _put_(self,w,h):
 		z=self._offset_-draw.offset-const
 		if drawscroll.landscape:
