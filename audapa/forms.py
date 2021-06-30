@@ -14,7 +14,7 @@ on=chr(0x25a1)
 def init():
 	b=Gtk.Box(homogeneous=True)#,hexpand=True nothing
 	global button
-	button=sets.colorButton(on,toggle,draw.cont)
+	button=sets.colorButton(on,toggle,None)
 	button.set_sensitive(False)
 	button.set_halign(Gtk.Align.CENTER)
 	b.append(button)
@@ -32,7 +32,6 @@ def close():
 	for i in range(0,sz):
 		p=point.points.pop()
 		p._remove_()
-	clear()
 	pbox.close()
 
 def clear():
@@ -55,6 +54,7 @@ def redraw(w,h):
 		return
 
 def toggle(b,a):
+	a=draw.cont
 	global control
 	if control:
 		a.remove_controller(control)

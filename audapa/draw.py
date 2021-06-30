@@ -10,7 +10,7 @@ from . import play
 from . import seloff
 from . import forms
 
-#area,cont
+#area,cont,over
 offset=0
 #length
 #samples
@@ -59,15 +59,14 @@ def redraw():
 	area.queue_draw()
 
 def init():
-	global area,cont
+	global area,over
 	area=Gtk.DrawingArea()
 	area.set_draw_func (draw_none,None,None)
 	over=Gtk.Overlay()
 	over.set_child(area)
-	cont=Gtk.Fixed()#fixed is not tracking window default-width
-	over.add_overlay(cont)
 	return over
 def close():
+	over.remove_overlay(cont)
 	global offset,length#for r_offset
 	offset=0
 	length=0
@@ -76,6 +75,10 @@ def close():
 	drawscroll.calculate(0)
 	play.stop()
 def open(format,sampwidth,channels,data):
+	global cont
+	cont=Gtk.Fixed()#fixed is not tracking window default-width
+	over.add_overlay(cont)
+	#
 	blockAlign=sampwidth*channels
 	scan,fm=play.scan(sampwidth,channels)
 	tot=length*blockAlign

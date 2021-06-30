@@ -49,8 +49,8 @@ def launch():
 	stream = audio.open(format=format,rate=rate,channels=channels,
 		output = True,start=False,stream_callback=callback)
 	#open
-	seloff.open()
 	draw.open(format,sampwidth,channels,data)
+	seloff.open()
 def start():
 	stream.start_stream()
 	button._set_text_(chr(0x23F8))
