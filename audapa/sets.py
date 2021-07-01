@@ -23,19 +23,28 @@ class colorButton(Gtk.Button):
 class colorEntry(Gtk.Entry):
 	def __init__(self,b=Gtk.EntryBuffer()):
 		Gtk.Entry.__init__(self,buffer=b,hexpand=True)
+		self._color_()
+	def _color_(self):
 		if (c:=color.get_text()):
 			cont=self.get_style_context()
-			p=Gtk.CssProvider()
-			p.load_from_data (b"entry { color: "+c.encode()+b"; }")
-			cont.add_provider(p,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+			self._provider_=Gtk.CssProvider()
+			self._provider_.load_from_data (b"entry { color: "+c.encode()+b"; }")
+			cont.add_provider(self._provider_,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+		else:
+			self._provider_=None
+	def _recolor_(self):
+		if self._provider_:
+			cont=self.get_style_context()
+			cont.remove_provider(self._provider_)
+		self._color_()
 
-from . import loop
 from . import draw
 
 pkgname='audapa'
 import appdirs
 import os.path
 import pathlib
+from html import escape
 
 def get_config_dir():
 	return pathlib.Path(appdirs.user_config_dir(pkgname))
@@ -92,9 +101,24 @@ def reset(b,di):
 	c['fgcolor2']=fgcolor2.get_text()
 	with open(get_config_file(), "w") as configfile:
 		config.write(configfile)
+	win=di['c'][0]
+	box=di['c'][1]
 	if di['t']['cl']==c['color']:
-		di['c'][0].set_child(di['c'][1])
+		win.set_child(box)
 		if di['t']['fcl']!=c['fgcolor']:
 			draw.draw_sel()
 		return
-	loop.stop(True)
+	draw.ostore=-1
+	search(box)
+	win.set_child(box)
+def search(p):
+	x=p.get_first_child()
+	while x:
+		y=x.get_next_sibling()
+		if isinstance(x,colorLabel):
+			x._set_text_(escape(x.get_text()))
+		elif isinstance(x,colorEntry):
+			x._recolor_()
+		else:
+			search(x)
+		x=y

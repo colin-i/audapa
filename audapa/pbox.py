@@ -6,22 +6,16 @@ from . import seloff
 from . import forms
 from . import point
 
-box=None
-
-def open():
-	global box
+def open(o,h):
+	global box,info
 	box=Gtk.Box(halign=Gtk.Align.CENTER)
 	box.append(sets.colorButton(seloff.char_delete,delete,None))
-	box.append(sets.colorButton('&lt;',left,None))
-	box.append(sets.colorButton('&gt;',right,None))
+	info=sets.colorLabel(inf(o,h))
+	box.append(info)
 	forms.button.get_parent().append(box)
 
 def close():
-	global box
-	if box:
-		forms.button.get_parent().remove(box)
-		box=None
-		point.lastselect=None
+	forms.button.get_parent().remove(box)
 
 def delete(b,d):
 	p=point.lastselect
@@ -29,22 +23,7 @@ def delete(b,d):
 	point.points.remove(p)
 	p.get_parent().remove(p)
 	close()
+	point.lastselect=None
 
-def left(b,d):
-	n=point.points.index(point.lastselect)
-	if n==0:
-		return
-	inter(n-1,n)
-def right(b,d):
-	n=point.points.index(point.lastselect)
-	if n+1==len(point.points):
-		return
-	inter(n+1,n+1)
-def inter(n,m):
-	a=point.points[n]
-	s=point.lastselect
-	p=point.struct()
-	p._offset_=(s._offset_+a._offset_)/2
-	p._height_=(s._height_+a._height_)/2
-	p._put_fix_()
-	point.points.insert(m,p)
+def inf(o,h):
+	return str(o)+'|'+str(h)

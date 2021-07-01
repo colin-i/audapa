@@ -32,7 +32,8 @@ def close():
 	for i in range(0,sz):
 		p=point.points.pop()
 		p._remove_()
-	pbox.close()
+	if point.lastselect:
+		pbox.close()
 
 def clear():
 	x=draw.cont.get_first_child()

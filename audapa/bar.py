@@ -7,7 +7,7 @@ from . import sets
 from . import play
 
 def cl(b,d):
-	loop.stop(False)
+	loop.stop()
 
 input=0x1F399
 
