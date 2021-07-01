@@ -114,11 +114,10 @@ def reset(b,di):
 def search(p):
 	x=p.get_first_child()
 	while x:
-		y=x.get_next_sibling()
 		if isinstance(x,colorLabel):
 			x._set_text_(escape(x.get_text()))
 		elif isinstance(x,colorEntry):
 			x._recolor_()
 		else:
 			search(x)
-		x=y
+		x=x.get_next_sibling()
