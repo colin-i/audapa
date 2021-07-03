@@ -17,15 +17,9 @@ class struct(Gtk.DrawingArea):
 		self.add_controller(self._control_)
 		self.set_size_request(2*const,2*const)
 		#
-		if drawscroll.landscape:
-			self._offset_=draw.offset+x
-			self._height_=draw.sampsize*y/draw.hstore
-		else:
-			self._offset_=draw.offset+y
-			self._height_=draw.sampsize*x/draw.wstore
-		self._height_-=draw.sampsize*draw.baseline
-		self._offset_=int(self._offset_)
-		self._height_=int(self._height_)
+		p=self._pos_(x,y)
+		self._offset_=draw.offset+p[0]
+		self._height_=p[1]
 		self._put_(draw.wstore,draw.hstore)
 		#
 		self._control_.emit("pressed",0,0,0)
@@ -34,6 +28,15 @@ class struct(Gtk.DrawingArea):
 				points.insert(points.index(p),self)
 				return
 		points.append(self)
+	def _pos_(self,x,y):
+		if drawscroll.landscape:
+			o=x
+			h=draw.sampsize*y/draw.hstore
+		else:
+			o=y
+			h=draw.sampsize*x/draw.wstore
+		h-=draw.sampsize*draw.baseline
+		return [int(o),int(h)]
 	def _draw_none_(self,widget,cr,width,height,d,u):
 		co=Gdk.RGBA()
 		if co.parse(sets.get_fgcolor2()):
@@ -47,15 +50,17 @@ class struct(Gtk.DrawingArea):
 		cr.rectangle(0,0,width,height)
 		cr.fill()
 	def _put_(self,w,h):
+		c=self._coord_(w,h)
+		draw.cont.put(self,c[0],c[1])
+	def _coord_(self,w,h):
 		z=self._offset_-draw.offset-const
 		if drawscroll.landscape:
 			y=self._height_*h/draw.sampsize
 			y+=h*draw.baseline-const
-			draw.cont.put(self,z,y)
-			return
+			return [z,y]
 		y=self._height_*w/draw.sampsize
 		y+=w*draw.baseline-const
-		draw.cont.put(self,y,z)
+		return [y,z]
 	def _press_(self,a,n,x,y,d):
 		global lastselect
 		if lastselect:

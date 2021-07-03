@@ -26,4 +26,4 @@ def delete(b,d):
 	point.lastselect=None
 
 def inf(o,h):
-	return str(o)+'|'+str(h)
+	return str(o)+' '+str(h)
