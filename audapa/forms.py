@@ -68,4 +68,7 @@ def toggle(b,a):
 		b._set_text_(chr(0x25a0))
 
 def press(g,n,x,y,d):
+	if point.lastselect and point.lastselect._drag_==True:
+		point.lastselect._dend_(x,y)
+		return
 	point.struct(x,y)

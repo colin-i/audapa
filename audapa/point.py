@@ -10,6 +10,7 @@ const=6
 points=[]
 
 class struct(Gtk.DrawingArea):
+	_drag_=False
 	def __init__(self,x,y):
 		Gtk.DrawingArea.__init__(self)
 		self._control_ = Gtk.GestureClick()
@@ -17,9 +18,7 @@ class struct(Gtk.DrawingArea):
 		self.add_controller(self._control_)
 		self.set_size_request(2*const,2*const)
 		#
-		p=self._pos_(x,y)
-		self._offset_=draw.offset+p[0]
-		self._height_=p[1]
+		self._pos_(x,y)
 		self._put_(draw.wstore,draw.hstore)
 		#
 		self._control_.emit("pressed",0,0,0)
@@ -35,8 +34,8 @@ class struct(Gtk.DrawingArea):
 		else:
 			o=y
 			h=draw.sampsize*x/draw.wstore
-		h-=draw.sampsize*draw.baseline
-		return [int(o),int(h)]
+		self._offset_=int(draw.offset+o)
+		self._height_=int(h-(draw.sampsize*draw.baseline))
 	def _draw_none_(self,widget,cr,width,height,d,u):
 		co=Gdk.RGBA()
 		if co.parse(sets.get_fgcolor2()):
@@ -64,11 +63,22 @@ class struct(Gtk.DrawingArea):
 	def _press_(self,a,n,x,y,d):
 		global lastselect
 		if lastselect:
-			lastselect.set_draw_func(lastselect._draw_none_,None,None)
-			pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
+			if lastselect!=self:
+				lastselect.set_draw_func(lastselect._draw_none_,None,None)
+				pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
+			else:
+				if self._drag_==False:
+					self._drag_=True
+				else:
+					self._drag_=False
+				return
 		else:
 			pbox.open(self._offset_,self._height_)
 		lastselect=self
 		self.set_draw_func(self._draw_cont_,None,None)
+	def _dend_(self,x,y):
+		self._pos_(x,y)
+		c=self._coord_(draw.wstore,draw.hstore)
+		draw.cont.move(self,c[0],c[1])
 	def _remove_(self):
 		self.remove_controller(self._control_)
