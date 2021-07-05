@@ -5,6 +5,7 @@ from . import sets
 from . import seloff
 from . import forms
 from . import point
+from . import points
 
 def open(o,h):
 	global box,info
@@ -20,7 +21,7 @@ def close():
 def delete(b,d):
 	p=point.lastselect
 	p._remove_()
-	point.points.remove(p)
+	points.points.remove(p)
 	p.get_parent().remove(p)
 	close()
 	point.lastselect=None

@@ -5,9 +5,9 @@ from . import sets
 from . import draw
 from . import drawscroll
 from . import pbox
+from . import points
 
 const=6
-points=[]
 
 class struct(Gtk.DrawingArea):
 	_drag_=False
@@ -17,16 +17,10 @@ class struct(Gtk.DrawingArea):
 		self._control_.connect("pressed",self._press_,None)
 		self.add_controller(self._control_)
 		self.set_size_request(2*const,2*const)
-		#
 		self._pos_(x,y)
 		self._put_(draw.wstore,draw.hstore)
-		#
+		points.insert(self)
 		self._control_.emit("pressed",0,0,0)
-		for p in points:
-			if self._offset_<p._offset_:
-				points.insert(points.index(p),self)
-				return
-		points.append(self)
 	def _pos_(self,x,y):
 		if drawscroll.landscape:
 			o=x
@@ -77,8 +71,10 @@ class struct(Gtk.DrawingArea):
 		lastselect=self
 		self.set_draw_func(self._draw_cont_,None,None)
 	def _dend_(self,x,y):
+		o=self._offset_
 		self._pos_(x,y)
 		c=self._coord_(draw.wstore,draw.hstore)
 		draw.cont.move(self,c[0],c[1])
+		points.move(self,o)
 	def _remove_(self):
 		self.remove_controller(self._control_)

@@ -6,6 +6,7 @@ from . import draw
 from . import point
 from . import drawscroll
 from . import pbox
+from . import points
 
 #button
 control=None
@@ -28,9 +29,9 @@ def close():
 	if control:
 		button.emit(sets._click_)
 	button.set_sensitive(False)
-	sz=len(point.points)
+	sz=len(points.points)
 	for i in range(0,sz):
-		p=point.points.pop()
+		p=points.points.pop()
 		p._remove_()
 	if point.lastselect:
 		pbox.close()
@@ -43,15 +44,15 @@ def clear():
 		x=y
 def redraw(w,h):
 	clear()
-	sz=len(point.points)
+	sz=len(points.points)
 	for i in range (0,sz):
-		if point.points[i]._offset_<draw.offset:
+		if points.points[i]._offset_<draw.offset:
 			continue
 		for j in range(i,sz):
 			if draw.offset+(w if drawscroll.landscape
-				else h)<point.points[j]._offset_:
+				else h)<points.points[j]._offset_:
 				return
-			point.points[j]._put_(w,h)
+			points.points[j]._put_(w,h)
 		return
 
 def toggle(b,a):
