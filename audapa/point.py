@@ -41,8 +41,7 @@ class struct(Gtk.DrawingArea):
 		if co.parse(sets.get_fgcolor2()):
 			cr.set_source_rgb(co.red,co.green,co.blue)
 		if self._drag_:
-			n=width/2
-			cr.arc(n,n,n,0,2*GLib.PI)
+			cr.arc(const,const,const,0,2*GLib.PI)
 		else:
 			cr.rectangle(0,0,width,height)
 		cr.fill()
