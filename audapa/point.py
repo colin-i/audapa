@@ -1,5 +1,5 @@
 
-from gi.repository import Gtk,Gdk
+from gi.repository import Gtk,Gdk,GLib
 
 from . import sets
 from . import draw
@@ -40,7 +40,11 @@ class struct(Gtk.DrawingArea):
 		co=Gdk.RGBA()
 		if co.parse(sets.get_fgcolor2()):
 			cr.set_source_rgb(co.red,co.green,co.blue)
-		cr.rectangle(0,0,width,height)
+		if self._drag_:
+			n=width/2
+			cr.arc(n,n,n,0,2*GLib.PI)
+		else:
+			cr.rectangle(0,0,width,height)
 		cr.fill()
 	def _put_(self,w,h):
 		c=self._coord_(w,h)
@@ -65,6 +69,7 @@ class struct(Gtk.DrawingArea):
 					self._drag_=True
 				else:
 					self._drag_=False
+				self.queue_draw()
 				return
 		else:
 			pbox.open(self._offset_,self._height_)
