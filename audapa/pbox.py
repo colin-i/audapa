@@ -9,9 +9,11 @@ from . import points
 
 def open(o,h):
 	global box,info
-	box=Gtk.Box(halign=Gtk.Align.CENTER)
+	box=Gtk.Box()
 	box.append(sets.colorButton(seloff.char_delete,delete,None))
 	info=sets.colorLabel(inf(o,h))
+	info.set_hexpand(True)
+	info.set_halign(Gtk.Align.END)
 	box.append(info)
 	forms.button.get_parent().append(box)
 
