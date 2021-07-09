@@ -6,6 +6,7 @@ from gi.repository import GLib
 from . import sets
 from . import draw
 from . import seloff
+from . import points
 
 wavefile=None
 output=0x23F5
@@ -95,7 +96,8 @@ def scan(sampwidth,channels):
 	return ['<'+fm*channels,fm]
 
 def save(b,d):
-	with wave.open(entry.get_text(),'wb') as file:
+	f_in=entry.get_text()
+	with wave.open(f_in,'wb') as file:
 		c=wavefile.getnchannels()
 		file.setnchannels(c)
 		s=wavefile.getsampwidth()
@@ -105,3 +107,4 @@ def save(b,d):
 		sc=scan(s,c)[0]
 		b=b"".join((wave.struct.pack(sc,i[0]) for i in draw.samples))
 		file.writeframes(b)#writeframesraw
+	points.save(f_in)

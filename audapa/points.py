@@ -1,4 +1,7 @@
 
+import os
+import pathlib
+
 points=[]
 
 def insert(poi):
@@ -29,3 +32,14 @@ def move(p,o):
 	if ini!=ix:
 		del points[ini]
 		points.insert(ix,p)
+
+def save(f_in):
+	p=os.path.dirname(f_in)
+	p=os.path.join(p,'_audapacache_')
+	f_out=os.path.join(p,os.path.basename(f_in)+'.json')
+	if len(points):
+		pathlib.Path(p).mkdir(exist_ok=True)#parents=False, FileExistsError exceptions will be ignored
+		with open(f_out,"w") as f:
+			pass
+	elif os.path.exists(f_out):
+		  os.remove(f_out)
