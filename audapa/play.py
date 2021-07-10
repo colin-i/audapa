@@ -37,7 +37,8 @@ def callback(in_data, frame_count, time_info, status):
 
 def launch():
 	global audio,stream,wavefile
-	wavefile=wave.open(entry.get_text(),'rb')
+	f=entry.get_text()
+	wavefile=wave.open(f,'rb')
 	audio = pyaudio.PyAudio() # create pyaudio instantiation
 	sampwidth=wavefile.getsampwidth()
 	format = audio.get_format_from_width(sampwidth)

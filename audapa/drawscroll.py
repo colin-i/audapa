@@ -23,6 +23,8 @@ def calculate(n):
 		elif n<=w:#cannot go back at overshot without this
 			if draw.length>w:
 				n=w+1
+			else:
+				n=w
 		if d.get_width()!=n or d.get_height()!=h:
 			d.set_size_request(n,h)
 			r_offset.cnged(win.get_hadjustment(),w)
@@ -33,6 +35,8 @@ def calculate(n):
 		elif n<=h:
 			if draw.length>h:
 				n=h+1
+			else:
+				n=h
 		if d.get_width()!=w or d.get_height()!=n:
 			d.set_size_request(w,n)
 			r_offset.cnged(win.get_vadjustment(),h)

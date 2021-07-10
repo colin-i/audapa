@@ -96,8 +96,8 @@ def open(format,sampwidth,channels,data):
 	global res_id
 	res_id=area.connect_after ("resize", resize_cb, None)
 	area.set_draw_func (draw_cont,None,None)
-	drawscroll.set_landscape()
-	drawscroll.calculate(length)
+	#need landscape,there is a case when n<length when no surface, and points at reopen
+	area.emit("resize",area.get_width(),area.get_height())
 
 def resize_cb(a,w,h,d):
 	drawscroll.set_landscape()

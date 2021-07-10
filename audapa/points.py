@@ -34,11 +34,14 @@ def move(p,o):
 	if ini!=ix:
 		del points[ini]
 		points.insert(ix,p)
-
-def save(f_in):
+def dpath(f_in):
 	p=os.path.dirname(f_in)
-	p=os.path.join(p,'_'+sets.pkgname+'cache_')
-	f_out=os.path.join(p,os.path.basename(f_in)+'.json')
+	return os.path.join(p,'_'+sets.pkgname+'cache_')
+def fpath(d_in,f_in):
+	return os.path.join(d_in,os.path.basename(f_in)+'.json')
+def save(f_in):
+	p=dpath(f_in)
+	f_out=fpath(p,f_in)
 	if len(points):
 		pathlib.Path(p).mkdir(exist_ok=True)#parents=False, FileExistsError exceptions will be ignored
 		with open(f_out,"w") as f:

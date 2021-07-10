@@ -17,6 +17,7 @@ class struct(Gtk.DrawingArea):
 		self._control_.connect("pressed",self._press_,None)
 		self.add_controller(self._control_)
 		self.set_size_request(2*const,2*const)
+		#
 		self._pos_(x,y)
 		self._put_(draw.wstore,draw.hstore)
 		points.insert(self)
