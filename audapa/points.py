@@ -2,6 +2,8 @@
 import os
 import pathlib
 
+from . import sets
+
 points=[]
 
 def insert(poi):
@@ -35,7 +37,7 @@ def move(p,o):
 
 def save(f_in):
 	p=os.path.dirname(f_in)
-	p=os.path.join(p,'_audapacache_')
+	p=os.path.join(p,'_'+sets.pkgname+'cache_')
 	f_out=os.path.join(p,os.path.basename(f_in)+'.json')
 	if len(points):
 		pathlib.Path(p).mkdir(exist_ok=True)#parents=False, FileExistsError exceptions will be ignored
