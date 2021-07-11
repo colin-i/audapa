@@ -15,7 +15,7 @@ def insert(poi):
 			points.insert(ix,poi)
 			if ix>0:
 				if (points[ix-1]._inter_==False
-			 		and p._inter_==False):
+					 and p._inter_==False):
 					poi._inter_=True
 			return
 	points.append(poi)
