@@ -1,8 +1,10 @@
 
 import os
 import pathlib
+import json
 
 from . import sets
+from . import point
 
 points=[]
 
@@ -39,12 +41,25 @@ def dpath(f_in):
 	return os.path.join(p,'_'+sets.pkgname+'cache_')
 def fpath(d_in,f_in):
 	return os.path.join(d_in,os.path.basename(f_in)+'.json')
-def save(f_in):
+def write(f_in):
 	p=dpath(f_in)
 	f_out=fpath(p,f_in)
 	if len(points):
 		pathlib.Path(p).mkdir(exist_ok=True)#parents=False, FileExistsError exceptions will be ignored
 		with open(f_out,"w") as f:
-			pass
+			d=[]
+			for po in points:
+				d.append([po._offset_,po._height_])
+			json.dump(d,f)
 	elif os.path.exists(f_out):
 		  os.remove(f_out)
+def read(f_in):
+	f_out=fpath(dpath(f_in),f_in)
+	if os.path.exists(f_out):
+		with open(f_out) as f:
+			d=json.load(f)
+			for p in d:
+				po=point.struct()
+				po._offset_=p[0]
+				po._height_=p[1]
+				points.append(po)

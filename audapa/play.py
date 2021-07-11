@@ -51,6 +51,7 @@ def launch():
 	stream = audio.open(format=format,rate=rate,channels=channels,
 		output = True,start=False,stream_callback=callback)
 	#open
+	points.read(f)
 	draw.open(format,sampwidth,channels,data)
 	seloff.open()
 def start():
@@ -108,4 +109,4 @@ def save(b,d):
 		sc=scan(s,c)[0]
 		b=b"".join((wave.struct.pack(sc,i[0]) for i in draw.samples))
 		file.writeframes(b)#writeframesraw
-	points.save(f_in)
+	points.write(f_in)

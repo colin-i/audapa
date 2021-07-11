@@ -11,14 +11,16 @@ const=6
 
 class struct(Gtk.DrawingArea):
 	_drag_=False
-	def __init__(self,x,y):
+	def __init__(self,*args):
 		Gtk.DrawingArea.__init__(self)
 		self._control_ = Gtk.GestureClick()
 		self._control_.connect("pressed",self._press_,None)
 		self.add_controller(self._control_)
 		self.set_size_request(2*const,2*const)
-		#
-		self._pos_(x,y)
+		if len(args)==0:
+			self.set_draw_func(self._draw_none_,None,None)
+			return
+		self._pos_(args[0],args[1])
 		self._put_(draw.wstore,draw.hstore)
 		points.insert(self)
 		self._control_.emit("pressed",0,0,0)
