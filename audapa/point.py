@@ -11,6 +11,7 @@ const=6
 
 class struct(Gtk.DrawingArea):
 	_drag_=False
+	_inter_=False
 	def __init__(self,*args):
 		Gtk.DrawingArea.__init__(self)
 		self._control_ = Gtk.GestureClick()

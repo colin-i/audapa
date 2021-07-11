@@ -11,7 +11,12 @@ points=[]
 def insert(poi):
 	for p in points:
 		if poi._offset_<p._offset_:
-			points.insert(points.index(p),poi)
+			ix=points.index(p)
+			points.insert(ix,poi)
+			if ix>0:
+				if (points[ix-1]._inter_==False
+			 		and p._inter_==False):
+					poi._inter_=True
 			return
 	points.append(poi)
 def move(p,o):

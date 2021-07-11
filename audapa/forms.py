@@ -50,7 +50,7 @@ def redraw(w,h):
 			continue
 		for j in range(i,sz):
 			if draw.offset+(w if drawscroll.landscape
-				else h)<points.points[j]._offset_:
+				 else h)<points.points[j]._offset_:
 				return
 			points.points[j]._put_(w,h)
 		return
