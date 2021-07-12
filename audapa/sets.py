@@ -67,6 +67,9 @@ def get_fgcolor():
 fgcolor2=Gtk.EntryBuffer(text="green")
 def get_fgcolor2():
 	return fgcolor2.get_text()
+fgcolor3=Gtk.EntryBuffer(text="blue")
+def get_fgcolor3():
+	return fgcolor3.get_text()
 
 def add(bx,tx,x,n):
 	t=colorLabel(tx)
@@ -79,6 +82,7 @@ def sets(b,combo):
 	n=add(bx,"Font/Stroke Color",color,0)
 	n=add(bx,"Foreground Color",fgcolor,n)
 	n=add(bx,"Foreground Color2",fgcolor2,n)
+	n=add(bx,"Foreground Color3",fgcolor3,n)
 	b=colorButton("Done", reset, {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
 	bx.attach(b,0,n,2,1)
@@ -91,6 +95,7 @@ def init():
 		color.set_text(c['color'],-1)
 		fgcolor.set_text(c['fgcolor'],-1)
 		fgcolor2.set_text(c['fgcolor2'],-1)
+		fgcolor3.set_text(c['fgcolor3'],-1)
 
 def reset(b,di):
 	config = configparser.ConfigParser()
@@ -99,6 +104,7 @@ def reset(b,di):
 	c['color']=color.get_text()
 	c['fgcolor']=fgcolor.get_text()
 	c['fgcolor2']=fgcolor2.get_text()
+	c['fgcolor3']=fgcolor3.get_text()
 	with open(get_config_file(), "w") as configfile:
 		config.write(configfile)
 	win=di['c'][0]

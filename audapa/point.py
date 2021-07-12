@@ -34,15 +34,19 @@ class struct(Gtk.DrawingArea):
 			h=draw.sampsize*x/draw.wstore
 		self._offset_=int(draw.offset+o)
 		self._height_=int(h-(draw.sampsize*draw.baseline))
+	def _color_(self):
+		if self._inter_==False:
+			return sets.get_fgcolor2()
+		return sets.get_fgcolor3()
 	def _draw_none_(self,widget,cr,width,height,d,u):
 		co=Gdk.RGBA()
-		if co.parse(sets.get_fgcolor2()):
+		if co.parse(self._color_()):
 			cr.set_source_rgb(co.red,co.green,co.blue)
 		cr.rectangle(0,0,width,height)
 		cr.stroke()
 	def _draw_cont_(self,widget,cr,width,height,d,u):
 		co=Gdk.RGBA()
-		if co.parse(sets.get_fgcolor2()):
+		if co.parse(self._color_()):
 			cr.set_source_rgb(co.red,co.green,co.blue)
 		if self._drag_:
 			cr.arc(const,const,const,0,2*GLib.PI)

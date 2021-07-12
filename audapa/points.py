@@ -54,7 +54,7 @@ def write(f_in):
 		with open(f_out,"w") as f:
 			d=[]
 			for po in points:
-				d.append([po._offset_,po._height_])
+				d.append([po._offset_,po._height_,po._inter_])
 			json.dump(d,f)
 	elif os.path.exists(f_out):
 		  os.remove(f_out)
@@ -67,4 +67,5 @@ def read(f_in):
 				po=point.struct()
 				po._offset_=p[0]
 				po._height_=p[1]
+				po._inter_=p[2]
 				points.append(po)
