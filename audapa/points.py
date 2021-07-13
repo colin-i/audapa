@@ -28,6 +28,9 @@ def move(p,o):
 		while ix<last:
 			o=points[ix+1]._offset_
 			if o<of:
+				if p._inter_:
+					p._offset_=o
+					return
 				ix+=1
 				continue
 			break
@@ -35,6 +38,9 @@ def move(p,o):
 		while ix>0:
 			o=points[ix-1]._offset_
 			if of<o:
+				if p._inter_:
+					p._offset_=o
+					return
 				ix-=1
 				continue
 			break
