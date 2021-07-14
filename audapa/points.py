@@ -24,7 +24,8 @@ def move(p,o):
 	ix=ini
 	last=len(points)-1
 	of=p._offset_
-	if o<of:
+	forward=o<of
+	if forward:
 		while ix<last:
 			o=points[ix+1]._offset_
 			if o<of:
@@ -45,6 +46,18 @@ def move(p,o):
 				continue
 			break
 	if ini!=ix:
+		indx=ini+1 if forward else ini-1
+		pnt=points[indx]
+		if pnt._inter_:
+			pnt._remove_()
+			pr=pnt.get_parent()
+			if pr:
+				pr.remove(pnt)
+			del points[indx]
+			if forward:
+				ix-=1
+			else:
+				ini-=1
 		del points[ini]
 		points.insert(ix,p)
 def dpath(f_in):
