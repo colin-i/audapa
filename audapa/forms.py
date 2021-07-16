@@ -30,9 +30,8 @@ def close():
 		button.emit(sets._click_)
 	button.set_sensitive(False)
 	sz=len(points.points)
-	for i in range(0,sz):
-		p=points.points.pop()
-		p._remove_()
+	for i in range(sz-1,-1,-1):
+		points.points[i]._remove_(i)
 	if point.lastselect:
 		pbox.close()
 

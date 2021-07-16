@@ -49,11 +49,10 @@ def move(p,o):
 		indx=ini+1 if forward else ini-1
 		pnt=points[indx]
 		if pnt._inter_:
-			pnt._remove_()
 			pr=pnt.get_parent()
 			if pr:
 				pr.remove(pnt)
-			del points[indx]
+			pnt._remove_(indx)
 			if forward:
 				ix-=1
 			else:

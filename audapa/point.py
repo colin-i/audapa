@@ -89,5 +89,6 @@ class struct(Gtk.DrawingArea):
 		c=self._coord_(draw.wstore,draw.hstore)
 		draw.cont.move(self,c[0],c[1])
 		pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
-	def _remove_(self):
+	def _remove_(self,ix):
 		self.remove_controller(self._control_)
+		del points.points[ix]
