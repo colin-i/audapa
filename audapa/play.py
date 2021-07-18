@@ -110,3 +110,5 @@ def save(b,d):
 		b=b"".join((wave.struct.pack(sc,i[0]) for i in draw.samples))
 		file.writeframes(b)#writeframesraw
 	points.write(f_in)
+def saveshort(b,d):
+	points.write(entry.get_text())

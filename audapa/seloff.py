@@ -39,7 +39,8 @@ def open():
 	lst=[]
 	button=add(on,toggle,draw.cont,lst)
 	add(char_delete,delete.act,None,lst)
-	add(chr(0x1f5ce),play.save,None,lst)#4be
+	add(chr(0x1f58b),play.save,None,lst)
+	add(chr(0x1f58a),play.saveshort,None,lst)
 	moveleft=add("&lt;",drawscroll.move,False,lst)
 	moveright=add("&gt;",drawscroll.move,True,lst)
 	stop=add("x",close,{'b':button,'list':lst},lst)

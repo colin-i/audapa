@@ -6,6 +6,7 @@ from . import draw
 from . import drawscroll
 from . import pbox
 from . import points
+from . import graph
 
 const=6
 
@@ -22,8 +23,8 @@ class struct(Gtk.DrawingArea):
 			self.set_draw_func(self._draw_none_,None,None)
 			return
 		self._pos_(args[0],args[1])
-		self._put_(draw.wstore,draw.hstore)
-		points.insert(self)
+		ix=points.insert(self)
+		self._put_(draw.wstore,draw.hstore,ix)
 		self._control_.emit("pressed",0,0,0)
 	def _pos_(self,x,y):
 		if drawscroll.landscape:
@@ -53,8 +54,9 @@ class struct(Gtk.DrawingArea):
 		else:
 			cr.rectangle(0,0,width,height)
 		cr.fill()
-	def _put_(self,w,h):
+	def _put_(self,w,h,ix):
 		c=self._coord_(w,h)
+		graph.put(self,ix,c,w,h)
 		draw.cont.put(self,c[0],c[1])
 	def _coord_(self,w,h):
 		z=self._offset_-draw.offset-const

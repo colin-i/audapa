@@ -7,6 +7,7 @@ from . import point
 from . import drawscroll
 from . import pbox
 from . import points
+from . import graph
 
 #button
 control=None
@@ -51,7 +52,7 @@ def redraw(w,h):
 			if draw.offset+(w if drawscroll.landscape
 				 else h)<points.points[j]._offset_:
 				return
-			points.points[j]._put_(w,h)
+			points.points[j]._put_(w,h,j)
 		return
 
 def toggle(b,a):
@@ -70,5 +71,6 @@ def toggle(b,a):
 def press(g,n,x,y,d):
 	if point.lastselect and point.lastselect._drag_==True:
 		point.lastselect._dend_(x,y)
-		return
-	point.struct(x,y)
+	else:
+		point.struct(x,y)
+	graph.area.queue_draw()

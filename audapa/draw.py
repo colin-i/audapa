@@ -9,6 +9,7 @@ from . import drawscroll
 from . import play
 from . import seloff
 from . import forms
+from . import graph
 
 #area,cont,over
 offset=0
@@ -53,10 +54,12 @@ def draw_sel():
 	if start<(offset+size) and end>offset:
 		sel(max(start,offset),min(end,offset+size))
 def redraw():
-	forms.redraw(wstore,hstore)
 	global surface
 	surface = area.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,wstore,hstore)
+	graph.surf(wstore,hstore)
+	forms.redraw(wstore,hstore)
 	area.queue_draw()
+	graph.area.queue_draw()
 
 def init():
 	global area,over
@@ -67,6 +70,7 @@ def init():
 	return over
 def close():
 	over.remove_overlay(cont)
+	graph.close(over)
 	global offset,length#for r_offset
 	offset=0
 	length=0
@@ -75,6 +79,7 @@ def close():
 	drawscroll.calculate(0)
 	play.stop()
 def open(format,sampwidth,channels,data):
+	graph.open(over)
 	global cont
 	cont=Gtk.Fixed()#fixed is not tracking window default-width
 	over.add_overlay(cont)
@@ -101,9 +106,10 @@ def open(format,sampwidth,channels,data):
 
 def resize_cb(a,w,h,d):
 	drawscroll.set_landscape()
-	forms.redraw(w,h)
 	global surface
 	surface = a.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,w,h)
+	graph.surf(w,h)
+	forms.redraw(w,h)
 
 def paintland(cr,y,ratio,a,b):
 	for i in range(a,b):

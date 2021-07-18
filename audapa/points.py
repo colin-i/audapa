@@ -9,16 +9,18 @@ from . import point
 points=[]
 
 def insert(poi):
-	for p in points:
+	ln=len(points)
+	for ix in range(0,ln):
+		p=points[ix]
 		if poi._offset_<p._offset_:
-			ix=points.index(p)
 			points.insert(ix,poi)
 			if ix>0:
 				if (points[ix-1]._inter_==False
 					 and p._inter_==False):
 					poi._inter_=True
-			return
+			return ix
 	points.append(poi)
+	return ln
 def move(p,o):
 	ini=points.index(p)
 	ix=ini
