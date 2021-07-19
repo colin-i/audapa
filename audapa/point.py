@@ -56,7 +56,7 @@ class struct(Gtk.DrawingArea):
 		cr.fill()
 	def _put_(self,w,h,ix):
 		c=self._coord_(w,h)
-		graph.put(self,ix,c,w,h)
+		graph.put(ix,c,w,h)
 		draw.cont.put(self,c[0],c[1])
 	def _coord_(self,w,h):
 		z=self._offset_-draw.offset-const

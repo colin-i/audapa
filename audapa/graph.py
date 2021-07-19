@@ -19,7 +19,7 @@ def surf(w,h):
 	global surface
 	surface = area.get_native().get_surface().create_similar_surface(cairo.Content.COLOR_ALPHA,w,h)
 
-def put(p,ix,c1,w,h):
+def put(ix,c1,w,h):
 	if ix>0:
 		c0=points.points[ix-1]._coord_(w,h)
 		line(c0,c1)

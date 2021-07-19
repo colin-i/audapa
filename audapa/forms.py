@@ -49,10 +49,13 @@ def redraw(w,h):
 		if points.points[i]._offset_<draw.offset:
 			continue
 		for j in range(i,sz):
+			p=points.points[j]
 			if draw.offset+(w if drawscroll.landscape
-				 else h)<points.points[j]._offset_:
+				 else h)<p._offset_:
+				if i<j:
+					graph.put(j,p._coord_(w,h),w,h)
 				return
-			points.points[j]._put_(w,h,j)
+			p._put_(w,h,j)
 		return
 
 def toggle(b,a):
