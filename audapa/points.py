@@ -33,7 +33,7 @@ def move(p,o):
 			if o<of:
 				if p._inter_:
 					p._offset_=o
-					return
+					return ix
 				ix+=1
 				continue
 			break
@@ -43,7 +43,7 @@ def move(p,o):
 			if of<o:
 				if p._inter_:
 					p._offset_=o
-					return
+					return ix
 				ix-=1
 				continue
 			break
@@ -61,6 +61,7 @@ def move(p,o):
 				ini-=1
 		del points[ini]
 		points.insert(ix,p)
+	return ix
 def dpath(f_in):
 	p=os.path.dirname(f_in)
 	return os.path.join(p,'_'+sets.pkgname+'cache_')
