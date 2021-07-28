@@ -32,16 +32,17 @@ def line(c0,c1):
 	co=Gdk.RGBA()
 	if co.parse(sets.get_fgcolor2()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
-	line_draw(cr,c0,c1)
+	#don't let line width corners to intersect
+	p0,p1=coords(cr,c0[0],c0[1],c1[0],c1[1])
+	cr.move_to(p0[0],p0[1])
+	cr.line_to(p1[0],p1[1])
 	cr.stroke()
-#don't let line width extremities to mess when deleting
-def line_draw(cr,c0,c1):
-	x=c1[0]-c0[0]
-	y=c1[1]-c0[1]
+def coords(cr,x0,y0,x1,y1):
+	x=x1-x0
+	y=y1-y0
 	l=cr.get_line_width()
 	t=x/y
 	r=math.atan(t)
 	x=math.sin(r)*l
 	y=math.cos(r)*l
-	cr.move_to(c0[0]+x,c0[1]+y)
-	cr.line_to(c1[0]-x,c1[1]-y)
+	return ([x0+x,y0+y],[x1-x,y1-y])

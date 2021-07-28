@@ -23,7 +23,7 @@ def draw_none(widget,cr,width,height,d,u):
 	co=Gdk.RGBA()
 	if co.parse(sets.get_color()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
-	cr.set_line_width(0.5)#default 2.0; cairo scale is 1
+	cr.set_line_width(1)#default 2.0; cairo scale is 1
 	if width>=height:
 		y=height/2
 		cr.move_to(0,y)
@@ -131,7 +131,7 @@ def unsel(a,b):
 	paint(a,b,sets.get_color())
 def paint(a,b,clr):
 	cr=cairo.Context(surface)
-	cr.set_line_width(0.5)#this at start?nothing
+	cr.set_line_width(1)#this at start?nothing
 	co=Gdk.RGBA()
 	if co.parse(clr):
 		cr.set_source_rgb(co.red,co.green,co.blue)
