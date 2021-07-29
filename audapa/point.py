@@ -88,13 +88,13 @@ class struct(Gtk.DrawingArea):
 		ini=points.points.index(self)
 		w=draw.wstore
 		h=draw.hstore
-		graph.take(ini,self._coord_(w,h),w,h)
+		dels=graph.take(ini,self._coord_(w,h),w,h)
 		#
 		o=self._offset_
 		self._pos_(x,y)
 		ix=points.move(self,o,ini)
 		c=self._coord_(w,h)
-		graph.put(ix,c,w,h)
+		graph.put(ix,c,w,h,dels)
 		draw.cont.move(self,c[0]-const,c[1]-const)
 		pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
 	def _remove_(self,ix):
