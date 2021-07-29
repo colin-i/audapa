@@ -57,15 +57,15 @@ class struct(Gtk.DrawingArea):
 	def _put_(self,w,h,ix):
 		c=self._coord_(w,h)
 		graph.put(ix,c,w,h)
-		draw.cont.put(self,c[0],c[1])
+		draw.cont.put(self,c[0]-const,c[1]-const)
 	def _coord_(self,w,h):
-		z=self._offset_-draw.offset-const
+		z=self._offset_-draw.offset
 		if drawscroll.landscape:
 			y=self._height_*h/draw.sampsize
-			y+=h*draw.baseline-const
+			y+=h*draw.baseline
 			return [z,y]
 		y=self._height_*w/draw.sampsize
-		y+=w*draw.baseline-const
+		y+=w*draw.baseline
 		return [y,z]
 	def _press_(self,a,n,x,y,d):
 		global lastselect
@@ -85,14 +85,17 @@ class struct(Gtk.DrawingArea):
 		lastselect=self
 		self.set_draw_func(self._draw_cont_,None,None)
 	def _dend_(self,x,y):
-		o=self._offset_
-		self._pos_(x,y)
-		ix=points.move(self,o)
+		ini=points.points.index(self)
 		w=draw.wstore
 		h=draw.hstore
+		graph.take(ini,self._coord_(w,h),w,h)
+		#
+		o=self._offset_
+		self._pos_(x,y)
+		ix=points.move(self,o,ini)
 		c=self._coord_(w,h)
 		graph.put(ix,c,w,h)
-		draw.cont.move(self,c[0],c[1])
+		draw.cont.move(self,c[0]-const,c[1]-const)
 		pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
 	def _remove_(self,ix):
 		self.remove_controller(self._control_)

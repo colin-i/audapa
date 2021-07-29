@@ -21,8 +21,7 @@ def insert(poi):
 			return ix
 	points.append(poi)
 	return ln
-def move(p,o):
-	ini=points.index(p)
+def move(p,o,ini):
 	ix=ini
 	last=len(points)-1
 	of=p._offset_
