@@ -42,9 +42,9 @@ def val(x0,y0,x1,y1):
 	y=y1-y0
 	t=x/y
 	return math.atan(t)
-def coords(cr,x0,y0,x1,y1):
+def coords(cr,x0,y0,x1,y1,extra=0):
 	r=val(x0,y0,x1,y1)
-	l=cr.get_line_width()
+	l=cr.get_line_width()-extra
 	x=math.sin(r)*l
 	y=math.cos(r)*l
 	return ([x0+x,y0+y],[x1-x,y1-y])
@@ -59,7 +59,7 @@ def take(ix,c1,w,h):
 def clearline(c0,c1):
 	cr=cairo.Context(surface)
 	cr.set_operator(cairo.Operator.CLEAR)
-	p0,p1=coords(cr,c0[0],c0[1],c1[0],c1[1])
+	p0,p1=coords(cr,c0[0],c0[1],c1[0],c1[1],1)   #it's tested
 	r=val(c0[0],c0[1],c1[0],c1[1])
 	h=cr.get_line_width()/2+1   #it's tested
 	y=math.sin(r)*h
