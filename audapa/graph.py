@@ -5,6 +5,7 @@ import math
 
 from . import points
 from . import sets
+from . import point
 
 def open(ovr):
 	global area
@@ -46,7 +47,7 @@ def coords(cr,x0,y0,x1,y1,extra=0):
 	y=y1-y0
 	t=x/y
 	r=math.atan(t)
-	l=cr.get_line_width()-extra
+	l=point.const/2-extra
 	x=math.sin(r)*l
 	y=math.cos(r)*l
 	return ([x0+x,y0+y],[x1-x,y1-y],r)
