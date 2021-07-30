@@ -43,7 +43,10 @@ class struct(Gtk.DrawingArea):
 		co=Gdk.RGBA()
 		if co.parse(self._color_()):
 			cr.set_source_rgb(co.red,co.green,co.blue)
-		cr.rectangle(0,0,width,height)
+		if self._drag_:
+			cr.arc(const,const,const,0,2*GLib.PI)
+		else:
+			cr.rectangle(0,0,width,height)
 		cr.stroke()
 	def _draw_cont_(self,widget,cr,width,height,d,u):
 		co=Gdk.RGBA()
