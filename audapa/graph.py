@@ -30,15 +30,16 @@ def put(ix,c1,w,h,dels=None):
 		line(c1,c0,dels)
 def line(c0,c1,dels=None):
 	cr=cairo.Context(surface)
-	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1])
 	if dels:
 		cr.save()
-		clearline(cr,dels[0],dels[1])
+		for d in dels:
+			clearline(cr,d[0],d[1])
 		cr.restore()
 	co=Gdk.RGBA()
 	if co.parse(sets.get_fgcolor2()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	#don't let line width corners to intersect
+	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1])
 	cr.move_to(p0[0],p0[1])
 	cr.line_to(p1[0],p1[1])
 	cr.stroke()
@@ -53,12 +54,15 @@ def coords(cr,x0,y0,x1,y1,extra=0):
 	return ([x0+x,y0+y],[x1-x,y1-y],r)
 
 def take(ix,c1,w,h):
+	sz=len(points.points)
 	if ix>0:
-		c0=points.points[ix-1]._coord_(w,h)
-		return [c0,c1]
-	elif len(points.points)>1:
+		d=[[points.points[ix-1]._coord_(w,h),c1]]
+		if ix+1<sz:
+			d.append([c1,points.points[ix+1]._coord_(w,h)])
+		return d
+	elif sz>1:
 		c0=points.points[1]._coord_(w,h)
-		return [c1,c0]
+		return [[c1,c0]]
 	return None
 def clearline(cr,c0,c1):
 	cr.set_operator(cairo.Operator.CLEAR)
