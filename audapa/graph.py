@@ -32,6 +32,7 @@ def line(c0,c1,dels=None):
 	cr=cairo.Context(surface)
 	if dels:
 		cr.save()
+		cr.set_operator(cairo.Operator.CLEAR)
 		for d in dels:
 			clearline(cr,d[0],d[1])
 		cr.restore()
@@ -65,7 +66,6 @@ def take(ix,c1,w,h):
 		return [[c1,c0]]
 	return None
 def clearline(cr,c0,c1):
-	cr.set_operator(cairo.Operator.CLEAR)
 	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1],1)   #it's tested
 	h=cr.get_line_width()/2+1   #it's tested
 	y=math.sin(r)*h
