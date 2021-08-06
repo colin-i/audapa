@@ -21,7 +21,7 @@ def insert(poi):
 			return ix
 	points.append(poi)
 	return ln
-def move(p,o,ini):
+def move(p,o,ini,w,h,dels):
 	ix=ini
 	last=len(points)-1
 	of=p._offset_
@@ -53,6 +53,10 @@ def move(p,o,ini):
 			pr=pnt.get_parent()
 			if pr:
 				pr.remove(pnt)
+				if forward:
+					dels.append([points[indx+1]._coord_(w,h),pnt._coord_(w,h)])
+				else:
+					dels.append([pnt._coord_(w,h),points[indx-1]._coord_(w,h)])
 			pnt._remove_(indx)
 			if forward:
 				ix-=1

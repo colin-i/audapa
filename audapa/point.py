@@ -95,7 +95,7 @@ class struct(Gtk.DrawingArea):
 		#
 		o=self._offset_
 		self._pos_(x,y)
-		ix=points.move(self,o,ini)
+		ix=points.move(self,o,ini,w,h,dels)
 		c=self._coord_(w,h)
 		graph.put(ix,c,w,h,dels)
 		draw.cont.move(self,c[0]-const,c[1]-const)
