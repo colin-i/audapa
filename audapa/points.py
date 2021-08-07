@@ -47,23 +47,26 @@ def move(p,o,ini,w,h,dels):
 				continue
 			break
 	if ini!=ix:
-		indx=ini+1 if forward else ini-1
-		pnt=points[indx]
-		if pnt._inter_:
-			pr=pnt.get_parent()
-			if pr:
-				pr.remove(pnt)
-				if forward:
-					dels.append([points[indx+1]._coord_(w,h),pnt._coord_(w,h)])
-				else:
-					dels.append([pnt._coord_(w,h),points[indx-1]._coord_(w,h)])
-			pnt._remove_(indx)
-			if forward:
-				ix-=1
-			else:
-				ini-=1
-		del points[ini]
+		ix=move_inter(forward,ini,ix,w,h,dels)
 		points.insert(ix,p)
+	return ix
+def move_inter(forward,ini,ix,w,h,dels):
+	indx=ini+1 if forward else ini-1
+	pnt=points[indx]
+	if pnt._inter_:
+		pr=pnt.get_parent()
+		if pr:
+			pr.remove(pnt)
+		if forward:
+			dels.append([points[indx+1]._coord_(w,h),pnt._coord_(w,h)])
+		else:
+			dels.append([pnt._coord_(w,h),points[indx-1]._coord_(w,h)])
+		pnt._remove_(indx)
+		if forward:
+			ix-=1
+		else:
+			ini-=1
+	del points[ini]
 	return ix
 def dpath(f_in):
 	p=os.path.dirname(f_in)

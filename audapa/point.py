@@ -98,7 +98,10 @@ class struct(Gtk.DrawingArea):
 		ix=points.move(self,o,ini,w,h,dels)
 		c=self._coord_(w,h)
 		graph.put(ix,c,w,h,dels)
-		draw.cont.move(self,c[0]-const,c[1]-const)
+		if self.get_parent():
+			draw.cont.move(self,c[0]-const,c[1]-const)
+		else:
+			draw.cont.put(self,c[0]-const,c[1]-const)
 		pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
 	def _remove_(self,ix):
 		self.remove_controller(self._control_)
