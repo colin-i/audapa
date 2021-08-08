@@ -54,20 +54,31 @@ def move_inter(forward,ini,ix,w,h,dels):
 	indx=ini+1 if forward else ini-1
 	pnt=points[indx]
 	if pnt._inter_:
+		if indx!=ix:
+			move_inter_end(forward,ix,w,h,dels)
 		pr=pnt.get_parent()
 		if pr:
 			pr.remove(pnt)
 		if forward:
-			dels.append([points[indx+1]._coord_(w,h),pnt._coord_(w,h)])
+			dels.append([pnt._coord_(w,h),points[indx+1]._coord_(w,h)])
 		else:
-			dels.append([pnt._coord_(w,h),points[indx-1]._coord_(w,h)])
+			dels.append([points[indx-1]._coord_(w,h),pnt._coord_(w,h)])
 		pnt._remove_(indx)
 		if forward:
 			ix-=1
 		else:
 			ini-=1
+	else:
+		move_inter_end(forward,ix,w,h,dels)
 	del points[ini]
 	return ix
+def move_inter_end(forward,ix,w,h,dels):
+	if forward:
+		if ix==len(points)-1:
+			return
+		dels.append([points[ix]._coord_(w,h),points[ix+1]._coord_(w,h)])
+	elif ix>0:
+		dels.append([points[ix-1]._coord_(w,h),points[ix]._coord_(w,h)])
 def dpath(f_in):
 	p=os.path.dirname(f_in)
 	return os.path.join(p,'_'+sets.pkgname+'cache_')
