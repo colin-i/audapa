@@ -43,7 +43,7 @@ def line_draw(cr,c0,c1):
 def coords(cr,x0,y0,x1,y1,extra=0):
 	x=x1-x0
 	y=y1-y0
-	t=x/y
+	t=x/y if y else math.inf
 	r=math.atan(t)
 	l=point.const-extra
 	x=math.sin(r)*l
