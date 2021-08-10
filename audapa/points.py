@@ -48,31 +48,42 @@ def move(p,o,ini,w,h,dels):
 				continue
 			break
 	if ini!=ix:
-		ix=move_inter(forward,ini,ix,w,h,dels)
-		points.insert(ix,p)
+		return move_inter(forward,ini,ix,w,h,dels,p)
 	return graph.take(ix,p,w,h)
-def move_inter(forward,ini,ix,w,h,dels):
+def move_inter(forward,ini,ix,w,h,dels,p):
 	indx=ini+1 if forward else ini-1
 	pnt=points[indx]
+	puts=None
 	if pnt._inter_:
-		if indx!=ix:
+		gap=indx!=ix
+		if gap:
 			move_inter_end(forward,ix,w,h,dels)
 		pr=pnt.get_parent()
 		if pr:
 			pr.remove(pnt)
 		if forward:
-			dels.append([pnt._coord_(w,h),points[indx+1]._coord_(w,h)])
-		else:
-			dels.append([points[indx-1]._coord_(w,h),pnt._coord_(w,h)])
-		pnt._remove_(indx)
-		if forward:
+			aux=points[indx+1]._coord_(w,h)
+			dels.append([dels[1][1],aux])
+			if gap and ini>0:
+				puts=[dels[0][0],aux]
 			ix-=1
 		else:
+			aux=points[indx-1]._coord_(w,h)
+			dels.append([aux,dels[0][0]])
+			if gap and ini<len(points)-1:
+				puts=[aux,dels[1][1]]
 			ini-=1
+		pnt._remove_(indx)
 	else:
 		move_inter_end(forward,ix,w,h,dels)
+		if ini>0 and ini<len(points)-1:
+			puts=[dels[0][0],dels[1][1]]
 	del points[ini]
-	return ix
+	points.insert(ix,p)
+	pts=graph.take(ix,p,w,h)
+	if puts:
+		pts.append(puts)
+	return pts
 def move_inter_end(forward,ix,w,h,dels):
 	if forward:
 		if ix==len(points)-1:
