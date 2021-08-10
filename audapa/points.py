@@ -5,6 +5,7 @@ import json
 
 from . import sets
 from . import point
+from . import graph
 
 points=[]
 
@@ -32,7 +33,7 @@ def move(p,o,ini,w,h,dels):
 			if o<of:
 				if p._inter_:
 					p._offset_=o
-					return ix
+					return graph.take(ix,p,w,h)
 				ix+=1
 				continue
 			break
@@ -42,14 +43,14 @@ def move(p,o,ini,w,h,dels):
 			if of<o:
 				if p._inter_:
 					p._offset_=o
-					return ix
+					return graph.take(ix,p,w,h)
 				ix-=1
 				continue
 			break
 	if ini!=ix:
 		ix=move_inter(forward,ini,ix,w,h,dels)
 		points.insert(ix,p)
-	return ix
+	return graph.take(ix,p,w,h)
 def move_inter(forward,ini,ix,w,h,dels):
 	indx=ini+1 if forward else ini-1
 	pnt=points[indx]

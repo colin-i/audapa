@@ -91,13 +91,14 @@ class struct(Gtk.DrawingArea):
 		ini=points.points.index(self)
 		w=draw.wstore
 		h=draw.hstore
-		dels=graph.take(ini,self._coord_(w,h),w,h)
+		dels=graph.take(ini,self,w,h)
 		#
 		o=self._offset_
 		self._pos_(x,y)
-		ix=points.move(self,o,ini,w,h,dels)
+		if puts:=points.move(self,o,ini,w,h,dels):
+			graph.lines(dels,puts)
+		#
 		c=self._coord_(w,h)
-		graph.put(ix,c,w,h,dels)
 		if self.get_parent():
 			draw.cont.move(self,c[0]-const,c[1]-const)
 		else:

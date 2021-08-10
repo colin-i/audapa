@@ -21,24 +21,20 @@ def surf(w,h):
 	global surface
 	surface = area.get_native().get_surface().create_similar_surface(cairo.Content.COLOR_ALPHA,w,h)
 
-def put(ix,c1,w,h,dels=None):
+def put(ix,c1,w,h):
 	if ix>0:
 		c0=points.points[ix-1]._coord_(w,h)
-		line(c0,c1,dels)
+		line(c0,c1)
 	elif len(points.points)>1:
 		c0=points.points[1]._coord_(w,h)
-		line(c1,c0,dels)
-def line(c0,c1,dels=None):
+		line(c1,c0)
+def line(c0,c1):
 	cr=cairo.Context(surface)
-	if dels:
-		cr.save()
-		cr.set_operator(cairo.Operator.CLEAR)
-		for d in dels:
-			clearline(cr,d[0],d[1])
-		cr.restore()
 	co=Gdk.RGBA()
 	if co.parse(sets.get_fgcolor2()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
+	line_draw(cr,c0,c1)
+def line_draw(cr,c0,c1):
 	#don't let line width corners to intersect
 	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1])
 	cr.move_to(p0[0],p0[1])
@@ -53,15 +49,29 @@ def coords(cr,x0,y0,x1,y1,extra=0):
 	x=math.sin(r)*l
 	y=math.cos(r)*l
 	return ([x0+x,y0+y],[x1-x,y1-y],r)
+def lines(dels,puts):
+	cr=cairo.Context(surface)
+	cr.save()
+	cr.set_operator(cairo.Operator.CLEAR)
+	for d in dels:
+		clearline(cr,d[0],d[1])
+	cr.restore()
+	co=Gdk.RGBA()
+	if co.parse(sets.get_fgcolor2()):
+		cr.set_source_rgb(co.red,co.green,co.blue)
+	for p in puts:
+		line_draw(cr,p[0],p[1])
 
-def take(ix,c1,w,h):
+def take(ix,pnt,w,h):
 	sz=len(points.points)
 	if ix>0:
+		c1=pnt._coord_(w,h)
 		d=[[points.points[ix-1]._coord_(w,h),c1]]
 		if ix+1<sz:
 			d.append([c1,points.points[ix+1]._coord_(w,h)])
 		return d
 	elif sz>1:
+		c1=pnt._coord_(w,h)
 		c0=points.points[1]._coord_(w,h)
 		return [[c1,c0]]
 	return None
