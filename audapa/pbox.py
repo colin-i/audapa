@@ -42,11 +42,11 @@ def and_inter(ix):
 		if sz==1:
 			return ix
 		test=1
-	elif pnts[ix-1]._inter_:
-		test=ix+1
 	elif ix==(sz-1):
 		test=sz-2
 		gap=1
+	elif pnts[ix-1]._inter_:
+		test=ix+1
 	else:
 		return ix
 	p=pnts[test]
