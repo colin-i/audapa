@@ -26,14 +26,15 @@ class struct(Gtk.DrawingArea):
 		ix=points.insert(self)
 		w=draw.wstore
 		h=draw.hstore
-		puts=graph.take(ix,self,w,h)
-		if len(puts)==2:
-			dels=[[puts[0][0],puts[1][1]]]
-		else:
-			dels=[]
+		puts,dels=self._take_(ix,w,h)
 		graph.lines(dels,puts)
 		self._put_point_(w,h)
 		self._control_.emit("pressed",0,0,0)
+	def _take_(self,ix,w,h):
+		a=graph.take(ix,self,w,h)
+		if len(a)==2:
+			return (a,[[a[0][0],a[1][1]]])
+		return (a,[])
 	def _pos_(self,x,y):
 		if drawscroll.landscape:
 			o=x
