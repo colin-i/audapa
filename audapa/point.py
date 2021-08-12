@@ -24,7 +24,15 @@ class struct(Gtk.DrawingArea):
 			return
 		self._pos_(args[0],args[1])
 		ix=points.insert(self)
-		self._put_(draw.wstore,draw.hstore,ix)
+		w=draw.wstore
+		h=draw.hstore
+		puts=graph.take(ix,self,w,h)
+		if len(puts)==2:
+			dels=[[puts[0][0],puts[1][1]]]
+		else:
+			dels=[]
+		graph.lines(dels,puts)
+		self._put_point_(w,h)
 		self._control_.emit("pressed",0,0,0)
 	def _pos_(self,x,y):
 		if drawscroll.landscape:
@@ -60,6 +68,9 @@ class struct(Gtk.DrawingArea):
 	def _put_(self,w,h,ix):
 		c=self._coord_(w,h)
 		graph.put(ix,c,w,h)
+		draw.cont.put(self,c[0]-const,c[1]-const)
+	def _put_point_(self,w,h):
+		c=self._coord_(w,h)
 		draw.cont.put(self,c[0]-const,c[1]-const)
 	def _coord_(self,w,h):
 		z=self._offset_-draw.offset
@@ -98,11 +109,11 @@ class struct(Gtk.DrawingArea):
 		if puts:=points.move(self,o,ini,w,h,dels):
 			graph.lines(dels,puts)
 		#
-		c=self._coord_(w,h)
 		if self.get_parent():
+			c=self._coord_(w,h)
 			draw.cont.move(self,c[0]-const,c[1]-const)
 		else:
-			draw.cont.put(self,c[0]-const,c[1]-const)
+			self._put_point_(w,h)
 		pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
 	def _remove_(self,ix):
 		self.remove_controller(self._control_)
