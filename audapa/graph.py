@@ -6,6 +6,7 @@ import math
 from . import points
 from . import sets
 from . import point
+from . import drawscroll
 
 def open(ovr):
 	global area
@@ -43,11 +44,17 @@ def line_draw(cr,c0,c1):
 def coords(cr,x0,y0,x1,y1,extra=0):
 	x=x1-x0
 	y=y1-y0
-	t=x/y if y else math.inf
-	r=math.atan(t)
 	l=point.const-extra
-	x=math.sin(r)*l
-	y=math.cos(r)*l
+	if drawscroll.landscape:
+		t=y/x if x else math.inf
+		r=math.atan(t)
+		x=math.cos(r)*l
+		y=math.sin(r)*l
+	else:
+		t=x/y if y else math.inf
+		r=math.atan(t)
+		x=math.sin(r)*l
+		y=math.cos(r)*l
 	return ([x0+x,y0+y],[x1-x,y1-y],r)
 def lines(dels,puts):
 	cr=cairo.Context(surface)
@@ -61,6 +68,10 @@ def lines(dels,puts):
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	for p in puts:
 		line_draw(cr,p[0],p[1])
+def xy_r(h,r):
+	if drawscroll.landscape:
+		return (math.sin(r)*h,math.cos(r)*h)
+	return (math.cos(r)*h,math.sin(r)*h)
 
 def take(ix,pnt,w,h):
 	sz=len(points.points)
@@ -78,8 +89,7 @@ def take(ix,pnt,w,h):
 def clearline(cr,c0,c1):
 	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1],1)   #it's tested
 	h=cr.get_line_width()/2+1   #it's tested
-	y=math.sin(r)*h
-	x=math.cos(r)*h
+	x,y=xy_r(h,r)
 	cr.move_to(p0[0]-x,p0[1]+y)
 	cr.line_to(p0[0]+x,p0[1]-y)
 	cr.line_to(p1[0]+x,p1[1]-y)

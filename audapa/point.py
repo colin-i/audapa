@@ -31,10 +31,11 @@ class struct(Gtk.DrawingArea):
 		self._put_point_(w,h)
 		self._control_.emit("pressed",0,0,0)
 	def _take_(self,ix,w,h):
-		a=graph.take(ix,self,w,h)
-		if len(a)==2:
-			return (a,[[a[0][0],a[1][1]]])
-		return (a,[])
+		if a:=graph.take(ix,self,w,h):
+			if len(a)==2:
+				return (a,[[a[0][0],a[1][1]]])
+			return (a,[])
+		return ([],[])
 	def _pos_(self,x,y):
 		if drawscroll.landscape:
 			o=x
