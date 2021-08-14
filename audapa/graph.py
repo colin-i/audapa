@@ -41,21 +41,6 @@ def line_draw(cr,c0,c1):
 	cr.move_to(p0[0],p0[1])
 	cr.line_to(p1[0],p1[1])
 	cr.stroke()
-def coords(cr,x0,y0,x1,y1,extra=0):
-	x=x1-x0
-	y=y1-y0
-	l=point.const-extra
-	if drawscroll.landscape:
-		t=y/x if x else math.inf
-		r=math.atan(t)
-		x=math.cos(r)*l
-		y=math.sin(r)*l
-	else:
-		t=x/y if y else math.inf
-		r=math.atan(t)
-		x=math.sin(r)*l
-		y=math.cos(r)*l
-	return ([x0+x,y0+y],[x1-x,y1-y],r)
 def lines(dels,puts):
 	cr=cairo.Context(surface)
 	cr.save()
@@ -68,11 +53,6 @@ def lines(dels,puts):
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	for p in puts:
 		line_draw(cr,p[0],p[1])
-def xy_r(h,r):
-	if drawscroll.landscape:
-		return (math.sin(r)*h,math.cos(r)*h)
-	return (math.cos(r)*h,math.sin(r)*h)
-
 def take(ix,pnt,w,h):
 	sz=len(points.points)
 	if ix>0:
@@ -96,3 +76,24 @@ def clearline(cr,c0,c1):
 	cr.line_to(p1[0]-x,p1[1]+y)
 	cr.line_to(p0[0]-x,p0[1]+y)
 	cr.fill()
+
+def coords(cr,x0,y0,x1,y1,extra=0):
+	x=x1-x0
+	y=y1-y0
+	l=point.const-extra
+	if drawscroll.landscape:
+		r=rads(y,x)
+		x=math.cos(r)*l
+		y=math.sin(r)*l
+	else:
+		r=rads(x,y)
+		x=math.sin(r)*l
+		y=math.cos(r)*l
+	return ([x0+x,y0+y],[x1-x,y1-y],r)
+def xy_r(h,r):
+	if drawscroll.landscape:
+		return (math.sin(r)*h,math.cos(r)*h)
+	return (math.cos(r)*h,math.sin(r)*h)
+def rads(a,b):
+	t=a/b if b else math.inf
+	return math.atan(t)
