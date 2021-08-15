@@ -53,7 +53,7 @@ def redraw(w,h):
 			if draw.offset+(w if drawscroll.landscape
 				 else h)<p._offset_:
 				if i<j:
-					graph.put(j,p._coord_(w,h),w,h)
+					graph.put(j,p,w,h)
 				return
 			p._put_(w,h,j)
 		return

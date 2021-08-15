@@ -24,49 +24,56 @@ def surf(w,h):
 
 def put(ix,c1,w,h):
 	if ix>0:
-		c0=points.points[ix-1]._coord_(w,h)
-		line(c0,c1)
+		c0=points.points[ix-1]
+		line(c0,c1,w,h)
 	elif len(points.points)>1:
-		c0=points.points[1]._coord_(w,h)
-		line(c1,c0)
-def line(c0,c1):
+		c0=points.points[1]
+		line(c1,c0,w,h)
+def line(c0,c1,w,h):
 	cr=cairo.Context(surface)
 	co=Gdk.RGBA()
 	if co.parse(sets.get_fgcolor2()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
-	line_draw(cr,c0,c1)
-def line_draw(cr,c0,c1):
+	line_draw(cr,c0,c1,w,h)
+def line_draw(cr,c0,c1,w,h):
+	c0=c0._coord_(w,h)
+	c1=c1._coord_(w,h)
 	#don't let line width corners to intersect
 	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1])
 	cr.move_to(p0[0],p0[1])
 	cr.line_to(p1[0],p1[1])
 	cr.stroke()
-def lines(dels,puts):
+def lines(dels,puts,w,h):
 	cr=cairo.Context(surface)
 	cr.save()
 	cr.set_operator(cairo.Operator.CLEAR)
 	for d in dels:
-		clearline(cr,d[0],d[1])
+		clearline(cr,d[0],d[1],w,h)
 	cr.restore()
 	co=Gdk.RGBA()
 	if co.parse(sets.get_fgcolor2()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	for p in puts:
-		line_draw(cr,p[0],p[1])
-def take(ix,pnt,w,h):
+		line_draw(cr,p[0],p[1],w,h)
+def dels(ds,w,h):
+	cr=cairo.Context(surface)
+	cr.set_operator(cairo.Operator.CLEAR)
+	for d in ds:
+		clearline(cr,d[0],d[1],w,h)
+def take(ix,pnt):
 	sz=len(points.points)
 	if ix>0:
-		c1=pnt._coord_(w,h)
-		d=[[points.points[ix-1]._coord_(w,h),c1]]
+		d=[[points.points[ix-1],pnt]]
 		if ix+1<sz:
-			d.append([c1,points.points[ix+1]._coord_(w,h)])
+			d.append([pnt,points.points[ix+1]])
 		return d
 	elif sz>1:
-		c1=pnt._coord_(w,h)
-		c0=points.points[1]._coord_(w,h)
-		return [[c1,c0]]
+		c0=points.points[1]
+		return [[pnt,c0]]
 	return None
-def clearline(cr,c0,c1):
+def clearline(cr,c0,c1,w,h):
+	c0=c0._coord_(w,h)
+	c1=c1._coord_(w,h)
 	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1],1)   #it's tested
 	h=cr.get_line_width()/2+1   #it's tested
 	x,y=xy_r(h,r)

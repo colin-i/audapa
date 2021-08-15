@@ -24,14 +24,14 @@ class struct(Gtk.DrawingArea):
 			return
 		self._pos_(args[0],args[1])
 		ix=points.insert(self)
+		puts,dels=self._take_(ix)
 		w=draw.wstore
 		h=draw.hstore
-		puts,dels=self._take_(ix,w,h)
-		graph.lines(dels,puts)
+		graph.lines(dels,puts,w,h)
 		self._put_point_(w,h)
 		self._control_.emit("pressed",0,0,0)
-	def _take_(self,ix,w,h):
-		if a:=graph.take(ix,self,w,h):
+	def _take_(self,ix):
+		if a:=graph.take(ix,self):
 			if len(a)==2:
 				return (a,[[a[0][0],a[1][1]]])
 			return (a,[])
@@ -68,8 +68,8 @@ class struct(Gtk.DrawingArea):
 			cr.rectangle(0,0,width,height)
 		cr.fill()
 	def _put_(self,w,h,ix):
+		graph.put(ix,self,w,h)
 		c=self._coord_(w,h)
-		graph.put(ix,c,w,h)
 		draw.cont.put(self,c[0]-const,c[1]-const)
 	def _put_point_(self,w,h):
 		c=self._coord_(w,h)
@@ -101,16 +101,17 @@ class struct(Gtk.DrawingArea):
 		lastselect=self
 		self.set_draw_func(self._draw_cont_,None,None)
 	def _dend_(self,x,y):
-		ini=points.points.index(self)
 		w=draw.wstore
 		h=draw.hstore
-		dels=graph.take(ini,self,w,h)
+		#
+		ini=points.points.index(self)
+		if dels:=graph.take(ini,self):
+			graph.dels(dels,w,h)
 		#
 		o=self._offset_
 		self._pos_(x,y)
-		if puts:=points.move(self,o,ini,w,h,dels):
-			graph.lines(dels,puts)
-		#
+		if puts:=points.move(self,o,ini,dels):
+			graph.lines(dels,puts,w,h)
 		if self.get_parent():
 			c=self._coord_(w,h)
 			draw.cont.move(self,c[0]-const,c[1]-const)

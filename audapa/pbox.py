@@ -25,32 +25,30 @@ def close():
 def delete(b,d):
 	p=point.lastselect
 	ix=points.points.index(p)
-	w=draw.wstore
-	h=draw.hstore
-	dels,puts=p._take_(ix,w,h)
-	ix=and_inter(ix,dels,puts,w,h)
-	graph.lines(dels,puts)
+	dels,puts=p._take_(ix)
+	ix=and_inter(ix,dels,puts)
+	graph.lines(dels,puts,draw.wstore,draw.hstore)
 	p._remove_(ix)
 	if p.get_parent():
 		p.get_parent().remove(p)
 	close()
 	point.lastselect=None
 	graph.area.queue_draw()
-def and_inter(ix,dels,puts,w,h):
+def and_inter(ix,dels,puts):
 	pnts=points.points
 	sz=len(pnts)
 	if ix==0:
 		if sz==1:
 			return ix
 		if and_inter_test(1):
-			dels.append([dels[0][1],pnts[1]._coord_(w,h)])
+			dels.append([dels[0][1],pnts[1]])
 	elif ix==(sz-1):
 		if and_inter_test(sz-2):
-			dels.append([pnts[sz-3]._coord_(w,h),dels[0][0]])
+			dels.append([pnts[sz-3],dels[0][0]])
 			ix-=1
 	elif pnts[ix-1]._inter_:
 		if and_inter_test(ix+1):
-			aux=pnts[ix+1]._coord_(w,h)
+			aux=pnts[ix+1]
 			dels.append([dels[1][1],aux])
 			puts[0][1]=aux
 	return ix

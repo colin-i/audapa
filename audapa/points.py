@@ -22,7 +22,7 @@ def insert(poi):
 			return ix
 	points.append(poi)
 	return ln
-def move(p,o,ini,w,h,dels):
+def move(p,o,ini,dels):
 	ix=ini
 	last=len(points)-1
 	of=p._offset_
@@ -33,7 +33,7 @@ def move(p,o,ini,w,h,dels):
 			if o<of:
 				if p._inter_:
 					p._offset_=o
-					return graph.take(ix,p,w,h)
+					return graph.take(ix,p)
 				ix+=1
 				continue
 			break
@@ -43,54 +43,61 @@ def move(p,o,ini,w,h,dels):
 			if of<o:
 				if p._inter_:
 					p._offset_=o
-					return graph.take(ix,p,w,h)
+					return graph.take(ix,p)
 				ix-=1
 				continue
 			break
 	if ini!=ix:
-		return move_inter(forward,ini,ix,w,h,dels,p)
-	return graph.take(ix,p,w,h)
-def move_inter(forward,ini,ix,w,h,dels,p):
+		return move_inter(forward,ini,ix,dels,p)
+	return graph.take(ix,p)
+def move_inter(forward,ini,ix,dels,p):
 	indx=ini+1 if forward else ini-1
 	pnt=points[indx]
 	puts=None
 	if pnt._inter_:
 		gap=indx!=ix
-		if gap:
-			move_inter_end(forward,ix,w,h,dels)
+		if forward:
+			aux=points[indx+1]
+			d=[dels[len(dels)-1][1],aux]
+			if gap and ini>0:
+				puts=[dels[0][0],aux]
+			dels.clear()
+			dels.append(d)
+			if gap:
+				move_inter_end(forward,ix,dels)
+			ix-=1
+		else:
+			aux=points[indx-1]
+			d=[aux,dels[0][0]]
+			if gap and ini<len(points)-1:
+				puts=[aux,dels[len(dels)-1][1]]
+			dels.clear()
+			dels.append(d)
+			if gap:
+				move_inter_end(forward,ix,dels)
+			ini-=1
 		pr=pnt.get_parent()
 		if pr:
 			pr.remove(pnt)
-		if forward:
-			aux=points[indx+1]._coord_(w,h)
-			dels.append([dels[1][1],aux])
-			if gap and ini>0:
-				puts=[dels[0][0],aux]
-			ix-=1
-		else:
-			aux=points[indx-1]._coord_(w,h)
-			dels.append([aux,dels[0][0]])
-			if gap and ini<len(points)-1:
-				puts=[aux,dels[1][1]]
-			ini-=1
 		pnt._remove_(indx)
 	else:
-		move_inter_end(forward,ix,w,h,dels)
 		if ini>0 and ini<len(points)-1:
 			puts=[dels[0][0],dels[1][1]]
+		dels.clear()
+		move_inter_end(forward,ix,dels)
 	del points[ini]
 	points.insert(ix,p)
-	pts=graph.take(ix,p,w,h)
+	pts=graph.take(ix,p)
 	if puts:
 		pts.append(puts)
 	return pts
-def move_inter_end(forward,ix,w,h,dels):
+def move_inter_end(forward,ix,dels):
 	if forward:
 		if ix==len(points)-1:
 			return
-		dels.append([points[ix]._coord_(w,h),points[ix+1]._coord_(w,h)])
+		dels.append([points[ix],points[ix+1]])
 	elif ix>0:
-		dels.append([points[ix-1]._coord_(w,h),points[ix]._coord_(w,h)])
+		dels.append([points[ix-1],points[ix]])
 def dpath(f_in):
 	p=os.path.dirname(f_in)
 	return os.path.join(p,'_'+sets.pkgname+'cache_')
