@@ -7,6 +7,7 @@ from . import points
 from . import sets
 from . import point
 from . import drawscroll
+from . import arc
 
 def open(ovr):
 	global area
@@ -36,12 +37,15 @@ def line(c0,c1,w,h):
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	line_draw(cr,c0,c1,w,h)
 def line_draw(cr,c0,c1,w,h):
-	c0=c0._coord_(w,h)
-	c1=c1._coord_(w,h)
-	#don't let line width corners to intersect
-	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1])
-	cr.move_to(p0[0],p0[1])
-	cr.line_to(p1[0],p1[1])
+	a0=c0._coord_(w,h)
+	a1=c1._coord_(w,h)
+	if c0._inter_ or c1._inter_:
+		arc.draw(cr,a0[0],a0[1],a1[0],a1[1])
+	else:
+		#don't let line width corners to intersect
+		p0,p1,r=coords(cr,a0[0],a0[1],a1[0],a1[1])
+		cr.move_to(p0[0],p0[1])
+		cr.line_to(p1[0],p1[1])
 	cr.stroke()
 def lines(dels,puts,w,h):
 	cr=cairo.Context(surface)
