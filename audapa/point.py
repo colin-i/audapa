@@ -12,8 +12,6 @@ const=6
 
 class struct(Gtk.DrawingArea):
 	_drag_=False
-	_inter_=False
-	_convex_=True
 	def __init__(self,*args):
 		Gtk.DrawingArea.__init__(self)
 		self._control_ = Gtk.GestureClick()
@@ -23,6 +21,8 @@ class struct(Gtk.DrawingArea):
 		if len(args)==0:
 			self.set_draw_func(self._draw_none_,None,None)
 			return
+		self._inter_=False
+		self._convex_=True
 		self._pos_(args[0],args[1])
 		ix=points.insert(self)
 		puts,dels=self._take_(ix)
