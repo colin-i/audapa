@@ -125,4 +125,5 @@ def read(f_in):
 				po._offset_=p[0]
 				po._height_=p[1]
 				po._inter_=p[2]
+				po._convex_=p[3]
 				points.append(po)

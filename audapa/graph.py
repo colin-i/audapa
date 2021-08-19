@@ -40,7 +40,7 @@ def line_draw(cr,c0,c1,w,h):
 	a0=c0._coord_(w,h)
 	a1=c1._coord_(w,h)
 	if c0._inter_ or c1._inter_:
-		arc.draw(cr,a0[0],a0[1],a1[0],a1[1])
+		arc.draw(cr,a0[0],a0[1],a1[0],a1[1],c0._convex_)
 	else:
 		#don't let line width corners to intersect
 		p0,p1,r=coords(cr,a0[0],a0[1],a1[0],a1[1])
