@@ -31,6 +31,9 @@ def draw(cr,x0,y0,x1,y1,convex):
 			return
 		cr.arc(x0-c,y0,c,0,raddif)
 		return
+	if land:
+		cr.arc(x0+c,y0,c,math.pi-raddif,math.pi)
+		return
 	cr.arc(x1+c,y1,c,math.pi,math.pi+raddif)
 def vals(x,y):
 	if x>y:

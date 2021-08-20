@@ -111,19 +111,20 @@ def write(f_in):
 		with open(f_out,"w") as f:
 			d=[]
 			for po in points:
-				d.append([po._offset_,po._height_,po._inter_])
+				d.append([po._offset_,po._height_,po._inter_,po._convex_])
 			json.dump(d,f)
 	elif os.path.exists(f_out):
-		  os.remove(f_out)
+		os.remove(f_out)
 def read(f_in):
 	f_out=fpath(dpath(f_in),f_in)
 	if os.path.exists(f_out):
 		with open(f_out) as f:
-			d=json.load(f)
-			for p in d:
-				po=point.struct()
-				po._offset_=p[0]
-				po._height_=p[1]
-				po._inter_=p[2]
-				po._convex_=p[3]
-				points.append(po)
+			if data:=f.read():
+				d=json.loads(data)
+				for p in d:
+					po=point.struct()
+					po._offset_=p[0]
+					po._height_=p[1]
+					po._inter_=p[2]
+					po._convex_=p[3]
+					points.append(po)
