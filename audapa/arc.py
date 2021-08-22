@@ -36,7 +36,9 @@ def draw(cr,x0,y0,x1,y1,convex):
 			cr.arc(x1,y1-c,c,math.pi/2,math.pi/2+raddif)
 			return
 		if land:
+			cr.arc(x0,y0-c,c,math.pi/2-raddif,math.pi/2)
 			return
+		cr.arc(x0,y0+c,c,math.pi*3/2-raddif,math.pi*3/2)
 		return
 	if (land and y0<y1) or (x0<x1 and land==False):
 		cr.arc(x0+c,y0,c,math.pi-raddif,math.pi)
