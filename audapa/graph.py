@@ -43,7 +43,7 @@ def line_draw(cr,c0,c1,w,h):
 		arc.draw(cr,a0[0],a0[1],a1[0],a1[1],c0._convex_)
 	else:
 		#don't let line width corners to intersect
-		p0,p1,r=coords(cr,a0[0],a0[1],a1[0],a1[1])
+		p0,p1=coords(a0[0],a0[1],a1[0],a1[1])
 		cr.move_to(p0[0],p0[1])
 		cr.line_to(p1[0],p1[1])
 	cr.stroke()
@@ -78,9 +78,11 @@ def take(ix,pnt):
 def clearline(cr,c0,c1,w,h):
 	c0=c0._coord_(w,h)
 	c1=c1._coord_(w,h)
-	p0,p1,r=coords(cr,c0[0],c0[1],c1[0],c1[1],1)   #it's tested
+	x,y=coords0(c0[0],c0[1],c1[0],c1[1],1)   #it's tested
+	p0=[c0[0]+x,c0[1]+y]
+	p1=[c1[0]-x,c1[1]-y]
 	h=cr.get_line_width()/2+1   #it's tested
-	x,y=xy_r(h,r)
+	x,y=xy_h(h,x,y)
 	cr.move_to(p0[0]-x,p0[1]+y)
 	cr.line_to(p0[0]+x,p0[1]-y)
 	cr.line_to(p1[0]+x,p1[1]-y)
@@ -88,7 +90,7 @@ def clearline(cr,c0,c1,w,h):
 	cr.line_to(p0[0]-x,p0[1]+y)
 	cr.fill()
 
-def coords(cr,x0,y0,x1,y1,extra=0):
+def coords0(x0,y0,x1,y1,extra=0):
 	x=x1-x0
 	y=y1-y0
 	l=point.const-extra
@@ -100,10 +102,15 @@ def coords(cr,x0,y0,x1,y1,extra=0):
 		r=rads(x,y)
 		x=math.sin(r)*l
 		y=math.cos(r)*l
-	return ([x0+x,y0+y],[x1-x,y1-y],r)
-def xy_r(h,r):
+	return (x,y)
+def coords(x0,y0,x1,y1):
+	x,y=coords0(x0,y0,x1,y1,0)
+	return ([x0+x,y0+y],[x1-x,y1-y])
+def xy_h(h,x,y):
 	if drawscroll.landscape:
+		r=math.atan2(y,x)
 		return (math.sin(r)*h,math.cos(r)*h)
+	r=math.atan2(x,y)
 	return (math.cos(r)*h,math.sin(r)*h)
 def rads(a,b):
 	t=a/b if b else math.inf
