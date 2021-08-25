@@ -4,7 +4,7 @@ from . import graph
 
 import math
 
-def draw(cr,x0,y0,x1,y1,convex,ln=0):
+def draw(cr,x0,y0,x1,y1,convex,ln):
 	land=drawscroll.landscape
 	if land:
 		x=x1-x0
