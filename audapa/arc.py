@@ -13,7 +13,7 @@ def draw(cr,x0,y0,x1,y1,convex):
 	else:
 		x=abs(x1-x0)
 		y=y1-y0
-	c,raddif,radsmall=vals(x,y,point.const)
+	c,raddif,radsmall=vals(x,y)
 	if convex:
 		if x>y:
 			if (land and y0<y1) or (x0<x1 and land==False):
@@ -48,7 +48,8 @@ def draw(cr,x0,y0,x1,y1,convex):
 		arc(cr,x1-c,y1,c,0,raddif,radsmall)
 		return
 	arc(cr,x1+c,y1,c,math.pi,math.pi+raddif,radsmall)
-def vals(x,y,l):
+def vals(x,y):
+	l=point.const
 	if x>y:
 		rads=graph.rads(x,y)
 		aux=math.cos(rads)
