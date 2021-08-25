@@ -1,10 +1,11 @@
 
 from . import drawscroll
 from . import graph
+from . import point
 
 import math
 
-def draw(cr,x0,y0,x1,y1,convex,ln):
+def draw(cr,x0,y0,x1,y1,convex):
 	land=drawscroll.landscape
 	if land:
 		x=x1-x0
@@ -12,7 +13,7 @@ def draw(cr,x0,y0,x1,y1,convex,ln):
 	else:
 		x=abs(x1-x0)
 		y=y1-y0
-	c,raddif,radsmall=vals(x,y,ln)
+	c,raddif,radsmall=vals(x,y,point.const)
 	if convex:
 		if x>y:
 			if (land and y0<y1) or (x0<x1 and land==False):
