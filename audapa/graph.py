@@ -78,13 +78,13 @@ def take(ix,pnt):
 def clearline(cr,a0,a1,w,h):
 	c0=a0._coord_(w,h)
 	c1=a1._coord_(w,h)
-	#arc is not forming a path for fill, like line_to that is also move_to
+	#arc is not forming a path for fill, like line_to that is also move_to-ing
 	if a0._inter_ or a1._inter_:
 		lw=cr.get_line_width()
-		cr.set_line_width(lw+1)
 		arc.draw(cr,c0[0],c0[1],c1[0],c1[1],a0._convex_,point.const-1)
-		cr.set_line_width(lw)
+		cr.set_line_width(lw+1)
 		cr.stroke()
+		cr.set_line_width(lw)
 		return
 	x,y=coords0(c0[0],c0[1],c1[0],c1[1],1)   #it's tested
 	p0=[c0[0]+x,c0[1]+y]
