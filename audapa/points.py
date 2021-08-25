@@ -33,6 +33,7 @@ def move(p,o,ini,dels):
 			if o<of:
 				if p._inter_:
 					p._offset_=o
+					dels.clear()
 					return graph.take(ix,p)
 				ix+=1
 				continue
@@ -43,12 +44,14 @@ def move(p,o,ini,dels):
 			if of<o:
 				if p._inter_:
 					p._offset_=o
+					dels.clear()
 					return graph.take(ix,p)
 				ix-=1
 				continue
 			break
 	if ini!=ix:
 		return move_inter(forward,ini,ix,dels,p)
+	dels.clear()
 	return graph.take(ix,p)
 def move_inter(forward,ini,ix,dels,p):
 	indx=ini+1 if forward else ini-1

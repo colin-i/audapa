@@ -40,7 +40,7 @@ def line_draw(cr,c0,c1,w,h):
 	a0=c0._coord_(w,h)
 	a1=c1._coord_(w,h)
 	if c0._inter_ or c1._inter_:
-		arc.draw(cr,a0[0],a0[1],a1[0],a1[1],c0._convex_)
+		arc.draw(cr,a0[0],a0[1],a1[0],a1[1],c0._convex_,point.const)
 	else:
 		#don't let line width corners to intersect
 		p0,p1=coords(a0[0],a0[1],a1[0],a1[1])
@@ -49,11 +49,11 @@ def line_draw(cr,c0,c1,w,h):
 	cr.stroke()
 def lines(dels,puts,w,h):
 	cr=cairo.Context(surface)
-	cr.save()
+	ope=cr.get_operator()
 	cr.set_operator(cairo.Operator.CLEAR)
 	for d in dels:
 		clearline(cr,d[0],d[1],w,h)
-	cr.restore()
+	cr.set_operator(ope)
 	co=Gdk.RGBA()
 	if co.parse(sets.get_fgcolor2()):
 		cr.set_source_rgb(co.red,co.green,co.blue)
@@ -75,9 +75,17 @@ def take(ix,pnt):
 		c0=points.points[1]
 		return [[pnt,c0]]
 	return None
-def clearline(cr,c0,c1,w,h):
-	c0=c0._coord_(w,h)
-	c1=c1._coord_(w,h)
+def clearline(cr,a0,a1,w,h):
+	c0=a0._coord_(w,h)
+	c1=a1._coord_(w,h)
+	#arc is not forming a path for fill, like line_to that is also move_to
+	if a0._inter_ or a1._inter_:
+		lw=cr.get_line_width()
+		cr.set_line_width(lw+1)
+		arc.draw(cr,c0[0],c0[1],c1[0],c1[1],a0._convex_,point.const-1)
+		cr.set_line_width(lw)
+		cr.stroke()
+		return
 	x,y=coords0(c0[0],c0[1],c1[0],c1[1],1)   #it's tested
 	p0=[c0[0]+x,c0[1]+y]
 	p1=[c1[0]-x,c1[1]-y]
@@ -85,8 +93,10 @@ def clearline(cr,c0,c1,w,h):
 	x,y=xy_h(h,x,y)
 	cr.move_to(p0[0]-x,p0[1]+y)
 	cr.line_to(p0[0]+x,p0[1]-y)
+	#
 	cr.line_to(p1[0]+x,p1[1]-y)
 	cr.line_to(p1[0]-x,p1[1]+y)
+	#
 	cr.line_to(p0[0]-x,p0[1]+y)
 	cr.fill()
 
