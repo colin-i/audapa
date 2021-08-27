@@ -9,11 +9,11 @@ from . import points
 from . import draw
 from . import graph
 
-def open(o,h):
+def open(p):
 	global box,info
 	box=Gtk.Box()
 	box.append(sets.colorButton(seloff.char_delete,delete,None))
-	info=sets.colorLabel(inf(o,h))
+	info=sets.colorLabel(inf(p._offset_,p._height_))
 	info.set_hexpand(True)
 	info.set_halign(Gtk.Align.END)
 	box.append(info)

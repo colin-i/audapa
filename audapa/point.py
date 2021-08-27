@@ -98,7 +98,7 @@ class struct(Gtk.DrawingArea):
 				self.queue_draw()
 				return
 		else:
-			pbox.open(self._offset_,self._height_)
+			pbox.open(self)
 		lastselect=self
 		self.set_draw_func(self._draw_cont_,None,None)
 	def _dend_(self,x,y):
