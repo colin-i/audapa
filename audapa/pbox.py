@@ -14,6 +14,7 @@ def open(p):
 	global box,info
 	box=Gtk.Box()
 	box.append(arcbutton.open(p))
+	box.append(sets.colorButton(chr(0x2913),snap,None))
 	box.append(sets.colorButton(seloff.char_delete,delete,None))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
 	info.set_hexpand(True)
@@ -65,3 +66,11 @@ def and_inter_test(test):
 
 def inf(o,h):
 	return str(o)+' '+str(h)
+
+def snap(b,d):
+	pass
+	#hg=_height_
+	#_height_=0
+	#p._coord_(w,h)
+	#_height_=hg
+	#p._dend_(x,y)
