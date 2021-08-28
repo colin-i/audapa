@@ -7,6 +7,7 @@ from . import drawscroll
 from . import pbox
 from . import points
 from . import graph
+from . import arcbutton
 
 const=6
 
@@ -90,6 +91,7 @@ class struct(Gtk.DrawingArea):
 			if lastselect!=self:
 				lastselect.set_draw_func(lastselect._draw_none_,None,None)
 				pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
+				arcbutton.button._set_text_(arcbutton.set(self))
 			else:
 				if self._drag_==False:
 					self._drag_=True

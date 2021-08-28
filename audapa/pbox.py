@@ -13,7 +13,7 @@ from . import arcbutton
 def open(p):
 	global box,info
 	box=Gtk.Box()
-	box.append(sets.colorButton(arcbutton.set(p),arcbutton.conv_conc,None))
+	box.append(arcbutton.open(p))
 	box.append(sets.colorButton(seloff.char_delete,delete,None))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
 	info.set_hexpand(True)

@@ -8,6 +8,11 @@ from . import sets
 import cairo
 from gi.repository import Gdk
 
+def open(p):
+	global button
+	button=sets.colorButton(set(p),conv_conc,None)
+	return button
+
 def conv_conc(b,d):
 	p=point.lastselect
 	pnts=points.points
