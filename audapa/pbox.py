@@ -68,9 +68,10 @@ def inf(o,h):
 	return str(o)+' '+str(h)
 
 def snap(b,d):
-	pass
-	#hg=_height_
-	#_height_=0
-	#p._coord_(w,h)
-	#_height_=hg
-	#p._dend_(x,y)
+	p=point.lastselect
+	hg=p._height_
+	p._height_=0
+	x,y=p._coord_(draw.wstore,draw.hstore)
+	p._height_=hg
+	p._dend_(x,y)
+	graph.area.queue_draw()
