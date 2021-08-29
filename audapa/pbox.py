@@ -14,7 +14,7 @@ def open(p):
 	global box,info
 	box=Gtk.Box()
 	box.append(arcbutton.open(p))
-	box.append(sets.colorButton(chr(0x0057),snap,None))
+	box.append(sets.colorButton(chr(0x0077),manual,None))#0057
 	box.append(sets.colorButton(chr(0x2913),snap,None))
 	box.append(sets.colorButton(seloff.char_delete,delete,None))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
@@ -76,3 +76,6 @@ def snap(b,d):
 	p._height_=hg
 	p._dend_(x,y)
 	graph.area.queue_draw()
+
+def manual(b,d):
+	pass
