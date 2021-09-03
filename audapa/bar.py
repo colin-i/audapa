@@ -11,12 +11,12 @@ def cl(b,d):
 
 input=0x1F399
 
-def init(win,bx):
+def init(combo):
 	global box
 	box=Gtk.Box()
 	box.append(sets.colorButton(chr(input), record.start, input))
-	box.append(sets.colorButton(chr(0x2699), sets.sets, [win,bx]))
-	box.append(sets.colorButton("X", cl, None))
+	box.append(sets.colorButton(chr(0x2699), sets.sets, combo))
+	box.append(sets.colorButton("X", cl))
 	box.append(play.entry)
 	box.append(play.button)
 	return box

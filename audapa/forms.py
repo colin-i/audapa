@@ -8,29 +8,35 @@ from . import drawscroll
 from . import pbox
 from . import points
 from . import graph
+from . import level
 
 #button
 control=None
 on=chr(0x25a1)
 
-def init():
+def init(combo):
 	b=Gtk.Box(homogeneous=True)#,hexpand=True nothing
-	global button
-	button=sets.colorButton(on,toggle,None)
-	button.set_sensitive(False)
-	button.set_halign(Gtk.Align.CENTER)
-	b.append(button)
-	#0x2021
+	global button,box
+	button=sets.colorButton(on,toggle)#halign CENTER
+	bt=sets.colorButton(chr(0x2021),level.open,combo)
+	box=Gtk.Box(halign=Gtk.Align.CENTER)
+	box.append(button)
+	box.append(bt)
+	for bt in box:
+		bt.set_sensitive(False)
+	b.append(box)
 	return b
 
 def open():
-	button.set_sensitive(True)
+	for b in box:
+		b.set_sensitive(True)
 	point.lastselect=None
 
 def close():
 	if control:
 		button.emit(sets._click_)
-	button.set_sensitive(False)
+	for b in box:
+		b.set_sensitive(False)
 	sz=len(points.points)
 	for i in range(sz-1,-1,-1):
 		points.points[i]._remove_(i)

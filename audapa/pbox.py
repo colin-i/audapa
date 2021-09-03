@@ -14,17 +14,17 @@ def open(p):
 	global box,info
 	box=Gtk.Box()
 	box.append(arcbutton.open(p))
-	box.append(sets.colorButton(chr(0x0077),manual,None))#0057
-	box.append(sets.colorButton(chr(0x2913),snap,None))
-	box.append(sets.colorButton(seloff.char_delete,delete,None))
+	box.append(sets.colorButton(chr(0x0077),manual))#0057
+	box.append(sets.colorButton(chr(0x2913),snap))
+	box.append(sets.colorButton(seloff.char_delete,delete))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
 	info.set_hexpand(True)
 	info.set_halign(Gtk.Align.END)
 	box.append(info)
-	forms.button.get_parent().append(box)
+	forms.box.get_parent().append(box)
 
 def close():
-	forms.button.get_parent().remove(box)
+	forms.box.get_parent().remove(box)
 
 def delete(b,d):
 	p=point.lastselect

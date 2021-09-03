@@ -15,7 +15,7 @@ class colorLabel(Gtk.Label):
 		self.set_markup(z)
 _click_ = "clicked"
 class colorButton(Gtk.Button):
-	def __init__(self,t,f,d):
+	def __init__(self,t,f,d=None):
 		Gtk.Button.__init__(self,child=colorLabel(t))
 		self.connect(_click_,f,d)
 	def _set_text_(self,t):

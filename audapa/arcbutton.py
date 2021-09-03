@@ -10,7 +10,7 @@ from gi.repository import Gdk
 
 def open(p):
 	global button
-	button=sets.colorButton(set(p),conv_conc,None)
+	button=sets.colorButton(set(p),conv_conc)
 	return button
 
 def conv_conc(b,d):
@@ -46,3 +46,4 @@ def arc_change(p0,p1):
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	graph.line_draw(cr,p0,p1,w,h)
 	graph.area.queue_draw()
+
