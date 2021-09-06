@@ -1,4 +1,6 @@
 
+from . import points
 
 def data(b,d):
-	pass
+	for p in points.points:
+		pass
