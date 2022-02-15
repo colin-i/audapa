@@ -30,4 +30,5 @@ if test.returncode:
 	exit(test.returncode)
 import wave
 
-subprocess.run([sys.executable,'-m','pip','install','--user','.'])
+if len(sys.argv)<2:
+	subprocess.run([sys.executable,'-m','pip','install','--user','.'])
