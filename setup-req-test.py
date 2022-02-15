@@ -25,10 +25,5 @@ if test.returncode:
 	exit(test.returncode)
 import appdirs
 
-test=subprocess.run([sys.executable,'-m','pip','install','Wave>=0.0.2'])
-if test.returncode:
-	exit(test.returncode)
-import wave
-
 if len(sys.argv)<2:
 	subprocess.run([sys.executable,'-m','pip','install','--user','.'])
