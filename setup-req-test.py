@@ -15,4 +15,19 @@ if test.returncode:
 	exit(test.returncode)
 import pyaudio
 
+test=subprocess.run([sys.executable,'-m','pip','install','pycairo>=1.20.0'])
+if test.returncode:
+	exit(test.returncode)
+import cairo
+
+test=subprocess.run([sys.executable,'-m','pip','install','appdirs>=1.4.3'])
+if test.returncode:
+	exit(test.returncode)
+import appdirs
+
+test=subprocess.run([sys.executable,'-m','pip','install','Wave>=0.0.2'])
+if test.returncode:
+	exit(test.returncode)
+import wave
+
 subprocess.run([sys.executable,'-m','pip','install','--user','.'])
