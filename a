@@ -1,4 +1,3 @@
-GTK_DEBUG=interactive GDK_BACKEND=broadway GTK_INSPECTOR_DISPLAY=:1 python -m audapa.main
-#x11          :0    is ok
-#broadway and :0    not visible
-#broadway and x11:0 failed
+
+
+GDK_BACKEND=broadway python -m audapa.main
