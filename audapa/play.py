@@ -9,7 +9,8 @@ from . import seloff
 from . import points
 
 wavefile=None
-output=0x23F5
+output=0x25B6
+#23F5
 timer=0
 
 def activate(en,d):

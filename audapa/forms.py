@@ -23,7 +23,7 @@ def init(combo):
 	box.append(button)
 	bt=sets.colorButton(chr(0x2021),level.open,combo)
 	box.append(bt)
-	bt=sets.colorButton(chr(0x1f5ab),save.data)
+	bt=sets.colorButton(chr(0x1f4be),save.data)#1f5ab
 	box.append(bt)
 	for bt in box:
 		bt.set_sensitive(False)
