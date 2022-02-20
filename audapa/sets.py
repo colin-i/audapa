@@ -58,7 +58,7 @@ get_data_dir().mkdir(exist_ok=True)
 def get_data_file(f):
 	return os.path.join(get_data_dir(),f)
 
-color=Gtk.EntryBuffer()
+color=Gtk.EntryBuffer(text="purple")
 def get_color():
 	return color.get_text()
 fgcolor=Gtk.EntryBuffer(text="red")
