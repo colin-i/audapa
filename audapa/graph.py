@@ -114,7 +114,7 @@ def coords0(x0,y0,x1,y1,extra=0):
 		y=math.cos(r)*l
 	return (x,y)
 def coords(x0,y0,x1,y1):
-	x,y=coords0(x0,y0,x1,y1,0)
+	x,y=coords0(x0,y0,x1,y1)
 	return ([x0+x,y0+y],[x1-x,y1-y])
 def xy_h(h,x,y):
 	if drawscroll.landscape:
