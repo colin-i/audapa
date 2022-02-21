@@ -19,11 +19,11 @@ def init(combo):
 	b=Gtk.Box(homogeneous=True)#,hexpand=True nothing
 	global button,box
 	box=Gtk.Box(halign=Gtk.Align.CENTER)
-	button=sets.colorButton(on,toggle)#halign CENTER
+	button=sets.colorButton(on,toggle,"Points Mode")#halign CENTER
 	box.append(button)
-	bt=sets.colorButton(chr(0x2021),level.open,combo)
+	bt=sets.colorButton(chr(0x2021),level.open,"Loudness",combo)
 	box.append(bt)
-	bt=sets.colorButton(chr(0x1f4be),save.data)#1f5ab
+	bt=sets.colorButton(chr(0x1f4be),save.data,"Write Points")#1f5ab
 	box.append(bt)
 	for bt in box:
 		bt.set_sensitive(False)

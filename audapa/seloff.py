@@ -29,21 +29,21 @@ def init():
 def press(g,n,x,y,d):
 	r_offset.calculate(int(x if drawscroll.landscape else y))
 
-def add(a,b,c,lst):
-	d=sets.colorButton(a,b,c)
+def add(a,b,i,c,lst):
+	d=sets.colorButton(a,b,i,c)
 	bar.box.append(d)
 	lst.append(d)
 	return d
 def open():
 	global stop,moveleft,moveright
 	lst=[]
-	button=add(on,toggle,draw.cont,lst)
-	add(char_delete,delete.act,None,lst)
-	add(chr(0x1f58b),play.save,None,lst)
-	add(chr(0x1f58a),play.saveshort,None,lst)
-	moveleft=add("&lt;",drawscroll.move,False,lst)
-	moveright=add("&gt;",drawscroll.move,True,lst)
-	stop=add("x",close,{'b':button,'list':lst},lst)
+	button=add(on,toggle,"Selection Toggle",draw.cont,lst)
+	add(char_delete,delete.act,"Delete",None,lst)
+	add(chr(0x1f58b),play.save,"Save All",None,lst)
+	add(chr(0x1f58a),play.saveshort,"Save Points",None,lst)
+	moveleft=add("&lt;",drawscroll.move,"Left Move",False,lst)
+	moveright=add("&gt;",drawscroll.move,"Right Move",True,lst)
+	stop=add("x",close,"Close",{'b':button,'list':lst},lst)
 	#
 	drawscroll.open()
 	forms.open()

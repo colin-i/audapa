@@ -10,7 +10,7 @@ from gi.repository import Gdk
 
 def open(p):
 	global button
-	button=sets.colorButton(set(p),conv_conc)
+	button=sets.colorButton(set(p),conv_conc,"Arc Orientation")
 	return button
 
 def conv_conc(b,d):

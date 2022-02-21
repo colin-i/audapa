@@ -14,9 +14,9 @@ def open(p):
 	global box,info
 	box=Gtk.Box()
 	box.append(arcbutton.open(p))
-	box.append(sets.colorButton(chr(0x0077),manual))#0057
-	box.append(sets.colorButton(chr(0x2913),snap))
-	box.append(sets.colorButton(seloff.char_delete,delete))
+	box.append(sets.colorButton(chr(0x0077),manual,"Manual"))#0057
+	box.append(sets.colorButton(chr(0x2913),snap,"Snap to base"))
+	box.append(sets.colorButton(seloff.char_delete,delete,"Delete"))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
 	info.set_hexpand(True)
 	info.set_halign(Gtk.Align.END)

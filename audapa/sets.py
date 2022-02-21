@@ -15,9 +15,10 @@ class colorLabel(Gtk.Label):
 		self.set_markup(z)
 _click_ = "clicked"
 class colorButton(Gtk.Button):
-	def __init__(self,t,f,d=None):
+	def __init__(self,t,f,i,d=None):
 		Gtk.Button.__init__(self,child=colorLabel(t))
 		self.connect(_click_,f,d)
+		self.set_tooltip_text(i)
 	def _set_text_(self,t):
 		self.get_child()._set_text_(t)
 class colorEntry(Gtk.Entry):
@@ -83,7 +84,7 @@ def sets(b,combo):
 	n=add(bx,"Foreground Color",fgcolor,n)
 	n=add(bx,"Foreground Color2",fgcolor2,n)
 	n=add(bx,"Foreground Color3",fgcolor3,n)
-	b=colorButton("Done", reset, {'c':combo,'t':
+	b=colorButton("Done", reset, "Return", {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
 	bx.attach(b,0,n,2,1)
 	combo[0].set_child(bx)

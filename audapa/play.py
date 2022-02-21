@@ -29,7 +29,7 @@ def toggle(b,d):
 def init():
 	global entry,button
 	entry=sets.colorEntry()
-	button=sets.colorButton(chr(output), toggle)
+	button=sets.colorButton(chr(output), toggle, "Play")
 	entry.connect('activate',activate,None)
 
 def callback(in_data, frame_count, time_info, status):
