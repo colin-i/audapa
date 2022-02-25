@@ -26,13 +26,15 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					xc=x0
 					yc=y0+c
 					#if raddif!=None:
-					return (xc,yc,math.pi*3/2,math.pi*3/2+raddif)
+					a=math.pi*3/2
+					b=math.pi*3/2+raddif
 				else:
 					#   ...
 					#...
 					xc=x1
 					yc=y1+c
-					return (xc,yc,math.pi*3/2-raddif,math.pi*3/2)
+					a=math.pi*3/2-raddif
+					b=math.pi*3/2
 			else:
 				if y0<y1:
 					#.
@@ -41,7 +43,8 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					# .
 					xc=x1-c
 					yc=y1
-					return (xc,yc,-raddif,0)
+					a=-raddif
+					b=0
 				else:
 					# .
 					# .
@@ -49,7 +52,8 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					#.
 					xc=x0+c
 					yc=y0
-					return (xc,yc,math.pi,math.pi+raddif)
+					a=math.pi
+					b=math.pi+raddif
 		else:
 			if x>y:
 				if y0<y1:
@@ -57,13 +61,15 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					#   ...
 					xc=x1
 					yc=y1-c
-					return (xc,yc,math.pi/2,math.pi/2+raddif)
+					a=math.pi/2
+					b=math.pi/2+raddif
 				else:
 					#   ...
 					#...
 					xc=x0
 					yc=y0-c
-					return (xc,yc,math.pi/2-raddif,math.pi/2)
+					a=math.pi/2-raddif
+					b=math.pi/2
 			else:
 				if y0<y1:
 					#.
@@ -72,7 +78,8 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					# .
 					xc=x0+c
 					yc=y0
-					return (xc,yc,math.pi-raddif,math.pi)
+					a=math.pi-raddif
+					b=math.pi
 				else:
 					# .
 					# .
@@ -80,7 +87,8 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					#.
 					xc=x1-c
 					yc=y1
-					return (xc,yc,0,raddif)
+					a=0
+					b=raddif
 	else:
 		if convex:
 			if x>y:
@@ -89,13 +97,15 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					#   ...
 					xc=x1
 					yc=y1-c
-					return (xc,yc,math.pi/2,math.pi/2+raddif)
+					a=math.pi/2
+					b=math.pi/2+raddif
 				else:
 					#   ...
 					#...
 					xc=x0
 					yc=y0+c
-					return (xc,yc,math.pi*3/2-raddif,math.pi*3/2)
+					a=math.pi*3/2-raddif
+					b=math.pi*3/2
 			else:
 				if x0<x1:
 					#.
@@ -104,7 +114,8 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					# .
 					xc=x0+c
 					yc=y0
-					return (xc,yc,math.pi-raddif,math.pi)
+					a=math.pi-raddif
+					b=math.pi
 				else:
 					# .
 					# .
@@ -112,7 +123,8 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					#.
 					xc=x1+c
 					yc=y1
-					return (xc,yc,math.pi,math.pi+raddif)
+					a=math.pi
+					b=math.pi+raddif
 		else:
 			if x>y:
 				if x0<x1:
@@ -120,13 +132,15 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					#   ...
 					xc=x0
 					yc=y0+c
-					return (xc,yc,math.pi*3/2,math.pi*3/2+raddif)
+					a=math.pi*3/2
+					b=math.pi*3/2+raddif
 				else:
 					#   ...
 					#...
 					xc=x1
 					yc=y1-c
-					return (xc,yc,math.pi/2-raddif,math.pi/2)
+					a=math.pi/2-raddif
+					b=math.pi/2
 			else:
 				if x0<x1:
 					#.
@@ -135,7 +149,8 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					# .
 					xc=x1-c
 					yc=y1
-					return (xc,yc,-raddif,0)
+					a=-raddif
+					b=0
 				else:
 					# .
 					# .
@@ -143,8 +158,9 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					#.
 					xc=x0-c
 					yc=y0
-					return (xc,yc,0,raddif)
-	return (xc,yc)
+					a=0
+					b=raddif
+	return (xc,yc,a,b)
 def radius(x,y):
 	if x>y:
 		rads=graph.rads(x,y)
