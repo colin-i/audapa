@@ -14,9 +14,9 @@ def draw(cr,x0,y0,x1,y1,convex):
 		x=abs(x1-x0)
 		y=y1-y0
 	c,raddif,radsmall=vals(x,y)
-	xc,yc,rstart,rend=center(x0,y0,x1,y1,convex,x,y,c,land,raddif)
+	xc,yc,rstart,rend=center(x0,y0,x1,y1,convex,x,y,c,raddif,land)
 	cr.arc(xc,yc,c,rstart+radsmall,rend-radsmall)
-def center(x0,y0,x1,y1,convex,x,y,c,land=True,raddif=None):
+def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 	if land:
 		if convex: #convex on land
 			if x>y:
@@ -25,15 +25,14 @@ def center(x0,y0,x1,y1,convex,x,y,c,land=True,raddif=None):
 					#   ...
 					xc=x0
 					yc=y0+c
-					if raddif!=None:
-						return (xc,yc,math.pi*3/2,math.pi*3/2+raddif)
+					#if raddif!=None:
+					return (xc,yc,math.pi*3/2,math.pi*3/2+raddif)
 				else:
 					#   ...
 					#...
 					xc=x1
 					yc=y1+c
-					if raddif!=None:
-						return (xc,yc,math.pi*3/2-raddif,math.pi*3/2)
+					return (xc,yc,math.pi*3/2-raddif,math.pi*3/2)
 			else:
 				if y0<y1:
 					#.
@@ -42,8 +41,7 @@ def center(x0,y0,x1,y1,convex,x,y,c,land=True,raddif=None):
 					# .
 					xc=x1-c
 					yc=y1
-					if raddif!=None:
-						return (xc,yc,-raddif,0)
+					return (xc,yc,-raddif,0)
 				else:
 					# .
 					# .
@@ -51,8 +49,7 @@ def center(x0,y0,x1,y1,convex,x,y,c,land=True,raddif=None):
 					#.
 					xc=x0+c
 					yc=y0
-					if raddif!=None:
-						return (xc,yc,math.pi,math.pi+raddif)
+					return (xc,yc,math.pi,math.pi+raddif)
 		else:
 			if x>y:
 				if y0<y1:
@@ -60,15 +57,13 @@ def center(x0,y0,x1,y1,convex,x,y,c,land=True,raddif=None):
 					#   ...
 					xc=x1
 					yc=y1-c
-					if raddif!=None:
-						return (xc,yc,math.pi/2,math.pi/2+raddif)
+					return (xc,yc,math.pi/2,math.pi/2+raddif)
 				else:
 					#   ...
 					#...
 					xc=x0
 					yc=y0-c
-					if raddif!=None:
-						return (xc,yc,math.pi/2-raddif,math.pi/2)
+					return (xc,yc,math.pi/2-raddif,math.pi/2)
 			else:
 				if y0<y1:
 					#.
@@ -77,8 +72,7 @@ def center(x0,y0,x1,y1,convex,x,y,c,land=True,raddif=None):
 					# .
 					xc=x0+c
 					yc=y0
-					if raddif!=None:
-						return (xc,yc,math.pi-raddif,math.pi)
+					return (xc,yc,math.pi-raddif,math.pi)
 				else:
 					# .
 					# .
@@ -86,8 +80,7 @@ def center(x0,y0,x1,y1,convex,x,y,c,land=True,raddif=None):
 					#.
 					xc=x1-c
 					yc=y1
-					if raddif!=None:
-						return (xc,yc,0,raddif)
+					return (xc,yc,0,raddif)
 	else:
 		if convex:
 			if x>y:

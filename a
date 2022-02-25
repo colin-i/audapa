@@ -1,3 +1,8 @@
 
+if [ -n "$1" ]; then
+z=$1
+else
+z="python"
+fi
 
-GDK_BACKEND=broadway python -m audapa.main
+GDK_BACKEND=broadway $z -m audapa.main
