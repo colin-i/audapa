@@ -16,9 +16,9 @@ def data(b,d):
 		x=x1-x0
 		y=abs(y1-y0)
 		#get radius
-		radius,raddif,unused=arc.radius(x,y)
+		radius,rads,unused=arc.radius(x,y)
 		#get center
-		xc,yc,rstart,rend=arc.center(x0,y0,x1,y1,prev._convex_,x,y,radius,raddif)
+		xc,yc,rstart,rend=arc.center(x0,y0,x1,y1,prev._convex_,x,y,radius,rads)
 		#iterate
 		if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
 		#x with cos

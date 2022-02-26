@@ -123,5 +123,6 @@ def xy_h(h,x,y):
 	r=math.atan2(x,y)
 	return (math.cos(r)*h,math.sin(r)*h)
 def rads(a,b):
+#this is atan2
 	t=a/b if b else math.inf
 	return math.atan(t)

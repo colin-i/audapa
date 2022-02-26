@@ -163,24 +163,21 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 	return (xc,yc,a,b)
 def radius(x,y):
 	if x>y:
-		rads=graph.rads(x,y)
-		aux=math.cos(rads)
-		cat=y/aux
+		n=x
+		m=y
 	else:
-		rads=graph.rads(y,x)
-		aux=math.cos(rads)
-		cat=x/aux
-	c=(cat/2)/aux
-	return (c,rads,aux)
+		n=y
+		m=x
+	rbig=graph.rads(n,m)
+	rsmall=math.pi/2-rbig
+	dif=rbig-rsmall
+	cat2=n/math.cos(dif)
+	return (cat2,math.pi/2-dif,rbig)
 def vals(x,y):
-	c,rads,aux=radius(x,y)
+	c,raddif,rads=radius(x,y)
 	l=point.const
-	if x>y:
-		ad=aux*l             #ysmall
-		op=math.sin(rads)*l  #xsmall
-	else:
-		ad=aux*l             #xsmall
-		op=math.sin(rads)*l  #ysmall
+	aux=math.cos(rads)
+	ad=aux*l
+	op=math.sin(rads)*l
 	radsmall=math.atan2(op,c-ad)
-	raddif=(math.pi/2-rads)*2
 	return (c,raddif,radsmall)

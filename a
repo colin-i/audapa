@@ -5,4 +5,5 @@ else
 z="python"
 fi
 
+#BROADWAY_DISPLAY=:0
 GDK_BACKEND=broadway $z -m audapa.main
