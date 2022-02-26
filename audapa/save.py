@@ -21,15 +21,17 @@ def data(b,d):
 		xc,yc,rstart,rend=arc.center(x0,y0,x1,y1,prev._convex_,x,y,radius,rads)
 		#iterate
 		if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
-		#x with cos
+		#x axis
 			x1-=x0
+			xpos=radius-x1
 			for i in range(1,x1):
 				#supra radius
-				a=i/radius
+				xpos+=1
+				a=xpos/radius
 				#to radians
-				a*=math.pi/2
+				a=math.acos(a)
 				#height knew
 				h=math.sin(a)*radius
 		else:
-		#x with sin
+		#y axis
 			pass
