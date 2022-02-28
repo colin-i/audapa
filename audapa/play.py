@@ -108,7 +108,7 @@ def save(b,d):
 		file.setframerate(wavefile.getframerate())
 		#.setparams((1, 4, Fs, 0, 'NONE', 'not compressed'))
 		sc=scan(s,c)[0]
-		b=b"".join((wave.struct.pack(sc,i[0]) for i in draw.samples))
+		b=b"".join((wave.struct.pack(sc,i) for i in draw.samples))
 		file.writeframes(b)#writeframesraw
 	points.write(f_in)
 def saveshort(b,d):

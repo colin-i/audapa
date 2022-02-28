@@ -91,7 +91,7 @@ def open(format,sampwidth,channels,data):
 	samples=[]
 	for i in range(0, tot, blockAlign):
 		s=wave.struct.unpack(scan, data[i:i+blockAlign])
-		samples.append(s)
+		samples.append(s[0])
 	global ostore,wstore,hstore,sampsize,baseline
 	ostore=-1
 	#wstore=-1 one flag is enaugh
@@ -115,14 +115,14 @@ def paintland(cr,y,ratio,a,b):
 	for i in range(a,b):
 		j=i-offset
 		cr.move_to(j,y)
-		z=samples[i][0]
+		z=samples[i]
 		r=ratio*z+y
 		cr.line_to(j,r)
 def paintport(cr,x,ratio,a,b):
 	for i in range(a,b):
 		j=i-offset
 		cr.move_to(x,j)
-		z=samples[i][0]
+		z=samples[i]
 		c=ratio*z+x
 		cr.line_to(c,j)
 def sel(a,b):
@@ -140,3 +140,7 @@ def paint(a,b,clr):
 	else:
 		paintport(cr,wstore*baseline,wstore/sampsize,a,b)
 	cr.stroke()
+
+def reset():
+	global ostore
+	ostore=-1

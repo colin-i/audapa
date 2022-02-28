@@ -3,6 +3,7 @@ import math
 
 from . import points
 from . import arc
+from . import draw
 
 def data(b,d):
 	s=len(points.points)
@@ -22,16 +23,25 @@ def data(b,d):
 		#iterate
 		if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
 		#x axis
-			x1-=x0
-			xpos=radius-x1
-			for i in range(1,x1):
+			n=x1-x0
+			xpos=radius-n
+			includingmargin=n+1
+			for i in range(0,includingmargin):
 				#supra radius
-				xpos+=1
 				a=xpos/radius
 				#to radians
 				a=math.acos(a)
-				#height knew
+				#height
 				h=math.sin(a)*radius
+				if rstart==0:
+					height=y1+h
+					draw.samples[x0+i]=height
+				else:
+					height=y0-h
+					draw.samples[x1-i]=height
+				xpos+=1
 		else:
 		#y axis
 			pass
+	draw.reset()
+	draw.area.queue_draw()

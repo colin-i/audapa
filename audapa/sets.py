@@ -115,7 +115,7 @@ def reset(b,di):
 		if di['t']['fcl']!=c['fgcolor']:
 			draw.draw_sel()
 		return
-	draw.ostore=-1
+	draw.reset()
 	search(box)
 	win.set_child(box)
 def search(p):
