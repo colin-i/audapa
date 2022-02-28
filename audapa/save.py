@@ -43,5 +43,6 @@ def data(b,d):
 		else:
 		#y axis
 			pass
+	draw.surf()
 	draw.reset()
 	draw.area.queue_draw()

@@ -53,9 +53,11 @@ def draw_sel():
 	end=seloff.end._get_()
 	if start<(offset+size) and end>offset:
 		sel(max(start,offset),min(end,offset+size))
-def redraw():
+def surf():
 	global surface
 	surface = area.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,wstore,hstore)
+def redraw():
+	surf()
 	graph.surf(wstore,hstore)
 	forms.redraw(wstore,hstore)
 	area.queue_draw()
