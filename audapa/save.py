@@ -17,7 +17,7 @@ def data(b,d):
 		x=x1-x0
 		y=abs(y1-y0)
 		#get radius
-		radius,rads,unused=arc.radius(x,y)
+		radius,rads=arc.radius(x,y)
 		#get center
 		xc,yc,rstart,rend=arc.center(x0,y0,x1,y1,prev._convex_,x,y,radius,rads)
 		#iterate
@@ -25,7 +25,7 @@ def data(b,d):
 		#x axis
 			n=x1-x0
 			xpos=radius-n
-			includingmargin=n+1
+			includingmargin=n+1 #for example, at x1-i, is from right to left(including left)
 			for i in range(0,includingmargin):
 				#supra radius
 				a=xpos/radius
@@ -36,9 +36,15 @@ def data(b,d):
 				if rstart==0:
 					height=y1+h
 					draw.samples[x0+i]=height
-				else:
+				elif rstart==math.pi:
 					height=y0-h
 					draw.samples[x1-i]=height
+				elif rend==math.pi:
+					height=y0+h
+					draw.samples[x1-i]=height
+				else:
+					height=y1-h
+					draw.samples[x0+i]=height
 				xpos+=1
 		else:
 		#y axis

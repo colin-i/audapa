@@ -13,9 +13,10 @@ def draw(cr,x0,y0,x1,y1,convex):
 	else:
 		x=abs(x1-x0)
 		y=y1-y0
-	c,raddif,radsmall=vals(x,y)
+	c,raddif=radius(x,y)
 	xc,yc,rstart,rend=center(x0,y0,x1,y1,convex,x,y,c,raddif,land)
-	cr.arc(xc,yc,c,rstart+radsmall,rend-radsmall)
+	#will be a heavy cpu load with radsmall when moveing an inter up a stable at angle 0 cr.arc(xc,yc,c,rstart+radsmall,rend-radsmall)
+	cr.arc(xc,yc,c,rstart,rend)
 def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 	if land:
 		if convex: #convex on land
@@ -172,12 +173,12 @@ def radius(x,y):
 	rsmall=math.pi/2-rbig
 	dif=rbig-rsmall
 	cat2=n/math.cos(dif)
-	return (cat2,math.pi/2-dif,rbig)
-def vals(x,y):
-	c,raddif,rads=radius(x,y)
-	l=point.const
-	aux=math.cos(rads)
-	ad=aux*l
-	op=math.sin(rads)*l
-	radsmall=math.atan2(op,c-ad)
-	return (c,raddif,radsmall)
+	return (cat2,math.pi/2-dif)
+#def vals(x,y):
+#	c,raddif,rads=radius(x,y)
+#	l=point.const
+#	aux=math.cos(rads)
+#	ad=aux*l
+#	op=math.sin(rads)*l
+#	radsmall=math.atan2(op,c-ad)
+#	return (c,raddif,radsmall)
