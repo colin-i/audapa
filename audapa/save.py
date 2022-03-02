@@ -14,18 +14,18 @@ def data(b,d):
 		y0=prev._height_
 		x1=cur._offset_
 		y1=cur._height_
-		x=abs(x1-x0)
+		x=x1-x0
 		y=abs(y1-y0)
 		#get radius
 		radius,rads=arc.radius(x,y)
 		#get center
-		xc,yc,rstart,rend=arc.center(x0,y0,x1,y1,prev._convex_,x,y,radius,rads)
+		_,yc,rstart,rend=arc.center(x0,y0,x1,y1,prev._convex_,x,y,radius,rads)
+		n=x1-x0
 		#iterate
 		if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
 		#x axis
-			n=x1-x0
 			xpos=radius-n
-			includingmargin=n+1 #for example, at x1-i, is from right to left(including left)
+			includingmargin=n+1 #is x1-i, [0-4) (4-8] will be bad
 			for i in range(0,includingmargin):
 				#supra radius
 				a=xpos/radius
@@ -43,17 +43,23 @@ def data(b,d):
 					height=y0+h
 					draw.samples[x1-i]=height
 				else:
+				#rend==0
 					height=y1-h
 					draw.samples[x0+i]=height
 				xpos+=1
 		else:
 		#y axis
-			n=y1-y0
-			ypos=radius-n
-			includingmargin=n+1
-			for i in range(0,includingmargin):
-				#
-				ypos+=1
+			for i in range(n,-1,-1):
+				a=i/radius
+				a=math.asin(a)
+				h=math.cos(a)*radius
+				if rstart==math.pi/2:
+					height=yc+h
+					draw.samples[x0+i]=height
+				elif rstart==math.pi*3/2:
+				elif rend==math.pi/2:
+				else:
+				#rend==math.pi*3/2
 	draw.surf()
 	draw.reset()
 	draw.area.queue_draw()
