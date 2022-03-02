@@ -14,7 +14,7 @@ def data(b,d):
 		y0=prev._height_
 		x1=cur._offset_
 		y1=cur._height_
-		x=x1-x0
+		x=abs(x1-x0)
 		y=abs(y1-y0)
 		#get radius
 		radius,rads=arc.radius(x,y)
@@ -48,7 +48,12 @@ def data(b,d):
 				xpos+=1
 		else:
 		#y axis
-			pass
+			n=y1-y0
+			ypos=radius-n
+			includingmargin=n+1
+			for i in range(0,includingmargin):
+				#
+				ypos+=1
 	draw.surf()
 	draw.reset()
 	draw.area.queue_draw()
