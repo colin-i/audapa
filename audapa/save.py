@@ -55,11 +55,17 @@ def data(b,d):
 				h=math.cos(a)*radius
 				if rstart==math.pi/2:
 					height=yc+h
-					draw.samples[x0+i]=height
+					draw.samples[x1-i]=height
 				elif rstart==math.pi*3/2:
+					height=yc-h
+					draw.samples[x0+i]=height
 				elif rend==math.pi/2:
+					height=yc+h
+					draw.samples[x0+i]=height
 				else:
 				#rend==math.pi*3/2
+					height=yc-h
+					draw.samples[x1-i]=height
 	draw.surf()
 	draw.reset()
 	draw.area.queue_draw()
