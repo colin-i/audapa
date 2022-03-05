@@ -5,9 +5,9 @@ import math
 
 from . import points
 from . import sets
-from . import point
 from . import drawscroll
 from . import arc
+#from . import point
 
 def open(ovr):
 	global area
@@ -103,7 +103,8 @@ def clearline(cr,a0,a1,w,h):
 def coords0(x0,y0,x1,y1,extra=0):
 	x=x1-x0
 	y=y1-y0
-	l=point.const-extra
+	#l=point.const-extra there was a problem at arc at same thing with this
+	l=-extra
 	if drawscroll.landscape:
 		r=rads(y,x)
 		x=math.cos(r)*l
