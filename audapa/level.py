@@ -58,13 +58,16 @@ def abort(b,combo):
 def maximum():
 	a=draw.sampsize
 	if draw.baseline!=0:
-		a*=draw.baseline
+		a=int(a*draw.baseline)
 		positiv=signbutton.get_child().get_text()==sign_positive
 	else:
 		positiv=True
 	x=0
 	for p in points.points:
-		h=abs(p._height_)
+		if p._height_>=0:
+			h=p._height_
+		else:
+			h=-p._height_
 		if positiv:
 			h=a-h
 		if h>x:
@@ -72,4 +75,9 @@ def maximum():
 	return x.__str__()
 
 def calcs(b,d):
-	pass
+	c=dif.get_text()
+	if c.isdigit():
+		a=int(c)
+		b=int(maxlabel.get_text())
+		if a>b:
+			dif.set_text(b.__str__(),-1)
