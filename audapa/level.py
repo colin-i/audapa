@@ -4,6 +4,8 @@ from gi.repository import Gtk
 from . import sets
 from . import draw
 from . import points
+from . import save
+from . import graph
 
 dif=Gtk.EntryBuffer()
 
@@ -41,9 +43,18 @@ def open(b,combo):
 	bt=sets.colorButton("Done",click,"Apply",combo)
 	box.append(bt)
 	combo[0].set_child(box)
+	#copies
+	global pointsorig,samplesorig
+	#.copy() => it is not deep, _height_ same
+	pointsorig=[]
+	for p in points.points:
+		pointsorig.append(p._height_)
+	samplesorig=draw.samples.copy()
 
 def click(b,combo):
-	abort(b,combo)
+	done(combo) #this here, else problems at get_native().get_surface()
+	save.redraw()
+	graph.redraw()
 
 def sign(b,d):
 	if b.get_child().get_text()==sign_positive:
@@ -53,15 +64,23 @@ def sign(b,d):
 	maxlabel._set_text_(maximum())
 
 def abort(b,combo):
-	combo[0].set_child(combo[1])
+	for i in range(len(pointsorig)-1,-1,-1):
+		points.points[i]._height_=pointsorig[i]
+	draw.samples=samplesorig
+	done(combo)
 
-def maximum():
+def size_sign():
 	a=draw.sampsize
 	if draw.baseline!=0:
 		a=int(a*draw.baseline)
 		positiv=signbutton.get_child().get_text()==sign_positive
 	else:
 		positiv=True
+	return (a,positiv)
+
+def maximum():
+	a,positiv=size_sign()
+	a-=1 #not targeting 32768, but [0,32767]
 	x=0
 	for p in points.points:
 		if p._height_>=0:
@@ -81,3 +100,32 @@ def calcs(b,d):
 		b=int(maxlabel.get_text())
 		if a>b:
 			dif.set_text(b.__str__(),-1)
+			return
+		sz,sgn=size_sign()
+		if sgn:
+			for p in points.points:
+				if p._height_>=0:
+					p._height_+=a
+					if p._height_>=sz:
+						p._height_=sz-1
+				else:
+					p._height_-=a
+					if p._height_<-sz:
+						p._height_=-sz
+		else:
+			for p in points.points:
+				if p._height_>=0:
+					if a>=p._height_:
+						p._height_=0
+					else:
+						p._height_-=a
+				else:
+					if a>=-p._height_:
+						p._height_=0
+					else:
+						p._height_+=a
+		maxlabel._set_text_(maximum())
+		save.apply()
+
+def done(combo):
+	combo[0].set_child(combo[1])

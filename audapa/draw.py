@@ -58,10 +58,8 @@ def surf():
 	surface = area.get_native().get_surface().create_similar_surface(cairo.Content.COLOR,wstore,hstore)
 def redraw():
 	surf()
-	graph.surf(wstore,hstore)
-	forms.redraw(wstore,hstore)
+	graph.redraw()
 	area.queue_draw()
-	graph.area.queue_draw()
 
 def init():
 	global area,over

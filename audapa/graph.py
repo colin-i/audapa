@@ -7,7 +7,8 @@ from . import points
 from . import sets
 from . import drawscroll
 from . import arc
-#from . import point
+from . import draw
+from . import forms
 
 def open(ovr):
 	global area
@@ -127,3 +128,8 @@ def rads(a,b):
 #this is atan2
 	t=a/b if b else math.inf
 	return math.atan(t)
+
+def redraw():
+	surf(draw.wstore,draw.hstore)
+	forms.redraw(draw.wstore,draw.hstore)
+	area.queue_draw()

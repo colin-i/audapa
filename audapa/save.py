@@ -6,6 +6,10 @@ from . import arc
 from . import draw
 
 def data(b,d):
+	apply()
+	redraw()
+
+def apply():
 	s=len(points.points)
 	for i in range(1,s):
 		prev=points.points[i-1]
@@ -66,6 +70,8 @@ def data(b,d):
 				#rend==math.pi*3/2
 					height=yc-h
 					draw.samples[x1-i]=height
+
+def redraw():
 	draw.surf()
 	draw.reset()
 	draw.area.queue_draw()
