@@ -25,7 +25,7 @@ def open(b,combo):
 	maxlabel=sets.colorLabel(maximum())
 	b2.append(maxlabel)
 	box.append(b2)
-	#atstart   middle[-1,1]   - or calculated
+	#atstart   middle[-1,1],example:63.5&-64   - or calculated
 	st=sets.colorLabel("0")
 	md=sets.colorLabel("0")
 	cal=sets.colorLabel("0")
