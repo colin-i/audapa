@@ -143,7 +143,7 @@ def calculate():
 	med=n/len(draw.samples)
 	#
 	a=get_size()/2
-	mid=abs(med-a)
-	mid=mid/a
+	b=med-a
+	mid=b/a
 	#
 	return (med.__str__(),mid.__str__())
