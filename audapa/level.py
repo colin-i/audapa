@@ -25,7 +25,7 @@ def open(b,combo):
 	maxlabel=sets.colorLabel(maximum())
 	b2.append(maxlabel)
 	box.append(b2)
-	#atstart   middle[-1,1],example:63.5&-64   - or calculated
+	#atstart   middle[-1,1]   - or calculated
 	cdata,mdata=calculate()
 	st=sets.colorLabel(cdata)
 	middlerate=sets.colorLabel(mdata)
@@ -71,13 +71,15 @@ def abort(b,combo):
 	done(combo)
 
 def size_sign():
-	a=draw.sampsize
 	if draw.baseline!=0:
-		a=int(a*draw.baseline)
 		positiv=signbutton.get_child().get_text()==sign_positive
 	else:
 		positiv=True
-	return (a,positiv)
+	return (get_size(),positiv)
+def get_size():
+	if draw.baseline!=0:
+		return int(draw.sampsize*draw.baseline)
+	return draw.sampsize
 
 def maximum():
 	a,positiv=size_sign()
@@ -139,4 +141,9 @@ def calculate():
 	for s in draw.samples:
 		n+=abs(s)
 	med=n/len(draw.samples)
-	return (med.__str__(),"0")
+	#
+	a=get_size()/2
+	mid=abs(med-a)
+	mid=mid/a
+	#
+	return (med.__str__(),mid.__str__())
