@@ -15,7 +15,7 @@ sign_positive="+"
 def open(b,combo):
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	#+/- button or not   entry   maxim
-	global signbutton,maxlabel
+	global signbutton,maxlabel,calculated,middlerate
 	b2=Gtk.Box()
 	if draw.baseline!=0:
 		signbutton=sets.colorButton(sign_positive,sign,"Sign")
@@ -26,13 +26,14 @@ def open(b,combo):
 	b2.append(maxlabel)
 	box.append(b2)
 	#atstart   middle[-1,1],example:63.5&-64   - or calculated
-	st=sets.colorLabel("0")
-	md=sets.colorLabel("0")
-	cal=sets.colorLabel("0")
+	cdata,mdata=calculate()
+	st=sets.colorLabel(cdata)
+	middlerate=sets.colorLabel(mdata)
+	calculated=sets.colorLabel("-")
 	b3=Gtk.Box(homogeneous=True)
 	b3.append(st)
-	b3.append(md)
-	b3.append(cal)
+	b3.append(middlerate)
+	b3.append(calculated)
 	box.append(b3)
 	#Calculate
 	calc=sets.colorButton("Calculate",calcs,"Test")
@@ -126,6 +127,16 @@ def calcs(b,d):
 						p._height_+=a
 		maxlabel._set_text_(maximum())
 		save.apply()
+		cdata,mdata=calculate()
+		calculated._set_text_(cdata)
+		middlerate._set_text_(mdata)
 
 def done(combo):
 	combo[0].set_child(combo[1])
+
+def calculate():
+	n=0
+	for s in draw.samples:
+		n+=abs(s)
+	med=n/len(draw.samples)
+	return (med.__str__(),"0")
