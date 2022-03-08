@@ -39,13 +39,14 @@ class colorEntry(Gtk.Entry):
 			cont.remove_provider(self._provider_)
 		self._color_()
 
-from . import draw
-
 pkgname='audapa'
 import appdirs
 import os.path
 import pathlib
 from html import escape
+
+from . import draw
+from . import forms
 
 def get_config_dir():
 	return pathlib.Path(appdirs.user_config_dir(pkgname))
@@ -71,12 +72,14 @@ def get_fgcolor2():
 fgcolor3=Gtk.EntryBuffer(text="blue")
 def get_fgcolor3():
 	return fgcolor3.get_text()
+zero_button=Gtk.CheckButton()
 
 def add(bx,tx,x,n):
+	return adder(bx,tx,colorEntry(x),n)
+def adder(bx,tx,x,n):
 	t=colorLabel(tx)
 	bx.attach(t,0,n,1,1)
-	en=colorEntry(x)
-	bx.attach(en,1,n,1,1)
+	bx.attach(x,1,n,1,1)
 	return n+1
 def sets(b,combo):
 	bx=Gtk.Grid(hexpand=True)
@@ -84,6 +87,7 @@ def sets(b,combo):
 	n=add(bx,"Foreground Color",fgcolor,n)
 	n=add(bx,"Foreground Color2",fgcolor2,n)
 	n=add(bx,"Foreground Color3",fgcolor3,n)
+	n=adder(bx,"Zero outside start and end at "+forms.formal_write,zero_button,n)
 	b=colorButton("Done", reset, "Return", {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
 	bx.attach(b,0,n,2,1)
@@ -97,6 +101,7 @@ def init():
 		fgcolor.set_text(c['fgcolor'],-1)
 		fgcolor2.set_text(c['fgcolor2'],-1)
 		fgcolor3.set_text(c['fgcolor3'],-1)
+		zero_button.set_active(False if c['zero']=='False' else True)
 
 def reset(b,di):
 	config = configparser.ConfigParser()
@@ -106,6 +111,7 @@ def reset(b,di):
 	c['fgcolor']=fgcolor.get_text()
 	c['fgcolor2']=fgcolor2.get_text()
 	c['fgcolor3']=fgcolor3.get_text()
+	c['zero']=zero_button.get_active().__str__()
 	with open(get_config_file(), "w") as configfile:
 		config.write(configfile)
 	win=di['c'][0]

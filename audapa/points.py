@@ -6,6 +6,8 @@ import json
 from . import sets
 from . import point
 from . import graph
+from . import play
+from . import draw
 
 points=[]
 
@@ -115,6 +117,8 @@ def write(f_in):
 			d=[]
 			for po in points:
 				d.append([po._offset_,po._height_,po._inter_,po._convex_])
+			a=play.wavefile
+			d=[d,(a.getsampwidth(),a.getnchannels(),a.getframerate(),draw.length)]
 			json.dump(d,f)
 	elif os.path.exists(f_out):
 		os.remove(f_out)
@@ -124,10 +128,11 @@ def read(f_in):
 		with open(f_out) as f:
 			if data:=f.read():
 				d=json.loads(data)
-				for p in d:
+				for p in d[0]:
 					po=point.struct()
 					po._offset_=p[0]
 					po._height_=p[1]
 					po._inter_=p[2]
 					po._convex_=p[3]
 					points.append(po)
+				return d[1]

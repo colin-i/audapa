@@ -41,8 +41,8 @@ def open():
 	add(char_delete,delete.act,"Delete",None,lst)
 	add(chr(0x1f58b),play.save,"Save All",None,lst)
 	add(chr(0x1f58a),play.saveshort,"Save Points",None,lst)
-	moveleft=add("&lt;",drawscroll.move,"Left Move",False,lst)
-	moveright=add("&gt;",drawscroll.move,"Right Move",True,lst)
+	moveleft=add("&lt;",drawscroll.move,"Left Move (,)",False,lst)
+	moveright=add("&gt;",drawscroll.move,"Right Move (.)",True,lst)
 	stop=add("x",close,"Close",{'b':button,'list':lst},lst)
 	#
 	drawscroll.open()

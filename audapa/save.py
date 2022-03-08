@@ -4,72 +4,75 @@ import math
 from . import points
 from . import arc
 from . import draw
+from . import sets
 
 def data(b,d):
 	apply()
 	redraw()
 
+def set(i,v):
+	draw.samples[i]=int(v) #there are troubles at write file without int
 def apply():
 	s=len(points.points)
-	for i in range(1,s):
-		prev=points.points[i-1]
-		cur=points.points[i]
-		x0=prev._offset_
-		y0=prev._height_
-		x1=cur._offset_
-		y1=cur._height_
-		x=x1-x0
-		y=abs(y1-y0)
-		#get radius
-		radius,rads=arc.radius(x,y)
-		#get center
-		_,yc,rstart,rend=arc.center(x0,y0,x1,y1,prev._convex_,x,y,radius,rads)
-		n=x1-x0
-		#iterate
-		if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
-		#x axis
-			xpos=radius-n
-			includingmargin=n+1 #is x1-i, [0-4) (4-8] will be bad
-			for i in range(0,includingmargin):
-				#supra radius
-				a=xpos/radius
-				#to radians
-				a=math.acos(a)
-				#height
-				h=math.sin(a)*radius
-				if rstart==0:
-					height=y1+h
-					draw.samples[x0+i]=height
-				elif rstart==math.pi:
-					height=y0-h
-					draw.samples[x1-i]=height
-				elif rend==math.pi:
-					height=y0+h
-					draw.samples[x1-i]=height
-				else:
-				#rend==0
-					height=y1-h
-					draw.samples[x0+i]=height
-				xpos+=1
-		else:
-		#y axis
-			for i in range(n,-1,-1):
-				a=i/radius
-				a=math.asin(a)
-				h=math.cos(a)*radius
-				if rstart==math.pi/2:
-					height=yc+h
-					draw.samples[x1-i]=height
-				elif rstart==math.pi*3/2:
-					height=yc-h
-					draw.samples[x0+i]=height
-				elif rend==math.pi/2:
-					height=yc+h
-					draw.samples[x0+i]=height
-				else:
-				#rend==math.pi*3/2
-					height=yc-h
-					draw.samples[x1-i]=height
+	if s>=2:
+		for i in range(1,s):
+			prev=points.points[i-1]
+			cur=points.points[i]
+			x0=prev._offset_
+			y0=prev._height_
+			x1=cur._offset_
+			y1=cur._height_
+			x=x1-x0
+			y=abs(y1-y0)
+			#get radius
+			radius,rads=arc.radius(x,y)
+			#get center
+			_,yc,rstart,rend=arc.center(x0,y0,x1,y1,prev._convex_,x,y,radius,rads)
+			n=x1-x0
+			#iterate
+			if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
+			#x axis
+				xpos=radius-n
+				includingmargin=n+1 #is x1-i, [0-4) (4-8] will be bad
+				for i in range(0,includingmargin):
+					#supra radius
+					a=xpos/radius
+					#to radians
+					a=math.acos(a)
+					#height
+					h=math.sin(a)*radius
+					if rstart==0:
+						set(x0+i,y1+h)
+					elif rstart==math.pi:
+						set(x1-i,y0-h)
+					elif rend==math.pi:
+						set(x1-i,y0+h)
+					else:
+					#rend==0
+						set(x0+i,y1-h)
+					xpos+=1
+			else:
+			#y axis
+				for i in range(n,-1,-1):
+					a=i/radius
+					a=math.asin(a)
+					h=math.cos(a)*radius
+					if rstart==math.pi/2:
+						set(x1-i,yc+h)
+					elif rstart==math.pi*3/2:
+						set(x0+i,yc-h)
+					elif rend==math.pi/2:
+						set(x0+i,yc+h)
+					else:
+					#rend==math.pi*3/2
+						set(x1-i,yc-h)
+		if sets.zero_button.get_active():
+			prev=points.points[0]._offset_
+			cur=cur._offset_
+			for i in range(0,prev):
+				draw.samples[i]=0
+			for i in range(cur,draw.length):
+				draw.samples[i]=0
 
 def redraw():
 	draw.surf()

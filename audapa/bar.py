@@ -5,6 +5,7 @@ from . import loop
 from . import record
 from . import sets
 from . import play
+from . import build
 
 def cl(b,d):
 	loop.stop()
@@ -19,4 +20,5 @@ def init(combo):
 	box.append(sets.colorButton("X", cl, "Exit"))
 	box.append(play.entry)
 	box.append(play.button)
+	box.append(sets.colorButton(chr(0x1F3D7),build.create,"Build"))
 	return box

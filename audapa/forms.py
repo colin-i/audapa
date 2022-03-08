@@ -14,6 +14,7 @@ from . import save
 #button
 control=None
 on=chr(0x25a1)
+formal_write="Write Points"
 
 def init(combo):
 	b=Gtk.Box(homogeneous=True)#,hexpand=True nothing
@@ -23,7 +24,7 @@ def init(combo):
 	box.append(button)
 	bt=sets.colorButton(chr(0x1F4E3),level.open,"Loudness",combo) #0x2021
 	box.append(bt)
-	bt=sets.colorButton(chr(0x1f4be),save.data,"Write Points")#1f5ab
+	bt=sets.colorButton(chr(0x1f4be),save.data,formal_write)#1f5ab
 	box.append(bt)
 	for bt in box:
 		bt.set_sensitive(False)

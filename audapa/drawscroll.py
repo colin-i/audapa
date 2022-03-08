@@ -92,10 +92,10 @@ def open():
 def close():
 	win.remove_controller(control)
 def eve(controller,keyval,keycode,state,d):
-	if keyval==Gdk.KEY_period or keyval==Gdk.KEY_greater:
+	if keyval==Gdk.KEY_period: # or keyval==Gdk.KEY_greater
 		seloff.moveright.emit(sets._click_)
 		return True
-	elif keyval==Gdk.KEY_comma or keyval==Gdk.KEY_less:
+	elif keyval==Gdk.KEY_comma: # or keyval==Gdk.KEY_less
 		seloff.moveleft.emit(sets._click_)
 		return True
 	return False

@@ -1,3 +1,4 @@
+
 import pyaudio
 import wave
 
@@ -35,25 +36,33 @@ def init():
 def callback(in_data, frame_count, time_info, status):
 	data = wavefile.readframes(frame_count)
 	return (data, pyaudio.paContinue)
+def waveopen(f):
+	global wavefile
+	wavefile=wave.open(f,'rb')
 
 def launch():
-	global audio,stream,wavefile
 	f=entry.get_text()
-	wavefile=wave.open(f,'rb')
-	audio = pyaudio.PyAudio() # create pyaudio instantiation
+	waveopen(f)
 	sampwidth=wavefile.getsampwidth()
-	format = audio.get_format_from_width(sampwidth)
 	rate = wavefile.getframerate()
 	channels = wavefile.getnchannels()
 	draw.length=wavefile.getnframes()
 	data = wavefile.readframes(draw.length)
 	wavefile.rewind()#for playing
+	#pyaudio/draw/bar
+	open(sampwidth,channels,rate)
+	#points
+	points.read(f)
+	#samples from file
+	draw.get_samples(sampwidth,channels,data)
+def open(sampwidth,channels,rate):
+	global audio,stream
 	# create pyaudio stream
-	stream = audio.open(format=format,rate=rate,channels=channels,
+	audio = pyaudio.PyAudio() # create pyaudio instantiation
+	stream = audio.open(format=audio.get_format_from_width(sampwidth),rate=rate,channels=channels,
 		output = True,start=False,stream_callback=callback)
 	#open
-	points.read(f)
-	draw.open(format,sampwidth,channels,data)
+	draw.open(sampwidth,channels)
 	seloff.open()
 def start():
 	stream.start_stream()
@@ -91,25 +100,26 @@ def is_act(d):
 		return False
 	return True
 
+formats={pyaudio.paInt16:'h',pyaudio.paUInt8:'B',pyaudio.paInt8:'b',
+	pyaudio.paFloat32:'f',pyaudio.paInt32:'i'}
 def scan(sampwidth,channels):
-	formats={pyaudio.paInt16:'h',pyaudio.paUInt8:'B',pyaudio.paInt8:'b',
-		pyaudio.paFloat32:'f',pyaudio.paInt32:'i'}
-	format = audio.get_format_from_width(sampwidth)
-	fm=formats[format]
-	return ['<'+fm*channels,fm]
+	fm=scan_format(sampwidth,channels)
+	return '<'+fm*channels
+def scan_format(sampwidth,channels):
+	return formats[audio.get_format_from_width(sampwidth)]
 
+def save_file(f_in,s,c,r):
+	with wave.open(f_in,'wb') as file:
+		file.setsampwidth(s)
+		file.setnchannels(c)
+		file.setframerate(r)
+		#.setparams((1, 4, Fs, 0, 'NONE', 'not compressed'))
+		sc=scan(s,c)
+		b=b"".join((wave.struct.pack(sc,i) for i in draw.samples))
+		file.writeframes(b)#this is setting nframes, oposite of writeframesraw
 def save(b,d):
 	f_in=entry.get_text()
-	with wave.open(f_in,'wb') as file:
-		c=wavefile.getnchannels()
-		file.setnchannels(c)
-		s=wavefile.getsampwidth()
-		file.setsampwidth(s)
-		file.setframerate(wavefile.getframerate())
-		#.setparams((1, 4, Fs, 0, 'NONE', 'not compressed'))
-		sc=scan(s,c)[0]
-		b=b"".join((wave.struct.pack(sc,i) for i in draw.samples))
-		file.writeframes(b)#writeframesraw
+	save_file(f_in,wavefile.getsampwidth(),wavefile.getnchannels(),wavefile.getframerate())
 	points.write(f_in)
 def saveshort(b,d):
 	points.write(entry.get_text())

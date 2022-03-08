@@ -13,7 +13,8 @@ const=6
 
 class struct(Gtk.DrawingArea):
 	_drag_=False
-	#offset,height,inter,convex,control,drag
+	#offset,height,inter,convex
+	#control
 	def __init__(self,*args):
 		Gtk.DrawingArea.__init__(self)
 		self._control_ = Gtk.GestureClick()

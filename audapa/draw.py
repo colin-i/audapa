@@ -78,25 +78,27 @@ def close():
 	area.set_draw_func (draw_none,None,None)
 	drawscroll.calculate(0)
 	play.stop()
-def open(format,sampwidth,channels,data):
+def get_samples(sampwidth,channels,data):
+	blockAlign=sampwidth*channels
+	tot=length*blockAlign
+	global samples
+	samples=[]
+	scan=play.scan(sampwidth,channels)
+	for i in range(0, tot, blockAlign):
+		s=wave.struct.unpack(scan, data[i:i+blockAlign])
+		samples.append(s[0])
+def open(sampwidth,channels):
 	graph.open(over)
 	global cont
 	cont=Gtk.Fixed()#fixed is not tracking window default-width
 	over.add_overlay(cont)
 	#
-	blockAlign=sampwidth*channels
-	scan,fm=play.scan(sampwidth,channels)
-	tot=length*blockAlign
-	global samples
-	samples=[]
-	for i in range(0, tot, blockAlign):
-		s=wave.struct.unpack(scan, data[i:i+blockAlign])
-		samples.append(s[0])
 	global ostore,wstore,hstore,sampsize,baseline
 	ostore=-1
 	#wstore=-1 one flag is enaugh
 	#hstore=-1
 	sampsize=2**(8*sampwidth)
+	fm=play.scan_format(sampwidth,channels)
 	baseline=(1/2) if fm.islower() else 0
 	global res_id
 	res_id=area.connect_after ("resize", resize_cb, None)
