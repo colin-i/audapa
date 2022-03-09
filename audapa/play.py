@@ -8,6 +8,7 @@ from . import sets
 from . import draw
 from . import seloff
 from . import points
+from . import build
 
 wavefile=None
 output=0x25B6
@@ -36,9 +37,12 @@ def init():
 def callback(in_data, frame_count, time_info, status):
 	data = wavefile.readframes(frame_count)
 	return (data, pyaudio.paContinue)
-def waveopen(f):
+def wave_open(f):
 	global wavefile
 	wavefile=wave.open(f,'rb')
+def waveopen(f):
+	wave_open(f)
+	build.button.set_sensitive(False)
 
 def launch():
 	f=entry.get_text()
@@ -87,6 +91,7 @@ def stop():
 	global wavefile
 	wavefile.close()
 	wavefile=None
+	build.button.set_sensitive(True)
 def terminate():
 	if wavefile:
 		seloff.stop.emit(sets._click_)
@@ -117,9 +122,11 @@ def save_file(f_in,s,c,r):
 		sc=scan(s,c)
 		b=b"".join((wave.struct.pack(sc,i) for i in draw.samples))
 		file.writeframes(b)#this is setting nframes, oposite of writeframesraw
+def save_opened(f_in):
+	save_file(f_in,wavefile.getsampwidth(),wavefile.getnchannels(),wavefile.getframerate())
 def save(b,d):
 	f_in=entry.get_text()
-	save_file(f_in,wavefile.getsampwidth(),wavefile.getnchannels(),wavefile.getframerate())
+	save_opened(f_in)
 	points.write(f_in)
 def saveshort(b,d):
 	points.write(entry.get_text())

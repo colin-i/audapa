@@ -103,14 +103,17 @@ def move_inter_end(forward,ix,dels):
 		dels.append([points[ix],points[ix+1]])
 	elif ix>0:
 		dels.append([points[ix-1],points[ix]])
+fpath_js='json'
 def dpath(f_in):
 	p=os.path.dirname(f_in)
 	return os.path.join(p,'_'+sets.pkgname+'cache_')
-def fpath(d_in,f_in):
-	return os.path.join(d_in,os.path.basename(f_in)+'.json')
+def fpath(f_in,ext):
+	return os.path.join(dpath(f_in),os.path.basename(f_in)+'.'+ext)
+def fpath_full(d_in,f_in):
+	return os.path.join(d_in,os.path.basename(f_in)+'.'+fpath_js)
 def write(f_in):
 	p=dpath(f_in)
-	f_out=fpath(p,f_in)
+	f_out=fpath_full(p,f_in)
 	if len(points):
 		pathlib.Path(p).mkdir(exist_ok=True)#parents=False, FileExistsError exceptions will be ignored
 		with open(f_out,"w") as f:
@@ -123,7 +126,7 @@ def write(f_in):
 	elif os.path.exists(f_out):
 		os.remove(f_out)
 def read(f_in):
-	f_out=fpath(dpath(f_in),f_in)
+	f_out=fpath(f_in,fpath_js)
 	if os.path.exists(f_out):
 		with open(f_out) as f:
 			if data:=f.read():

@@ -9,6 +9,7 @@ from . import drawscroll
 from . import delete
 from . import play
 from . import forms
+from . import reload
 
 on='+'
 #off='-'
@@ -57,6 +58,7 @@ def close(s,d):
 	draw.close()
 	drawscroll.close()
 	forms.close()
+	reload.close()
 def reset():
 	start._set_text_("0")
 	end._set_text_("0")

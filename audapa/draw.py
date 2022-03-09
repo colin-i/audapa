@@ -22,6 +22,7 @@ offset=0
 def draw_none(widget,cr,width,height,d,u):
 	co=Gdk.RGBA()
 	if co.parse(sets.get_color()):
+		#set line color
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	cr.set_line_width(1)#default 2.0; cairo scale is 1
 	if width>=height:
@@ -93,8 +94,8 @@ def open(sampwidth,channels):
 	cont=Gtk.Fixed()#fixed is not tracking window default-width
 	over.add_overlay(cont)
 	#
-	global ostore,wstore,hstore,sampsize,baseline
-	ostore=-1
+	global wstore,hstore,sampsize,baseline
+	reset()
 	#wstore=-1 one flag is enaugh
 	#hstore=-1
 	sampsize=2**(8*sampwidth)
