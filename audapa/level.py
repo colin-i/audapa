@@ -54,7 +54,7 @@ def open(b,combo):
 
 def click(b,combo):
 	done(combo) #this here, else problems at get_native().get_surface()
-	save.redraw()
+	save.saved()
 	graph.redraw()
 
 def sign(b,d):
@@ -137,13 +137,18 @@ def done(combo):
 	combo[0].set_child(combo[1])
 
 def calculate():
-	n=0
-	for s in draw.samples:
-		n+=abs(s)
-	med=n/len(draw.samples)
-	#
-	a=get_size()/2
-	b=med-a
-	mid=b/a
-	#
-	return (med.__str__(),mid.__str__())
+	s=len(points.points)
+	if s>=2:
+		n=0
+		start=points.points[0]._offset_
+		stop=points.points[s-1]._offset_+save.margin
+		for i in range(start,stop):
+			n+=abs(draw.samples[i])
+		med=n/(stop-start)
+		#
+		a=get_size()/2
+		b=med-a
+		mid=b/a
+		#
+		return (med.__str__(),mid.__str__())
+	return ("-","-")

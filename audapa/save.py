@@ -5,10 +5,16 @@ from . import points
 from . import arc
 from . import draw
 from . import sets
+from . import reload
 
 def data(b,d):
 	apply()
+	saved()
+def saved():
+	reload.file()
 	redraw()
+
+margin=1
 
 def set(i,v):
 	draw.samples[i]=int(v) #there are troubles at write file without int
@@ -33,7 +39,7 @@ def apply():
 			if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
 			#x axis
 				xpos=radius-n
-				includingmargin=n+1 #is x1-i, [0-4) (4-8] will be bad
+				includingmargin=n+margin #is x1-i, [0-4) (4-8] will be bad
 				for i in range(0,includingmargin):
 					#supra radius
 					a=xpos/radius
