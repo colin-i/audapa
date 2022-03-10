@@ -10,6 +10,8 @@ from . import points
 from . import graph
 from . import level
 from . import save
+from . import spread
+from . import blank
 
 #button
 control=None
@@ -22,9 +24,13 @@ def init(combo):
 	box=Gtk.Box(halign=Gtk.Align.CENTER)
 	button=sets.colorButton(on,toggle,"Points Mode")#halign CENTER
 	box.append(button)
+	bt=sets.colorButton(chr(0x1f4be),save.data,formal_write)#1f5ab
+	box.append(bt)
 	bt=sets.colorButton(chr(0x1F4E3),level.open,"Loudness",combo) #0x2021
 	box.append(bt)
-	bt=sets.colorButton(chr(0x1f4be),save.data,formal_write)#1f5ab
+	bt=sets.colorButton(chr(0x1FA97),spread.open,"Spread",combo)
+	box.append(bt)
+	bt=sets.colorButton(chr(0x2422),blank.open,"Blanks",combo)
 	box.append(bt)
 	for bt in box:
 		bt.set_sensitive(False)
