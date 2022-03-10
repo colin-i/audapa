@@ -22,6 +22,7 @@ def open(b,combo):
 		b2.append(signbutton)
 	en=sets.colorEntry(dif)
 	b2.append(en)
+	b2.append(sets.colorLabel("from 0 to "))
 	maxlabel=sets.colorLabel(maximum())
 	b2.append(maxlabel)
 	box.append(b2)
