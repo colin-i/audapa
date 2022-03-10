@@ -3,8 +3,8 @@ from gi.repository import Gtk
 
 from . import sets
 
-start=Gtk.EntryBuffer()
-stop=Gtk.EntryBuffer()
+start=Gtk.EntryBuffer(text="0")
+stop=Gtk.EntryBuffer(text="0")
 
 def open(b,combo):
 	bx=Gtk.Grid(hexpand=True)
@@ -21,3 +21,12 @@ def cancel(b,combo):
 
 def done(b,combo):
 	combo[0].set_child(combo[1])
+	n=len(draw.samples)
+	a=start.get_text()
+	if a.isdigit():
+		c=int(a)
+		draw.samples=([0]*c)+draw.samples
+	b=stop.get_text()
+	if b.isdigit():
+		c=int(b)
+		draw.samples+=[0]*c
