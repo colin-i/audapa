@@ -10,6 +10,7 @@ from . import delete
 from . import play
 from . import forms
 from . import reload
+from . import info
 
 on='+'
 #off='-'
@@ -44,6 +45,7 @@ def open():
 	add(chr(0x1f58a),play.saveshort,"Save Points",None,lst)
 	moveleft=add("&lt;",drawscroll.move,"Left Move (,)",False,lst)
 	moveright=add("&gt;",drawscroll.move,"Right Move (.)",True,lst)
+	add(chr(0x24D8),info.open,"Wave information",None,lst)
 	stop=add("x",close,"Close",{'b':button,'list':lst},lst)
 	#
 	drawscroll.open()
