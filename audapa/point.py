@@ -92,7 +92,7 @@ class struct(Gtk.DrawingArea):
 		if lastselect:
 			if lastselect!=self:
 				lastselect.set_draw_func(lastselect._draw_none_,None,None)
-				pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
+				self._info_()
 				arcbutton.button._set_text_(arcbutton.set(self))
 			else:
 				if self._drag_==False:
@@ -122,7 +122,9 @@ class struct(Gtk.DrawingArea):
 			draw.cont.move(self,c[0]-const,c[1]-const)
 		else:
 			self._put_point_(w,h)
-		pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
+		self._info_()
 	def _remove_(self,ix):
 		self.remove_controller(self._control_)
 		del points.points[ix]
+	def _info_(self):
+		pbox.info._set_text_(pbox.inf(self._offset_,self._height_))

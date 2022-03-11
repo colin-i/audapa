@@ -2,6 +2,13 @@
 from gi.repository import Gtk
 
 from . import sets
+from . import draw
+from . import save
+from . import delete
+
+def saved():
+	draw.length=len(draw.samples)
+	save.saved()
 
 start=Gtk.EntryBuffer(text="0")
 stop=Gtk.EntryBuffer(text="0")
@@ -23,10 +30,15 @@ def done(b,combo):
 	combo[0].set_child(combo[1])
 	n=len(draw.samples)
 	a=start.get_text()
-	if a.isdigit():
-		c=int(a)
-		draw.samples=([0]*c)+draw.samples
 	b=stop.get_text()
-	if b.isdigit():
-		c=int(b)
-		draw.samples+=[0]*c
+	abool=a.isdigit()
+	bbool=b.isdigit()
+	if abool or bbool:
+		if abool:
+			c=int(a)
+			draw.samples=([0]*c)+draw.samples
+		if bbool:
+			c=int(b)
+			draw.samples+=[0]*c
+		saved()
+		delete.changed() #this is not required in all cases but when adding without modifying draw(draw is big enough), will be required

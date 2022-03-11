@@ -20,6 +20,9 @@ def act(b,d):
 		draw.reset()
 	draw.redraw()
 	seloff.reset()
-	r_offset.cged(drawscroll.win.get_hadjustment()) if drawscroll.landscape else r_offset.cged(drawscroll.win.get_vadjustment())
+	changed()
 	#for playback
 	reload.file()
+
+def changed():
+	r_offset.cged(drawscroll.win.get_hadjustment()) if drawscroll.landscape else r_offset.cged(drawscroll.win.get_vadjustment())

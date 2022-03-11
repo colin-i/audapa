@@ -38,7 +38,7 @@ def add(a,b,i,c,lst):
 def open():
 	global stop,moveleft,moveright
 	lst=[]
-	button=add(on,toggle,"Selection Toggle",draw.cont,lst)
+	button=add(on,toggle,"Selection Mode",draw.cont,lst)
 	add(char_delete,delete.act,"Delete",None,lst)
 	add(chr(0x1f58b),play.save,"Save All",None,lst)
 	add(chr(0x1f58a),play.saveshort,"Save Points",None,lst)
