@@ -9,17 +9,23 @@ from . import sets
 def open(b,d):
 	bx=Gtk.Grid(hexpand=True)
 	nchannels, sampwidth, framerate, nframes, comptype, compname = play.wavefile.getparams()
-	add("nchannels",nchannels)
-	add("sampwidth",sampwidth)
-	add("framerate",framerate)
-	add("nframes",nframes)
-	add("comptype",comptype)
-	add("compname",compname)
-	bx.attach(sets.colorButton("Done",done,"Back"),0,0,1,1)
+	add(bx,"nchannels",nchannels.__str__(),0)
+	add(bx,"sampwidth",sampwidth.__str__(),1)
+	add(bx,"framerate",framerate.__str__(),2)
+	add(bx,"nframes",nframes.__str__(),3)
+	add(bx,"comptype",comptype,4)
+	add(bx,"compname",compname,5)
+	bx.attach(sets.colorButton("Done",done,"Back"),0,6,2,1)
 	win.set_child(bx)
 
-def add(n,v):
-	pass
+def add(b,n,v,r):
+	a=sets.colorLabel(n)
+	a.set_halign(Gtk.Align.START)
+	b.attach(a,0,r,1,1)
+	a=sets.colorLabel(v)
+	a.set_halign(Gtk.Align.START)
+	a.set_margin_start(10)
+	b.attach(a,1,r,1,1)
 
 def done(b,d):
 	win.set_child(box)
