@@ -4,14 +4,20 @@ import json
 import configparser
 
 class colorLabel(Gtk.Label):
-	def __init__(self,t):
+	def __init__(self,t,extratag=None):
 		Gtk.Label.__init__(self)
-		self._set_text_(t)
-	def _set_text_(self,t):
+		self._set_text_(t,extratag)
+	def _set_text_(self,t,extratag=None):
 		z="<span"#p is error
 		if (c:=color.get_text()):
 			z+=" color='"+c+"'"
-		z+=">"+t+"</span>"
+		z+=">"
+		if extratag: #can't set with Pango after.
+			z+="<"+extratag+">"
+		z+=t
+		if extratag:
+			z+="</"+extratag+">"
+		z+="</span>"
 		self.set_markup(z)
 _click_ = "clicked"
 class colorButton(Gtk.Button):
