@@ -33,6 +33,25 @@ def done(b,combo):
 				if b>n:
 					spread.set_text(n.__str__(),-1)
 					return
-		combo[0].set_child(combo[1]) #move.saved blank.saved
+				#b=-b
+			#apply()
+			#save.apply()
+			#move.saved(combo)
+			#blank.saved()
+			#return
+		combo[0].set_child(combo[1])
 		return
 	level.not_a_digit(spread)
+
+#def apply():
+	#samples enlarge
+	#sz=[i]-[i-1]
+	#*b/total
+	#[i]._offset_
+	#rest.append()
+	#rest_pos.append()
+	#rest sort
+	#rest sum/total
+	#for i in range(0,)
+	#[j]._offset_+=sign
+	#samples compress
