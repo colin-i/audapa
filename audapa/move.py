@@ -6,6 +6,7 @@ from . import points
 from . import draw
 from . import graph
 from . import point
+from . import level
 
 buffer=Gtk.EntryBuffer()
 to_right=Gtk.CheckButton()
@@ -23,21 +24,33 @@ def open(b,combo):
 def cancel(b,combo):
 	combo[0].set_child(combo[1])
 
+def saved(combo):
+	combo[0].set_child(combo[1]) #here or problem at surface
+	graph.redraw()
+	if point.lastselect:
+		point.lastselect._info_()
+
 def done(b,combo):
-	combo[0].set_child(combo[1])
-	s=len(points.points)
-	if s>=1:
-		a=buffer.get_text()
-		if a.isdigit():
+	a=buffer.get_text()
+	if a.isdigit():
+		s=len(points.points)
+		if s>=1:
 			b=int(a)
 			if to_right.get_active():
 				dif=draw.length-points.points[s-1]._offset_
-				n=-(b if b<=dif else dif)
+				if b>dif:
+					buffer.set_text(dif.__str__(),-1)
+					return
+				b=-b
 			else:
 				start=points.points[0]._offset_
-				n=b if start>=b else start
+				if start<b:
+					buffer.set_text(start.__str__(),-1)
+					return
 			for i in range(0,s):
-				points.points[i]._offset_-=n
-			graph.redraw()
-			if point.lastselect:
-				point.lastselect._info_()
+				points.points[i]._offset_-=b
+			saved(combo)
+			return
+		combo[0].set_child(combo[1])
+		return
+	level.not_a_digit(buffer)

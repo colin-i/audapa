@@ -5,10 +5,12 @@ from . import sets
 from . import draw
 from . import save
 from . import delete
+from . import level
 
 def saved():
 	draw.length=len(draw.samples)
 	save.saved()
+	delete.changed() #this is not required in all cases but when adding without modifying draw(draw is big enough), will be required
 
 start=Gtk.EntryBuffer(text="0")
 stop=Gtk.EntryBuffer(text="0")
@@ -27,8 +29,6 @@ def cancel(b,combo):
 	combo[0].set_child(combo[1])
 
 def done(b,combo):
-	combo[0].set_child(combo[1])
-	n=len(draw.samples)
 	a=start.get_text()
 	b=stop.get_text()
 	abool=a.isdigit()
@@ -40,5 +40,10 @@ def done(b,combo):
 		if bbool:
 			c=int(b)
 			draw.samples+=[0]*c
+		combo[0].set_child(combo[1])
 		saved()
-		delete.changed() #this is not required in all cases but when adding without modifying draw(draw is big enough), will be required
+		return
+	if not abool:
+		level.not_a_digit(start)
+	if not bbool:
+		level.not_a_digit(stop)

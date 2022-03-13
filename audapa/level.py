@@ -97,6 +97,9 @@ def maximum():
 			x=h
 	return x.__str__()
 
+def not_a_digit(buf):
+	buf.set_text("0",-1) #isdigit failed
+
 def calcs(b,d):
 	c=dif.get_text()
 	if c.isdigit():
@@ -133,6 +136,8 @@ def calcs(b,d):
 		cdata,mdata=calculate()
 		calculated._set_text_(cdata)
 		middlerate._set_text_(mdata)
+		return
+	not_a_digit(dif)
 
 def done(combo):
 	combo[0].set_child(combo[1])

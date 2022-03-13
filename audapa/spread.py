@@ -3,6 +3,7 @@ from gi.repository import Gtk
 
 from . import sets
 from . import points
+from . import level
 
 spread=Gtk.EntryBuffer()
 compress=Gtk.CheckButton()
@@ -21,13 +22,17 @@ def cancel(b,combo):
 	combo[0].set_child(combo[1])
 
 def done(b,combo):
-	combo[0].set_child(combo[1])
-	ps=points.points
-	s=len(ps)
-	if s>=2:
-		a=spread.get_text()
-		if a.isdigit():
+	a=spread.get_text()
+	if a.isdigit():
+		ps=points.points
+		s=len(ps)
+		if s>=2:
 			b=int(a)
-			n=p[s-1]._offset_-p[0]._offset_
+			n=ps[s-1]._offset_-ps[0]._offset_
 			if compress.get_active():
-				b=b if b<n else n
+				if b>n:
+					spread.set_text(n.__str__(),-1)
+					return
+		combo[0].set_child(combo[1]) #move.saved blank.saved
+		return
+	level.not_a_digit(spread)
