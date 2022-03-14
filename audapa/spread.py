@@ -33,8 +33,11 @@ def done(b,combo):
 				if b>n:
 					spread.set_text(n.__str__(),-1)
 					return
-				#b=-b
-			#apply()
+				#apply(-b,-1)
+				#compress()
+			#else:
+				#enlarge()
+				#apply(b,1)
 			#save.apply()
 			#move.saved(combo)
 			#blank.saved()
@@ -43,10 +46,17 @@ def done(b,combo):
 		return
 	level.not_a_digit(spread)
 
-#def apply():
-	#samples enlarge
+#def enlarge():
+	#1.copyout/copyback
+	#this 2.interblank/append
+
+#def compress():
+	#copy
+	#remove
+
+#def apply(n,sign):
 	#sz=[i]-[i-1]
-	#*b/total
+	#*n/total
 	#[i]._offset_
 	#rest.append()
 	#rest_pos.append()
@@ -54,4 +64,3 @@ def done(b,combo):
 	#rest sum/total
 	#for i in range(0,)
 	#[j]._offset_+=sign
-	#samples compress
