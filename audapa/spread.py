@@ -52,8 +52,9 @@ def done(b,combo):
 def enlarge(n):
 	s=len(draw.samples)
 	extra=s-points.points[len(points.points)-1]._offset_
-	#there is a nicer move but this is lazzy
+	#there is a nicer move but this is lazy
 	right=draw.samples[s-extra:]
+	del draw.samples[s-extra:]
 	draw.samples=draw.samples+([0]*n)+right
 
 def compress(n):
