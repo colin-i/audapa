@@ -35,14 +35,13 @@ def done(b,combo):
 				if b>n:
 					spread.set_text(n.__str__(),-1)
 					return
-				#apply(-b,-1)
+				apply(-b,-1)
 				compress(b)
 			else:
 				enlarge(b)
-				#apply(b,1)
+				apply(b,1)
 			#save.apply()
-			combo[0].set_child(combo[1])
-			#move.saved(combo)
+			move.saved(combo)
 			blank.saved()
 			return
 		combo[0].set_child(combo[1])
@@ -67,13 +66,20 @@ def compress(n):
 	#remove N in safe
 	del draw.samples[s-n:]
 
-#def apply(n,sign):
-	#sz=[i]-[i-1]
-	#*n/total
-	#[i]._offset_
-	#rest.append()
-	#rest_pos.append()
-	#rest sort
-	#rest sum/total
-	#for i in range(0,)
-	#[j]._offset_+=sign
+def apply(n,sign):
+	ps=points.points
+	leng=len(ps)
+	total=ps[leng-1]._offset_-ps[0]._offset_
+	rest=[]
+	rest_sum=0
+	for i in range(1,leng):
+		sz=(ps[i]._offset_-ps[i-1]._offset_)*n
+		sp=int(sz/total)
+		rs=sz%total
+		ps[i]._offset_+=sp
+		rest.append([rs,i])
+		rest_sum+=rs
+	rest.sort(reverse=True) #by first
+	unassigned=int(rest_sum/total) #'float' object cannot be interpreted as an integer
+	for i in range(0,unassigned):
+		ps[rest[i][1]]._offset_+=sign
