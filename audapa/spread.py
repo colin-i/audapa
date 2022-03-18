@@ -6,6 +6,8 @@ from . import points
 from . import level
 from . import draw
 from . import blank
+from . import move
+from . import save
 
 spread=Gtk.EntryBuffer()
 reduce=Gtk.CheckButton()
@@ -35,12 +37,13 @@ def done(b,combo):
 				if b>n:
 					spread.set_text(n.__str__(),-1)
 					return
+				end=ps[s-1]._offset_
 				apply(-b,-1)
-				compress(b)
+				compress(b,end)
 			else:
 				enlarge(b)
 				apply(b,1)
-			#save.apply()
+			save.apply()
 			move.saved(combo)
 			blank.saved()
 			return
@@ -56,10 +59,9 @@ def enlarge(n):
 	del draw.samples[s-extra:]
 	draw.samples=draw.samples+([0]*n)+right
 
-def compress(n):
+def compress(n,end):
 	#copy right at position
 	s=len(draw.samples)
-	end=points.points[len(points.points)-1]._offset_
 	extra=s-end
 	for i in range(end,s):
 		draw.samples[i-n]=draw.samples[i]
@@ -79,7 +81,12 @@ def apply(n,sign):
 		ps[i]._offset_+=sp
 		rest.append([rs,i])
 		rest_sum+=rs
+		for j in range(i+1,leng):
+			ps[j]._offset_+=sp
 	rest.sort(reverse=True) #by first
 	unassigned=int(rest_sum/total) #'float' object cannot be interpreted as an integer
 	for i in range(0,unassigned):
-		ps[rest[i][1]]._offset_+=sign
+		pos=rest[i][1]
+		ps[pos]._offset_+=sign
+		for j in range(pos+1,leng):
+			ps[j]._offset_+=sign

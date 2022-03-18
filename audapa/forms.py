@@ -31,9 +31,9 @@ def init(combo):
 	box.append(bt)
 	bt=sets.colorButton(chr(0x1FA97),spread.open,"Spread",combo)
 	box.append(bt)
-	bt=sets.colorButton(chr(0x2194),move.open,"Move Points",combo)
-	box.append(bt)
 	bt=sets.colorButton(chr(0x2422),blank.open,"Blanks",combo)
+	box.append(bt)
+	bt=sets.colorButton(chr(0x2194),move.open,"Move Points",combo)
 	box.append(bt)
 	for bt in box:
 		bt.set_sensitive(False)
