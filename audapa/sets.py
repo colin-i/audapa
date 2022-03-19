@@ -9,7 +9,7 @@ class colorLabel(Gtk.Label):
 		self._set_text_(t,extratag)
 	def _set_text_(self,t,extratag=None):
 		z="<span"#p is error
-		if (c:=color.get_text()):
+		if (c:=text_color.get_text()):
 			z+=" color='"+c+"'"
 		z+=">"
 		if extratag: #can't set with Pango after.
@@ -32,7 +32,7 @@ class colorEntry(Gtk.Entry):
 		Gtk.Entry.__init__(self,buffer=b,hexpand=True)
 		self._color_()
 	def _color_(self):
-		if (c:=color.get_text()):
+		if (c:=text_color.get_text()):
 			cont=self.get_style_context()
 			self._provider_=Gtk.CssProvider()
 			self._provider_.load_from_data (b"entry { color: "+c.encode()+b"; }")
@@ -78,12 +78,15 @@ def get_fgcolor2():
 fgcolor3=Gtk.EntryBuffer(text="blue")
 def get_fgcolor3():
 	return fgcolor3.get_text()
+text_color=Gtk.EntryBuffer()
 zero_button=Gtk.CheckButton()
+turn_page=Gtk.CheckButton(active=True)
 
 def add(bx,tx,x,n):
 	return adder(bx,tx,colorEntry(x),n)
 def adder(bx,tx,x,n):
 	t=colorLabel(tx)
+	t.set_halign(Gtk.Align.START)
 	bx.attach(t,0,n,1,1)
 	bx.attach(x,1,n,1,1)
 	return n+1
@@ -93,7 +96,9 @@ def sets(b,combo):
 	n=add(bx,"Foreground Color",fgcolor,n)
 	n=add(bx,"Foreground Color2",fgcolor2,n)
 	n=add(bx,"Foreground Color3",fgcolor3,n)
+	n=add(bx,"Text Color",text_color,n)
 	n=adder(bx,"Zero outside start and end at "+forms.formal_write,zero_button,n)
+	n=adder(bx,"Turn the page at margin touch",turn_page,n)
 	b=colorButton("Done", reset, "Return", {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
 	bx.attach(b,0,n,2,1)
@@ -107,7 +112,9 @@ def init():
 		fgcolor.set_text(c['fgcolor'],-1)
 		fgcolor2.set_text(c['fgcolor2'],-1)
 		fgcolor3.set_text(c['fgcolor3'],-1)
+		text_color.set_text(c['text_color'],-1)
 		zero_button.set_active(False if c['zero']=='False' else True)
+		turn_page.set_active(False if c['turn']=='False' else True)
 
 def reset(b,di):
 	config = configparser.ConfigParser()
@@ -117,7 +124,9 @@ def reset(b,di):
 	c['fgcolor']=fgcolor.get_text()
 	c['fgcolor2']=fgcolor2.get_text()
 	c['fgcolor3']=fgcolor3.get_text()
+	c['text_color']=text_color.get_text()
 	c['zero']=zero_button.get_active().__str__()
+	c['turn']=turn_page.get_active().__str__()
 	with open(get_config_file(), "w") as configfile:
 		config.write(configfile)
 	win=di['c'][0]

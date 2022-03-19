@@ -34,7 +34,8 @@ def cged(a):
 	cnged(a,int(a.get_page_size()))
 def cgd(a,d):
 	cged(a)
-	drawscroll.edge(a.get_value(),a.get_upper()-a.get_page_size())
+	if sets.turn_page.get_active():
+		drawscroll.edge(a.get_value(),a.get_upper()-a.get_page_size())
 
 def calculate(pos):
 	#pos is is relative to draw
