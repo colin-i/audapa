@@ -92,7 +92,7 @@ def adder(bx,tx,x,n):
 	return n+1
 def sets(b,combo):
 	bx=Gtk.Grid(hexpand=True)
-	n=add(bx,"Font/Stroke Color",color,0)
+	n=add(bx,"Stroke Color",color,0)
 	n=add(bx,"Foreground Color",fgcolor,n)
 	n=add(bx,"Foreground Color2",fgcolor2,n)
 	n=add(bx,"Foreground Color3",fgcolor3,n)
