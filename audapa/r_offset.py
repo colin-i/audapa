@@ -4,6 +4,7 @@ from gi.repository import Gtk
 from . import sets
 from . import draw
 from . import seloff
+from . import drawscroll
 
 class inttext(sets.colorLabel):
 	def _get_(self):
@@ -24,7 +25,8 @@ def init():
 	return b
 
 def cnged(a,visible):
-	l=draw.offset+int(a.get_value())
+	val=int(a.get_value())
+	l=draw.offset+val
 	atleft._set_text_(str(l))
 	r=max(draw.length-visible-l,0)
 	atright._set_text_(str(r))
@@ -32,6 +34,7 @@ def cged(a):
 	cnged(a,int(a.get_page_size()))
 def cgd(a,d):
 	cged(a)
+	drawscroll.edge(a.get_value(),a.get_upper()-a.get_page_size())
 
 def calculate(pos):
 	#pos is is relative to draw

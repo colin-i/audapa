@@ -20,7 +20,7 @@ def calculate(n):
 		#30000 maximum size of an X window
 		if n>(size:=(w*f)):
 			n=size
-		elif n<=w:#cannot go back at overshot without this
+		elif n<=w:#cannot go back at overshot/scroll without this
 			if draw.length>w:
 				n=w+1
 			else:
@@ -54,21 +54,34 @@ def backward(a,b):
 		draw.offset-=a
 		r_offset.cged(b)
 		draw.redraw()
-def edge(wn,pos,d):
-	if pos==Gtk.PositionType.RIGHT:
-		forward(size,win.get_hadjustment())
-	elif pos==Gtk.PositionType.BOTTOM:
-		forward(size,win.get_vadjustment())
-	elif pos==Gtk.PositionType.LEFT:
-		backward(min(size,draw.offset),win.get_hadjustment())
+#def edge(wn,pos,d):
+#	if pos==Gtk.PositionType.RIGHT:
+#		forward(size,win.get_hadjustment())
+#	elif pos==Gtk.PositionType.BOTTOM:
+#		forward(size,win.get_vadjustment())
+#	elif pos==Gtk.PositionType.LEFT:
+#		backward(min(size,draw.offset),win.get_hadjustment())
+#	else:
+#		backward(min(size,draw.offset),win.get_vadjustment())
+def edge(val,max):
+	if landscape:
+		ad=win.get_hadjustment()
+		if val==0:
+			backward(min(size,draw.offset),ad)
+		elif val==max:
+			forward(size,ad)
 	else:
-		backward(min(size,draw.offset),win.get_vadjustment())
+		ad=win.get_vadjustment()
+		if val==0:
+			backward(min(size,draw.offset),ad)
+		elif val==max:
+			forward(size,ad)
 
 def init():
 	global win
 	win=Gtk.ScrolledWindow(vexpand=True)
 	win.set_child(draw.init())
-	win.connect('edge-overshot',edge,None)
+	#win.connect('edge-overshot',edge,None)
 	win.get_hadjustment().connect('value-changed',r_offset.cgd,None)
 	win.get_vadjustment().connect('value-changed',r_offset.cgd,None)
 
