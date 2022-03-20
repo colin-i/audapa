@@ -37,6 +37,8 @@ def done(b,combo):
 	abool=a.isdigit()
 	bbool=b.isdigit()
 	if abool or bbool:
+		if zero.get_active():
+			zero_outside()
 		if abool:
 			c=int(a)
 			draw.samples=([0]*c)+draw.samples
@@ -45,8 +47,6 @@ def done(b,combo):
 			draw.samples+=[0]*c
 		combo[0].set_child(combo[1])
 		saved()
-		if zero.get_active():
-			zero_outside()
 		save.saved()
 		return
 	if not abool:
