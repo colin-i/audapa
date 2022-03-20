@@ -4,7 +4,6 @@ import math
 from . import points
 from . import arc
 from . import draw
-from . import sets
 from . import reload
 
 def data(b,d):
@@ -74,13 +73,6 @@ def apply():
 					else:
 					#rend==math.pi*3/2
 						set(x1-i,yc-h)
-		if sets.zero_button.get_active():
-			prev=points.points[0]._offset_
-			cur=cur._offset_
-			for i in range(0,prev):
-				draw.samples[i]=0
-			for i in range(cur,draw.length):
-				draw.samples[i]=0
 
 def redraw():
 	draw.surf()

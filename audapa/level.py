@@ -55,7 +55,10 @@ def open(b,combo):
 
 def click(b,combo):
 	done(combo) #this here, else problems at get_native().get_surface()
-	save.saved()
+	if sets.get_fulleffect():
+		save.saved()
+	else:
+		abort_samples()
 	graph.redraw()
 
 def sign(b,d):

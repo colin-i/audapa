@@ -39,13 +39,16 @@ def done(b,combo):
 					return
 				end=ps[s-1]._offset_
 				apply(-b,-1)
-				compress(b,end)
+				if sets.get_fulleffect():
+					compress(b,end)
 			else:
-				enlarge(b)
+				if sets.get_fulleffect():
+					enlarge(b)
 				apply(b,1)
 			move.saved(combo)
-			blank.saved()
-			save.effect()
+			if sets.get_fulleffect():
+				blank.saved()
+				save.effect()
 			return
 		combo[0].set_child(combo[1])
 		return

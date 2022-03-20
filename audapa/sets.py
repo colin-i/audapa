@@ -79,7 +79,6 @@ fgcolor3=Gtk.EntryBuffer(text="blue")
 def get_fgcolor3():
 	return fgcolor3.get_text()
 text_color=Gtk.EntryBuffer()
-zero_button=Gtk.CheckButton()
 turn_page=Gtk.CheckButton(active=True)
 full_effect=Gtk.CheckButton(active=True)
 def get_fulleffect():
@@ -100,9 +99,8 @@ def sets(b,combo):
 	n=add(bx,"Foreground Color2",fgcolor2,n)
 	n=add(bx,"Foreground Color3",fgcolor3,n)
 	n=add(bx,"Text Color",text_color,n)
-	n=adder(bx,"Zero outside start and end at "+forms.formal_write,zero_button,n)
 	n=adder(bx,"Turn the page at margin touch",turn_page,n)
-	n=adder(bx,"Points effect and apply to samples",full_effect,n)
+	n=adder(bx,forms.formal_write+" after a points effect",full_effect,n)
 	b=colorButton("Done", reset, "Return", {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
 	bx.attach(b,0,n,2,1)
@@ -117,7 +115,6 @@ def init():
 		fgcolor2.set_text(c['fgcolor2'],-1)
 		fgcolor3.set_text(c['fgcolor3'],-1)
 		text_color.set_text(c['text_color'],-1)
-		zero_button.set_active(False if c['zero']=='False' else True)
 		turn_page.set_active(False if c['turn']=='False' else True)
 		full_effect.set_active(False if c['effect']=='False' else True)
 
@@ -130,7 +127,6 @@ def reset(b,di):
 	c['fgcolor2']=fgcolor2.get_text()
 	c['fgcolor3']=fgcolor3.get_text()
 	c['text_color']=text_color.get_text()
-	c['zero']=zero_button.get_active().__str__()
 	c['turn']=turn_page.get_active().__str__()
 	c['effect']=full_effect.get_active().__str__()
 	with open(get_config_file(), "w") as configfile:
