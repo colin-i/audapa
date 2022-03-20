@@ -43,9 +43,9 @@ def done(b,combo):
 			else:
 				enlarge(b)
 				apply(b,1)
-			save.apply()
 			move.saved(combo)
 			blank.saved()
+			save.effect()
 			return
 		combo[0].set_child(combo[1])
 		return

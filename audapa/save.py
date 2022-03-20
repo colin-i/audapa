@@ -8,6 +8,8 @@ from . import sets
 from . import reload
 
 def data(b,d):
+	effect()
+def effect():
 	apply()
 	saved()
 def saved():

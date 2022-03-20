@@ -7,6 +7,7 @@ from . import draw
 from . import graph
 from . import point
 from . import level
+from . import save
 
 buffer=Gtk.EntryBuffer()
 to_right=Gtk.CheckButton()
@@ -50,6 +51,8 @@ def done(b,combo):
 			for i in range(0,s):
 				points.points[i]._offset_-=b
 			saved(combo)
+			if sets.get_fulleffect():
+				save.effect()
 			return
 		combo[0].set_child(combo[1])
 		return

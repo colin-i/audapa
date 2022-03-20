@@ -9,7 +9,6 @@ from . import level
 
 def saved():
 	draw.length=len(draw.samples)
-	save.saved()
 	delete.changed() #this is not required in all cases but when adding without modifying draw(draw is big enough), will be required
 
 start=Gtk.EntryBuffer(text="0")
@@ -42,6 +41,7 @@ def done(b,combo):
 			draw.samples+=[0]*c
 		combo[0].set_child(combo[1])
 		saved()
+		save.saved()
 		return
 	if not abool:
 		level.not_a_digit(start)

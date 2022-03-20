@@ -65,10 +65,12 @@ def sign(b,d):
 		b._set_text_(sign_positive)
 	maxlabel._set_text_(maximum())
 
+def abort_samples():
+	draw.samples=samplesorig
 def abort(b,combo):
 	for i in range(len(pointsorig)-1,-1,-1):
 		points.points[i]._height_=pointsorig[i]
-	draw.samples=samplesorig
+	abort_samples()
 	done(combo)
 
 def size_sign():
