@@ -8,6 +8,7 @@ from . import pbox
 from . import points
 from . import graph
 from . import arcbutton
+from . import distance
 
 const=6
 
@@ -106,23 +107,24 @@ class struct(Gtk.DrawingArea):
 		lastselect=self
 		self.set_draw_func(self._draw_cont_,None,None)
 	def _dend_(self,x,y):
-		w=draw.wstore
-		h=draw.hstore
-		#
-		ini=points.points.index(self)
-		if dels:=graph.take(ini,self):
-			graph.dels(dels,w,h)
-		#
-		o=self._offset_
-		self._pos_(x,y)
-		if puts:=points.move(self,o,ini,dels):
-			graph.lines(dels,puts,w,h)
-		if self.get_parent():
-			c=self._coord_(w,h)
-			draw.cont.move(self,c[0]-const,c[1]-const)
-		else:
-			self._put_point_(w,h)
-		self._info_()
+		if distance.test(x,y,self):
+			w=draw.wstore
+			h=draw.hstore
+			#
+			ini=points.points.index(self)
+			if dels:=graph.take(ini,self):
+				graph.dels(dels,w,h)
+			#
+			o=self._offset_
+			self._pos_(x,y)
+			if puts:=points.move(self,o,ini,dels):
+				graph.lines(dels,puts,w,h)
+			if self.get_parent():
+				c=self._coord_(w,h)
+				draw.cont.move(self,c[0]-const,c[1]-const)
+			else:
+				self._put_point_(w,h)
+			self._info_()
 	def _remove_(self,ix):
 		self.remove_controller(self._control_)
 		del points.points[ix]

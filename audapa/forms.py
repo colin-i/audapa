@@ -13,6 +13,7 @@ from . import save
 from . import spread
 from . import blank
 from . import move
+from . import distance
 
 #button
 control=None
@@ -95,5 +96,6 @@ def press(g,n,x,y,d):
 	if point.lastselect and point.lastselect._drag_==True:
 		point.lastselect._dend_(x,y)
 	else:
-		point.struct(x,y)
+		if distance.test(x,y,None):
+			point.struct(x,y)
 	graph.area.queue_draw()
