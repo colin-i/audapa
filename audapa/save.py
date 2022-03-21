@@ -85,5 +85,10 @@ def apply_arc(x0,y0,x1,y1,conv):
 				set(x1-i,yc-h)
 
 def apply_line(x0,y0,x1,y1):
-	for i in range(x0,x1):
-		set(i,0)
+	if x0!=x1: #a will be inf and also no for
+		x=x1-x0
+		y=y1-y0
+		a=y/x
+		for i in range(0,x):
+			y=a*i
+			set(x0+i,y0+y)
