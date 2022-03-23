@@ -53,6 +53,7 @@ from html import escape
 
 from . import draw
 from . import forms
+from . import point
 
 def get_config_dir():
 	return pathlib.Path(appdirs.user_config_dir(pkgname))
@@ -83,6 +84,7 @@ turn_page=Gtk.CheckButton(active=True)
 full_effect=Gtk.CheckButton(active=True)
 def get_fulleffect():
 	return full_effect.get_active()
+distance=Gtk.EntryBuffer(text=(3*point.const).__str__())
 
 def add(bx,tx,x,n):
 	return adder(bx,tx,colorEntry(x),n)
@@ -101,6 +103,7 @@ def sets(b,combo):
 	n=add(bx,"Text Color",text_color,n)
 	n=adder(bx,"Turn the page at margin touch",turn_page,n)
 	n=adder(bx,forms.formal_write+" after a points effect",full_effect,n)
+	n=add(bx,"Minimum distance between points",distance,n)
 	b=colorButton("Done", reset, "Return", {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
 	bx.attach(b,0,n,2,1)
@@ -117,6 +120,7 @@ def init():
 		text_color.set_text(c['text_color'],-1)
 		turn_page.set_active(False if c['turn']=='False' else True)
 		full_effect.set_active(False if c['effect']=='False' else True)
+		distance.set_text(c['distance'],-1)
 
 def reset(b,di):
 	config = configparser.ConfigParser()
@@ -129,6 +133,7 @@ def reset(b,di):
 	c['text_color']=text_color.get_text()
 	c['turn']=turn_page.get_active().__str__()
 	c['effect']=full_effect.get_active().__str__()
+	c['distance']=distance.get_text()
 	with open(get_config_file(), "w") as configfile:
 		config.write(configfile)
 	win=di['c'][0]

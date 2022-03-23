@@ -10,7 +10,7 @@ from . import graph
 from . import arcbutton
 from . import distance
 
-const=6
+const=6 #this is the radius
 
 class struct(Gtk.DrawingArea):
 	_drag_=False
