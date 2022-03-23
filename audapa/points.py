@@ -53,7 +53,8 @@ def move(p,o,ini,dels):
 			break
 	if ini!=ix:
 		return move_inter(forward,ini,ix,dels,p)
-	dels.clear()
+	if dels:
+		dels.clear()
 	return graph.take(ix,p)
 def move_inter(forward,ini,ix,dels,p):
 	indx=ini+1 if forward else ini-1

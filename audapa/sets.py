@@ -84,7 +84,7 @@ turn_page=Gtk.CheckButton(active=True)
 full_effect=Gtk.CheckButton(active=True)
 def get_fulleffect():
 	return full_effect.get_active()
-distance=Gtk.EntryBuffer(text=(3*point.const).__str__())
+distance=Gtk.EntryBuffer(text=(2*point.const).__str__())
 
 def add(bx,tx,x,n):
 	return adder(bx,tx,colorEntry(x),n)
@@ -113,14 +113,20 @@ def init():
 	config = configparser.ConfigParser()
 	if(config.read(get_config_file())):
 		c=config['conf']
-		color.set_text(c['color'],-1)
-		fgcolor.set_text(c['fgcolor'],-1)
-		fgcolor2.set_text(c['fgcolor2'],-1)
-		fgcolor3.set_text(c['fgcolor3'],-1)
-		text_color.set_text(c['text_color'],-1)
-		turn_page.set_active(False if c['turn']=='False' else True)
-		full_effect.set_active(False if c['effect']=='False' else True)
-		distance.set_text(c['distance'],-1)
+		init_t(c,'color',color)
+		init_t(c,'fgcolor',fgcolor)
+		init_t(c,'fgcolor2',fgcolor2)
+		init_t(c,'fgcolor3',fgcolor3)
+		init_t(c,'text_color',text_color)
+		init_c(c,'turn',turn_page)
+		init_c(c,'effect',full_effect)
+		init_t(c,'distance',distance)
+def init_t(src,key,dst):
+	if key in src: #this is not checking values
+		dst.set_text(src[key],-1)
+def init_c(src,key,dst):
+	if key in src:
+		dst.set_active(False if src[key]=='False' else True)
 
 def reset(b,di):
 	config = configparser.ConfigParser()

@@ -3,6 +3,7 @@ import math
 
 from . import draw
 from . import sets
+from . import point
 
 def test(x,y,p):
 	d=float(sets.distance.get_text())
@@ -14,8 +15,8 @@ def test(x,y,p):
 def recurse(x,y,p,a,d):
 	if a and a!=p:
 		xa,ya=draw.cont.get_child_position(a)
-		xb=xa-x
-		yb=ya-y
+		xb=xa+point.const-x
+		yb=ya+point.const-y
 		c=math.sqrt(pow(xb,2)+pow(yb,2))
 		if c<d:
 			print(c.__str__()+" is less than the minimum required distance of "+d.__str__())
