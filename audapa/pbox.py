@@ -9,6 +9,7 @@ from . import points
 from . import draw
 from . import graph
 from . import arcbutton
+from . import step
 
 def open(p):
 	global box,info
@@ -18,6 +19,10 @@ def open(p):
 	#def manual(b,d):
 	box.append(sets.colorButton(chr(0x2913),snap,"Snap to base"))
 	box.append(sets.colorButton(seloff.char_delete,delete,"Delete"))
+	box.append(sets.colorButton(chr(0x2B05),step.left,"Left"))
+	box.append(sets.colorButton(chr(0x27A1),step.right,"Right"))
+	box.append(sets.colorButton(chr(0x2B06),step.up,"Up"))
+	box.append(sets.colorButton(chr(0x2B07),step.down,"Down"))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
 	info.set_hexpand(True)
 	info.set_halign(Gtk.Align.END)

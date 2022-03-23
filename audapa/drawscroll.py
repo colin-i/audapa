@@ -98,12 +98,16 @@ def move(b,next):
 		backward(a,b)
 
 def open():
-	global control
+	global control,control2
 	control=Gtk.EventControllerKey()
 	control.connect("key-pressed",eve,None)
 	win.add_controller(control)
+	control2 = Gtk.GestureClick()
+	control2.connect("pressed",press,win)
+	win.add_controller(control2)
 def close():
 	win.remove_controller(control)
+	win.remove_controller(control2)
 def eve(controller,keyval,keycode,state,d):
 	if keyval==Gdk.KEY_period: # or keyval==Gdk.KEY_greater
 		seloff.moveright.emit(sets._click_)
@@ -112,3 +116,5 @@ def eve(controller,keyval,keycode,state,d):
 		seloff.moveleft.emit(sets._click_)
 		return True
 	return False
+def press(g,n,x,y,w):
+	w.grab_focus() #it's tested at this call
