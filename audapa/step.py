@@ -18,9 +18,8 @@ def right_type():
 	p=point.lastselect
 	ix=points.points.index(p)
 	if x+1==len(points.points) or points.points[x+1]._offset_>(draw.offset+draw.size):
-		limit==draw.size
-	else:
-		limit=points.points[x+1]._offset_-draw._offset_
+		return draw.size
+	return points.points[x+1]._offset_-draw._offset_
 
 def left(b,d):
 	if drawscroll.landscape:
