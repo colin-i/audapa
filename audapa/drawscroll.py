@@ -6,6 +6,7 @@ from . import seloff
 from . import sets
 
 #size,landscape,win
+#size here is 3 times
 
 def set_landscape():
 	global landscape

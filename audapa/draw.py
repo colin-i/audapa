@@ -16,6 +16,7 @@ offset=0
 #length
 #samples
 #size
+#size here is visible samples
 
 #sampsize,baseline,surface,ostore,wstore,hstore
 
