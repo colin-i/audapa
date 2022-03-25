@@ -10,6 +10,7 @@ from . import draw
 from . import graph
 from . import arcbutton
 from . import step
+from . import snap
 
 def open(p):
 	global box,info
@@ -26,11 +27,11 @@ def open(p):
 	box.append(sets.colorButton(a,step.up,"Up ("+a+")"))
 	a=chr(0x2B07)
 	box.append(sets.colorButton(a,step.down,"Down ("+a+")"))
-	box.append(sets.colorButton(chr(0x2693),snap,"Snap to base"))
-	box.append(sets.colorButton(chr(0x21E4),snap,"Snap to left"))
-	box.append(sets.colorButton(chr(0x21E5),snap,"Snap to right"))
-	box.append(sets.colorButton(chr(0x2912),snap,"Snap to top"))
-	box.append(sets.colorButton(chr(0x2913),snap,"Snap to bottom"))
+	box.append(sets.colorButton(chr(0x2693),snap.base,"Snap to base"))
+	box.append(sets.colorButton(chr(0x21E4),snap.left,"Snap to left"))
+	box.append(sets.colorButton(chr(0x21E5),snap.right,"Snap to right"))
+	box.append(sets.colorButton(chr(0x2912),snap.top,"Snap to top"))
+	box.append(sets.colorButton(chr(0x2913),snap.bottom,"Snap to bottom"))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
 	info.set_hexpand(True)
 	info.set_halign(Gtk.Align.END)
@@ -81,15 +82,3 @@ def and_inter_test(test):
 
 def inf(o,h):
 	return str(o)+' '+str(h)
-
-def snap(b,d):
-	p=point.lastselect
-	hg=p._height_
-	p._height_=0
-	x,y=p._coord_(draw.wstore,draw.hstore)
-	p._height_=hg
-	autodrag(p,x,y)
-
-def autodrag(p,x,y):
-	p._dend_(x,y)
-	graph.area.queue_draw()

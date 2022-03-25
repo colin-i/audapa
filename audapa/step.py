@@ -3,7 +3,7 @@ from . import point
 from . import points
 from . import draw
 from . import drawscroll
-from . import pbox
+from . import snap
 
 #tests: 1 right circle,2 right inter,3 right margin
 #       4 left free/inter/margin
@@ -25,7 +25,7 @@ def right_type():
 	return pos_type(ix+1)
 
 def autodrag(p,x,y):
-	pbox.autodrag(p,x+point.const,y+point.const)
+	snap.autodrag(p,x+point.const,y+point.const)
 
 def left(b,d):
 	leftk()
