@@ -17,7 +17,6 @@ def open(p):
 	box.append(arcbutton.open(p))
 	#box.append(sets.colorButton(chr(0x0077),manual,"Manual"))#0057
 	#def manual(b,d):
-	box.append(sets.colorButton(chr(0x2913),snap,"Snap to base"))
 	box.append(sets.colorButton(seloff.char_delete,delete,"Delete"))
 	a=chr(0x2B05)
 	box.append(sets.colorButton(a,step.left,"Left ("+a+")"))
@@ -27,6 +26,11 @@ def open(p):
 	box.append(sets.colorButton(a,step.up,"Up ("+a+")"))
 	a=chr(0x2B07)
 	box.append(sets.colorButton(a,step.down,"Down ("+a+")"))
+	box.append(sets.colorButton(chr(0x2693),snap,"Snap to base"))
+	box.append(sets.colorButton(chr(0x21E4),snap,"Snap to left"))
+	box.append(sets.colorButton(chr(0x21E5),snap,"Snap to right"))
+	box.append(sets.colorButton(chr(0x2912),snap,"Snap to top"))
+	box.append(sets.colorButton(chr(0x2913),snap,"Snap to bottom"))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
 	info.set_hexpand(True)
 	info.set_halign(Gtk.Align.END)
@@ -84,5 +88,8 @@ def snap(b,d):
 	p._height_=0
 	x,y=p._coord_(draw.wstore,draw.hstore)
 	p._height_=hg
+	autodrag(p,x,y)
+
+def autodrag(p,x,y):
 	p._dend_(x,y)
 	graph.area.queue_draw()

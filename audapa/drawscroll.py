@@ -4,6 +4,8 @@ from . import draw
 from . import r_offset
 from . import seloff
 from . import sets
+from . import point
+from . import step
 
 #size,landscape,win
 #size here is 3 times
@@ -115,6 +117,18 @@ def eve(controller,keyval,keycode,state,d):
 		return True
 	elif keyval==Gdk.KEY_comma: # or keyval==Gdk.KEY_less
 		seloff.moveleft.emit(sets._click_)
+		return True
+	elif keyval==Gdk.KEY_Left and point.lastselect:
+		step.leftk()
+		return True
+	elif keyval==Gdk.KEY_Right and point.lastselect:
+		step.rightk()
+		return True
+	elif keyval==Gdk.KEY_Up and point.lastselect:
+		step.upk()
+		return True
+	elif keyval==Gdk.KEY_Down and point.lastselect:
+		step.downk()
 		return True
 	return False
 def press(g,n,x,y,w):
