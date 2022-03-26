@@ -21,9 +21,9 @@ on=chr(0x25a1)
 formal_write="Write Points"
 
 def init(combo):
-	b=Gtk.Box(homogeneous=True)#,hexpand=True nothing
+	b=Gtk.Box()#homogeneous=True
 	global button,box
-	box=Gtk.Box(halign=Gtk.Align.CENTER)
+	box=Gtk.Box(halign=Gtk.Align.CENTER,hexpand=True) #Fill default
 	button=sets.colorButton(on,toggle,"Points Mode")#halign CENTER
 	box.append(button)
 	bt=sets.colorButton(chr(0x1f4be),save.data,formal_write)#1f5ab
@@ -69,6 +69,9 @@ def redraw(w,h):
 	for i in range (0,sz):
 		if points.points[i]._offset_<draw.offset:
 			continue
+		if i>0:
+			j=i-1
+			graph.put(j,points.points[j],w,h) #this is not required when manual putting points but at first glance
 		for j in range(i,sz):
 			p=points.points[j]
 			if draw.offset+(w if drawscroll.landscape

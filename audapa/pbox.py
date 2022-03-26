@@ -15,6 +15,10 @@ from . import snap
 def open(p):
 	global box,info
 	box=Gtk.Box()
+	sep=Gtk.Separator() #margin-start=0
+	sep.set_margin_start(4)
+	sep.set_margin_end(4)
+	box.append(sep)
 	box.append(arcbutton.open(p))
 	#box.append(sets.colorButton(chr(0x0077),manual,"Manual"))#0057
 	#def manual(b,d):
@@ -28,18 +32,22 @@ def open(p):
 	a=chr(0x2B07)
 	box.append(sets.colorButton(a,step.down,"Down ("+a+")"))
 	box.append(sets.colorButton(chr(0x2693),snap.base,"Snap to base"))
-	box.append(sets.colorButton(chr(0x21E4),snap.left,"Snap to left"))
-	box.append(sets.colorButton(chr(0x21E5),snap.right,"Snap to right"))
-	box.append(sets.colorButton(chr(0x2912),snap.top,"Snap to top"))
-	box.append(sets.colorButton(chr(0x2913),snap.bottom,"Snap to bottom"))
+	box.append(sets.colorButton(chr(0x21E4),snap.left,"Snap Left"))
+	box.append(sets.colorButton(chr(0x21E5),snap.right,"Snap Right"))
+	box.append(sets.colorButton(chr(0x2912),snap.up,"Snap Up"))
+	box.append(sets.colorButton(chr(0x2913),snap.down,"Snap Down"))
 	info=sets.colorLabel(inf(p._offset_,p._height_))
-	info.set_hexpand(True)
+	info.set_hexpand(True) #Default value: FALSE
 	info.set_halign(Gtk.Align.END)
 	box.append(info)
+	forms.box.set_halign(Gtk.Align.START)
+	forms.box.set_hexpand(False)
 	forms.box.get_parent().append(box)
 
 def close():
 	forms.box.get_parent().remove(box)
+	forms.box.set_hexpand(True)
+	forms.box.set_halign(Gtk.Align.CENTER)
 
 def delete(b,d):
 	p=point.lastselect
