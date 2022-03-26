@@ -69,14 +69,11 @@ def redraw(w,h):
 	for i in range (0,sz):
 		if points.points[i]._offset_<draw.offset:
 			continue
-		if i>0:
-			j=i-1
-			graph.put(j,points.points[j],w,h) #this is not required when manual putting points but at first glance
 		for j in range(i,sz):
 			p=points.points[j]
 			if draw.offset+(w if drawscroll.landscape
 				 else h)<p._offset_:
-				if i<j:
+				if i>0:
 					graph.put(j,p,w,h)
 				return
 			p._put_(w,h,j)
