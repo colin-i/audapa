@@ -15,7 +15,7 @@ sign_positive="+"
 def open(b,combo):
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	#+/- button or not   entry   maxim
-	global signbutton,maxlabel,calculated,middlerate
+	global signbutton,maxlabel,calculated,middlerate,pausesbool
 	b2=Gtk.Box()
 	if draw.baseline!=0:
 		signbutton=sets.colorButton(sign_positive,sign,"Sign")
@@ -36,6 +36,11 @@ def open(b,combo):
 	b3.append(middlerate)
 	b3.append(calculated)
 	box.append(b3)
+	b4=Gtk.Box()
+	b4.append(sets.colorLabel("Keep pauses"))
+	pausesbool=Gtk.CheckButton(active=True)
+	b4.append(pausesbool)
+	box.append(b4)
 	#Calculate
 	calc=sets.colorButton("Calculate",calcs,"Test")
 	box.append(calc)
@@ -114,28 +119,35 @@ def calcs(b,d):
 			dif.set_text(b.__str__(),-1)
 			return
 		sz,sgn=size_sign()
+		pauses=[]
 		if sgn:
-			for p in points.points:
-				if p._height_>=0:
-					p._height_+=a
-					if p._height_>=sz:
-						p._height_=sz-1
-				else:
-					p._height_-=a
-					if p._height_<-sz:
-						p._height_=-sz
-		else:
-			for p in points.points:
-				if p._height_>=0:
-					if a>=p._height_:
-						p._height_=0
+			rng=len(points.points)
+			for i in range(0,rng):
+				if pause(i,pauses):
+					p=points.points[i]
+					if p._height_>=0:
+						p._height_+=a
+						if p._height_>=sz:
+							p._height_=sz-1
 					else:
 						p._height_-=a
-				else:
-					if a>=-p._height_:
-						p._height_=0
+						if p._height_<-sz:
+							p._height_=-sz
+		else:
+			rng=len(points.points)
+			for i in range(0,rng):
+				if pause(i,pauses):
+					p=points.points[i]
+					if p._height_>=0:
+						if a>=p._height_:
+							p._height_=0
+						else:
+							p._height_-=a
 					else:
-						p._height_+=a
+						if a>=-p._height_:
+							p._height_=0
+						else:
+							p._height_+=a
 		maxlabel._set_text_(maximum())
 		save.apply()
 		cdata,mdata=calculate()
@@ -163,3 +175,16 @@ def calculate():
 		#
 		return (med.__str__(),mid.__str__())
 	return ("-","-")
+
+def pause(i,lst):
+	if pausesbool.get_active():
+		a=points.points[i]
+		if a._height_==0:
+			j=i+1
+			if j!=len(points.points):
+				b=points.points[j]
+				if b._height_==0:
+					#here is a sound pause
+					lst.append(i)
+					lst.append(j)
+	return True
