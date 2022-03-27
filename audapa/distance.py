@@ -13,13 +13,14 @@ def test(x,y,p):
 	return True
 
 def recurse(x,y,p,a,d):
-	if a and a!=p:
-		xa,ya=draw.cont.get_child_position(a)
-		xb=xa+point.const-x
-		yb=ya+point.const-y
-		c=math.sqrt(pow(xb,2)+pow(yb,2))
-		if c<d:
-			print(c.__str__()+" is less than the minimum required distance of "+d.__str__())
-			return False
+	if a:
+		if a!=p:
+			xa,ya=draw.cont.get_child_position(a)
+			xb=xa+point.const-x
+			yb=ya+point.const-y
+			c=math.sqrt(pow(xb,2)+pow(yb,2))
+			if c<d:
+				print(c.__str__()+" is less than the minimum required distance of "+d.__str__())
+				return False
 		return recurse(x,y,p,a.get_prev_sibling(),d)
 	return True
