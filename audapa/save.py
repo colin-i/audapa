@@ -15,8 +15,6 @@ def saved():
 	reload.file()
 	redraw()
 
-margin=1
-
 def redraw():
 	draw.surf()
 	draw.reset()
@@ -50,8 +48,13 @@ def apply_arc(x0,y0,x1,y1,conv):
 	if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
 	#x axis
 		xpos=radius-x
-		includingmargin=x+margin #is x1-i, [0-4) (4-8] will be bad
-		for i in range(0,includingmargin):
+		if rstart==0 or rend==0:
+			startpoint=0
+			stoppoint=x
+		else:
+			startpoint=1
+			stoppoint=x+1
+		for i in range(startpoint,stoppoint):
 			#supra radius
 			a=xpos/radius
 			#to radians
@@ -70,7 +73,13 @@ def apply_arc(x0,y0,x1,y1,conv):
 			xpos+=1
 	else:
 	#y axis
-		for i in range(x,-1,-1):
+		if rstart==math.pi*3/2 or rend==math.pi/2:
+			startpoint=x
+			stoppoint=0
+		else:
+			startpoint=x-1
+			stoppoint=-1
+		for i in range(startpoint,stoppoint,-1):
 			a=i/radius
 			a=math.asin(a)
 			h=math.cos(a)*radius

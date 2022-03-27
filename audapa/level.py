@@ -152,7 +152,7 @@ def calculate():
 	if s>=2:
 		n=0
 		start=points.points[0]._offset_
-		stop=points.points[s-1]._offset_+save.margin
+		stop=points.points[s-1]._offset_
 		for i in range(start,stop):
 			n+=abs(draw.samples[i])
 		med=n/(stop-start)
