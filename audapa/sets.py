@@ -80,6 +80,8 @@ fgcolor3=Gtk.EntryBuffer(text="blue")
 def get_fgcolor3():
 	return fgcolor3.get_text()
 text_color=Gtk.EntryBuffer()
+def get_text_color():
+	return text_color.get_text()
 turn_page=Gtk.CheckButton(active=True)
 full_effect=Gtk.CheckButton(active=True)
 def get_fulleffect():

@@ -22,7 +22,7 @@ offset=0
 
 def draw_none(widget,cr,width,height,d,u):
 	co=Gdk.RGBA()
-	if co.parse(sets.get_color()):
+	if co.parse(sets.get_text_color()):
 		#set line color
 		cr.set_source_rgb(co.red,co.green,co.blue)
 	cr.set_line_width(1)#default 2.0; cairo scale is 1
