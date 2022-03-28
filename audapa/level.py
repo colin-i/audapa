@@ -6,6 +6,7 @@ from . import draw
 from . import points
 from . import save
 from . import graph
+from . import point
 
 dif=Gtk.EntryBuffer()
 
@@ -42,12 +43,14 @@ def open(b,combo):
 	b4.append(pausesbool)
 	box.append(b4)
 	#Calculate
-	calc=sets.colorButton("Calculate",calcs,"Test")
+	calc=sets.colorButton("Set",calcs,"Calculate")
 	box.append(calc)
 	#Cancel
 	exit=sets.colorButton("Cancel",abort,"Abort",combo)
 	box.append(exit)
-	bt=sets.colorButton("Done",click,"Apply",combo)
+	bt=sets.colorButton("Return",click,"Finish",combo)
+	box.append(bt)
+	bt=sets.colorButton("Done",ready,"Set & Return",combo)
 	box.append(bt)
 	combo[0].set_child(box)
 	#copies
@@ -59,6 +62,8 @@ def open(b,combo):
 	samplesorig=draw.samples.copy()
 
 def click(b,combo):
+	finish(combo)
+def finish(combo):
 	done(combo) #this here, else problems at get_native().get_surface()
 	if sets.get_fulleffect():
 		save.saved()
@@ -111,6 +116,8 @@ def not_a_digit(buf):
 	buf.set_text("0",-1) #isdigit failed
 
 def calcs(b,d):
+	modify()
+def modify():
 	c=dif.get_text()
 	if c.isdigit():
 		a=int(c)
@@ -136,18 +143,18 @@ def calcs(b,d):
 		else:
 			rng=len(points.points)
 			for i in range(0,rng):
-				if pause(i,pauses):
-					p=points.points[i]
-					if p._height_>=0:
-						if a>=p._height_:
-							p._height_=0
-						else:
-							p._height_-=a
+				p=points.points[i]
+				if p._height_>=0:
+					if a>=p._height_:
+						p._height_=0
 					else:
-						if a>=-p._height_:
-							p._height_=0
-						else:
-							p._height_+=a
+						p._height_-=a
+				else:
+					if a>=-p._height_:
+						p._height_=0
+					else:
+						p._height_+=a
+		resolve(pauses)
 		maxlabel._set_text_(maximum())
 		save.apply()
 		cdata,mdata=calculate()
@@ -158,6 +165,10 @@ def calcs(b,d):
 
 def done(combo):
 	combo[0].set_child(combo[1])
+
+def ready(b,combo):
+	modify()
+	finish(combo)
 
 def calculate():
 	s=len(points.points)
@@ -185,6 +196,39 @@ def pause(i,lst):
 				b=points.points[j]
 				if b._height_==0:
 					#here is a sound pause
-					lst.append(i)
-					lst.append(j)
+					first=len(lst)==0
+					if first or lst[len(lst)-1]!=i:
+						#is new
+						lst.append(i)
+						lst.append(j)
+						if first:
+							#the interval start if it is at the start it will not be adjusted
+							return False
+					else:
+						#extend only
+						lst[len(lst)-1]=j
+						return False
+			elif lst[len(lst)-1]==i:
+				#last needs false
+				return False
 	return True
+
+def resolve(pauses):
+	sz=len(pauses)
+	of=0
+	i=0
+	while i<sz: #for-loop will not care about i modification inside
+		a=pauses[i]
+		if a>0:
+			insert(a+of,1)
+			of+=1
+		i+=1
+		a=pauses[i]
+		if a+1<len(points.points):
+			insert(a+of,0)
+			of+=1
+		i+=1
+
+def insert(ix,more):
+	p=points.points[ix]
+	points.add(p._offset_,0,False,point.default_convex,ix+more)

@@ -133,10 +133,13 @@ def read(f_in):
 			if data:=f.read():
 				d=json.loads(data)
 				for p in d[0]:
-					po=point.struct()
-					po._offset_=p[0]
-					po._height_=p[1]
-					po._inter_=p[2]
-					po._convex_=p[3]
-					points.append(po)
+					add(p[0],p[1],p[2],p[3],len(points))
 				return d[1]
+
+def add(o,h,i,c,pos):
+	po=point.struct()
+	po._offset_=o
+	po._height_=h
+	po._inter_=i
+	po._convex_=c
+	points.insert(pos,po)

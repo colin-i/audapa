@@ -11,6 +11,7 @@ from . import arcbutton
 from . import distance
 
 const=6 #this is the radius
+default_convex=True
 
 class struct(Gtk.DrawingArea):
 	_drag_=False
@@ -26,7 +27,7 @@ class struct(Gtk.DrawingArea):
 			self.set_draw_func(self._draw_none_,None,None)
 			return
 		self._inter_=False
-		self._convex_=True
+		self._convex_=default_convex
 		self._pos_(args[0],args[1])
 		ix=points.insert(self)
 		puts,dels=self._take_(ix)
