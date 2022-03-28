@@ -7,6 +7,7 @@ from . import points
 from . import save
 from . import graph
 from . import point
+from . import distance
 
 dif=Gtk.EntryBuffer()
 
@@ -64,12 +65,13 @@ def open(b,combo):
 def click(b,combo):
 	finish(combo)
 def finish(combo):
-	done(combo) #this here, else problems at get_native().get_surface()
-	if sets.get_fulleffect():
-		save.saved()
-	else:
-		abort_samples()
-	graph.redraw()
+	if distance.test_all():
+		done(combo) #this here, else problems at get_native().get_surface()
+		if sets.get_fulleffect():
+			save.saved()
+		else:
+			abort_samples()
+		graph.redraw()
 
 def sign(b,d):
 	if b.get_child().get_text()==sign_positive:
