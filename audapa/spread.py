@@ -23,6 +23,7 @@ def open(b,combo):
 	combo[0].set_child(bx)
 
 def cancel(b,combo):
+	#if snapshot: restore
 	combo[0].set_child(combo[1])
 
 def done(b,combo):
@@ -37,9 +38,12 @@ def done(b,combo):
 				if b>n:
 					spread.set_text(n.__str__(),-1)
 					return
+				#if snapshot: restore
+				#snapshot1
 				end=ps[s-1]._offset_
 				apply(-b,-1)
 				if sets.get_fulleffect():
+					#snapshot2
 					compress(b,end)
 			else:
 				if sets.get_fulleffect():
