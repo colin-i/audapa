@@ -55,23 +55,26 @@ def open(b,combo):
 	box.append(bt)
 	combo[0].set_child(box)
 	#copies
-	global pointsorig,samplesorig
+	global pointsorig,samplesorig,pointsorigh #since pauses can be more points
 	#.copy() => it is not deep, _height_ same
-	pointsorig=[]
+	pointsorig=points.points.copy()
+	pointsorigh=[]
 	for p in points.points:
-		pointsorig.append(p._height_)
+		pointsorigh.append(p._height_)
 	samplesorig=draw.samples.copy()
 
 def click(b,combo):
 	finish(combo)
 def finish(combo):
 	if distance.test_all():
-		done(combo) #this here, else problems at get_native().get_surface()
-		if sets.get_fulleffect():
-			save.saved()
-		else:
-			abort_samples()
-		graph.redraw()
+		conclude(combo)
+def conclude(combo):
+	done(combo) #this here, else problems at get_native().get_surface()
+	if sets.get_fulleffect():
+		save.saved()
+	else:
+		abort_samples()
+	graph.redraw()
 
 def sign(b,d):
 	if b.get_child().get_text()==sign_positive:
@@ -83,10 +86,14 @@ def sign(b,d):
 def abort_samples():
 	draw.samples=samplesorig
 def abort(b,combo):
-	for i in range(len(pointsorig)-1,-1,-1):
-		points.points[i]._height_=pointsorig[i]
+	restore()
 	abort_samples()
 	done(combo)
+def restore():
+	points.points.clear()
+	for i in range(0,len(pointsorigh)):
+		points.points.append(pointsorig[i])
+		points.points[i]._height_=pointsorigh[i]
 
 def size_sign():
 	if draw.baseline!=0:
@@ -127,6 +134,7 @@ def modify():
 		if a>b:
 			dif.set_text(b.__str__(),-1)
 			return
+		restore() #need no more points or points tend to flat
 		sz,sgn=size_sign()
 		pauses=[]
 		if sgn:

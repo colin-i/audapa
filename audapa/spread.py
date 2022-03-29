@@ -45,14 +45,16 @@ def done(b,combo):
 				if sets.get_fulleffect():
 					enlarge(b)
 				apply(b,1)
-			move.saved(combo)
-			if sets.get_fulleffect():
-				blank.saved()
-				save.effect()
+			conclude(combo)
 			return
 		combo[0].set_child(combo[1])
 		return
 	level.not_a_digit(spread)
+def conclude(combo):
+	move.saved(combo)
+	if sets.get_fulleffect():
+		blank.saved()
+		save.effect()
 
 def enlarge(n):
 	s=len(draw.samples)
