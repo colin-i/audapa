@@ -8,6 +8,7 @@ from . import draw
 from . import blank
 from . import move
 from . import save
+from . import distance
 
 spread=Gtk.EntryBuffer()
 reduce=Gtk.CheckButton()
@@ -20,11 +21,26 @@ def open(b,combo):
 	bx.attach(reduce,1,1,1,1)
 	bx.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,2,2,1)
 	bx.attach(sets.colorButton("Done",done,"Apply",combo),0,3,2,1)
+	try:
+		#if from previous compress
+		global pointsorig
+		global samplesorig
+		del pointsorig
+		del samplesorig
+	except:
+		pass
 	combo[0].set_child(bx)
 
 def cancel(b,combo):
-	#if snapshot: restore
+	try:
+		restore()
+		draw.samples=samplesorig
+	except:
+		pass
 	combo[0].set_child(combo[1])
+def restore():
+	for i in range(0,len(pointsorig)): #pointsorig can be modified it will not influence the starting for-to
+		points.points[i]._offset_=pointsorig[i]
 
 def done(b,combo):
 	a=spread.get_text()
@@ -33,18 +49,30 @@ def done(b,combo):
 		s=len(ps)
 		if s>=2:
 			b=int(a)
-			n=ps[s-1]._offset_-ps[0]._offset_
 			if reduce.get_active():
+				try:
+					#can be in vain , is return after, but who cares about that return
+					restore()
+				except:
+					global pointsorig
+					pointsorig=[]
+					for p in points.points:
+						pointsorig.append(p._offset_)
+				end=ps[s-1]._offset_
+				n=end-ps[0]._offset_
 				if b>n:
 					spread.set_text(n.__str__(),-1)
 					return
-				#if snapshot: restore
-				#snapshot1
-				end=ps[s-1]._offset_
 				apply(-b,-1)
 				if sets.get_fulleffect():
-					#snapshot2
+					global samplesorig
+					try:
+						draw.samples=samplesorig.copy() #can hit done multiple times and then is .copy
+					except:
+						samplesorig=draw.samples.copy()
 					compress(b,end)
+				if not distance.test_all():
+					return
 			else:
 				if sets.get_fulleffect():
 					enlarge(b)
