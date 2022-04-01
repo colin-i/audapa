@@ -14,10 +14,14 @@ dif=Gtk.EntryBuffer()
 #signbutton,maxlabel
 sign_positive="+"
 
+#box,pointsorig,pointsorigh,samplesorig
+distancebutton=None
+
 def open(b,combo):
+	global signbutton,maxlabel,calculated,middlerate,pausesbool
+	global box,pointsorig,samplesorig,pointsorigh #since pauses can be more points
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	#+/- button or not   entry   maxim
-	global signbutton,maxlabel,calculated,middlerate,pausesbool
 	b2=Gtk.Box()
 	if draw.baseline!=0:
 		signbutton=sets.colorButton(sign_positive,sign,"Sign")
@@ -53,21 +57,27 @@ def open(b,combo):
 	box.append(bt)
 	bt=sets.colorButton("Done",ready,"Set & Return",combo)
 	box.append(bt)
-	combo[0].set_child(box)
 	#copies
-	global pointsorig,samplesorig,pointsorigh #since pauses can be more points
 	#.copy() => it is not deep, _height_ same
 	pointsorig=points.points.copy()
 	pointsorigh=[]
 	for p in points.points:
 		pointsorigh.append(p._height_)
 	samplesorig=draw.samples.copy()
+	#and set
+	combo[0].set_child(box)
 
 def click(b,combo):
 	finish(combo)
 def finish(combo):
-	if distance.test_all():
+	if (dtest:=distance.test_all())==-1:
 		conclude(combo)
+	else:
+		global distancebutton
+		a=distancebutton
+		distancebutton=distance.hold(dtest,distancebutton,callback,combo)
+		if not a:
+			box.append(distancebutton)
 def conclude(combo):
 	done(combo) #this here, else problems at get_native().get_surface()
 	if sets.get_fulleffect():
@@ -75,6 +85,8 @@ def conclude(combo):
 	else:
 		abort_samples()
 	graph.redraw()
+def callback(b,combo):
+	conclude(combo)
 
 def sign(b,d):
 	if b.get_child().get_text()==sign_positive:

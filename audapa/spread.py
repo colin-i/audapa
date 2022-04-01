@@ -13,14 +13,18 @@ from . import distance
 spread=Gtk.EntryBuffer()
 reduce=Gtk.CheckButton()
 
+#box,pointsorig,samplesorig
+distancebutton=None
+
 def open(b,combo):
-	bx=Gtk.Grid(hexpand=True)
-	bx.attach(sets.colorLabel("Spread/Compress N samples"),0,0,1,1)
-	bx.attach(sets.colorEntry(spread),1,0,1,1)
-	bx.attach(sets.colorLabel("Compress"),0,1,1,1) #Enlarge
-	bx.attach(reduce,1,1,1,1)
-	bx.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,2,2,1)
-	bx.attach(sets.colorButton("Done",done,"Apply",combo),0,3,2,1)
+	global box
+	box=Gtk.Grid(hexpand=True)
+	box.attach(sets.colorLabel("Spread/Compress N samples"),0,0,1,1)
+	box.attach(sets.colorEntry(spread),1,0,1,1)
+	box.attach(sets.colorLabel("Compress"),0,1,1,1) #Enlarge
+	box.attach(reduce,1,1,1,1)
+	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,2,2,1)
+	box.attach(sets.colorButton("Done",done,"Apply",combo),0,3,2,1)
 	try:
 		#if from previous compress
 		global pointsorig
@@ -29,7 +33,7 @@ def open(b,combo):
 		del samplesorig
 	except:
 		pass
-	combo[0].set_child(bx)
+	combo[0].set_child(box)
 
 def cancel(b,combo):
 	try:
@@ -71,7 +75,12 @@ def done(b,combo):
 					except:
 						samplesorig=draw.samples.copy()
 					compress(b,end)
-				if not distance.test_all():
+				if (dtest:=distance.test_all())!=-1:
+					global distancebutton
+					a=distancebutton
+					distancebutton=distance.hold(dtest,distancebutton,callback,combo)
+					if not a:
+						box.attach(distancebutton,0,4,2,1)
 					return
 			else:
 				if sets.get_fulleffect():
@@ -87,6 +96,8 @@ def conclude(combo):
 	if sets.get_fulleffect():
 		blank.saved()
 		save.effect()
+def callback(b,combo):
+	conclude(combo)
 
 def enlarge(n):
 	s=len(draw.samples)

@@ -40,6 +40,15 @@ def test_all():
 			b=points.points[i]._coord_(draw.wstore,draw.hstore)
 			c=check(a,b,d)
 			if c!=-1:
-				return False
+				return i
 			a=b
-	return True
+	return -1
+
+def hold(t,b,f,d):
+	if not b:
+		b=sets.colorButton(text(t),f,"Confirm",d)
+		return b
+	b._set_text_(text(t))
+	return b
+def text(t):
+	return t.__str__()
