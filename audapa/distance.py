@@ -42,7 +42,7 @@ def test_all():
 			b=p._coord_(draw.wstore,draw.hstore)
 			c=check(a,b,d)
 			if c!=-1:
-				return p
+				return (p,c)
 			a=b
 	return None
 
@@ -52,5 +52,5 @@ def hold(p,b,f,d):
 		return b
 	b._set_text_(text(p))
 	return b
-def text(p):
-	return "Distance problem at "+pbox.inf(p)
+def text(z):
+	return "Distance problem at "+pbox.inf(z[0])+": "+z[1].__str__()
