@@ -14,12 +14,11 @@ dif=Gtk.EntryBuffer()
 #signbutton,maxlabel
 sign_positive="+"
 
-#box,pointsorig,pointsorigh,samplesorig
-distancebutton=None
+#box,distancebutton,pointsorig,pointsorigh,samplesorig
 
 def open(b,combo):
 	global signbutton,maxlabel,calculated,middlerate,pausesbool
-	global box,pointsorig,samplesorig,pointsorigh #since pauses can be more points
+	global box,distancebutton,pointsorig,samplesorig,pointsorigh #since pauses can be more points
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	#+/- button or not   entry   maxim
 	b2=Gtk.Box()
@@ -64,6 +63,7 @@ def open(b,combo):
 	for p in points.points:
 		pointsorigh.append(p._height_)
 	samplesorig=draw.samples.copy()
+	distancebutton=None
 	#and set
 	combo[0].set_child(box)
 

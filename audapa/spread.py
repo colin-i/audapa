@@ -13,8 +13,7 @@ from . import distance
 spread=Gtk.EntryBuffer()
 reduce=Gtk.CheckButton()
 
-#box,pointsorig,samplesorig
-distancebutton=None
+#box,pointsorig,samplesorig,distancebutton
 
 def open(b,combo):
 	global box
@@ -25,14 +24,14 @@ def open(b,combo):
 	box.attach(reduce,1,1,1,1)
 	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,2,2,1)
 	box.attach(sets.colorButton("Done",done,"Apply",combo),0,3,2,1)
+	global pointsorig,samplesorig,distancebutton
 	try:
 		#if from previous compress
-		global pointsorig
-		global samplesorig
 		del pointsorig
 		del samplesorig
 	except:
 		pass
+	distancebutton=None
 	combo[0].set_child(box)
 
 def cancel(b,combo):
