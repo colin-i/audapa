@@ -36,7 +36,7 @@ def open(p):
 	box.append(sets.colorButton(chr(0x21E5),snap.right,"Snap Right"))
 	box.append(sets.colorButton(chr(0x2912),snap.up,"Snap Up"))
 	box.append(sets.colorButton(chr(0x2913),snap.down,"Snap Down"))
-	info=sets.colorLabel(inf(p._offset_,p._height_))
+	info=sets.colorLabel(inf(p))
 	info.set_hexpand(True) #Default value: FALSE
 	info.set_halign(Gtk.Align.END)
 	box.append(info)
@@ -88,5 +88,5 @@ def and_inter_test(test):
 			p.get_parent().remove(p)
 	return b
 
-def inf(o,h):
-	return str(o)+' '+str(h)
+def inf(p):
+	return str(p._offset_)+' '+str(p._height_)

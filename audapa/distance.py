@@ -5,6 +5,7 @@ from . import draw
 from . import sets
 from . import point
 from . import points
+from . import pbox
 
 def test(x,y,p):
 	d=float(sets.distance.get_text())
@@ -37,18 +38,19 @@ def test_all():
 		d=float(sets.distance.get_text())
 		a=points.points[0]._coord_(draw.wstore,draw.hstore)
 		for i in range(1,sz):
-			b=points.points[i]._coord_(draw.wstore,draw.hstore)
+			p=points.points[i]
+			b=p._coord_(draw.wstore,draw.hstore)
 			c=check(a,b,d)
 			if c!=-1:
-				return i
+				return p
 			a=b
-	return -1
+	return None
 
-def hold(t,b,f,d):
+def hold(p,b,f,d):
 	if not b:
-		b=sets.colorButton(text(t),f,"Confirm",d)
+		b=sets.colorButton(text(p),f,"Confirm",d)
 		return b
-	b._set_text_(text(t))
+	b._set_text_(text(p))
 	return b
-def text(t):
-	return t.__str__()
+def text(p):
+	return "Distance problem at "+pbox.inf(p)

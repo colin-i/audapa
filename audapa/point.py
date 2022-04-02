@@ -130,4 +130,4 @@ class struct(Gtk.DrawingArea):
 		self.remove_controller(self._control_)
 		del points.points[ix]
 	def _info_(self):
-		pbox.info._set_text_(pbox.inf(self._offset_,self._height_))
+		pbox.info._set_text_(pbox.inf(self))

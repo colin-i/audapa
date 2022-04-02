@@ -75,7 +75,7 @@ def done(b,combo):
 					except:
 						samplesorig=draw.samples.copy()
 					compress(b,end)
-				if (dtest:=distance.test_all())!=-1:
+				if dtest:=distance.test_all():
 					global distancebutton
 					a=distancebutton
 					distancebutton=distance.hold(dtest,distancebutton,callback,combo)

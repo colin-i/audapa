@@ -70,7 +70,7 @@ def open(b,combo):
 def click(b,combo):
 	finish(combo)
 def finish(combo):
-	if (dtest:=distance.test_all())==-1:
+	if not (dtest:=distance.test_all()):
 		conclude(combo)
 	else:
 		global distancebutton
