@@ -86,7 +86,8 @@ turn_page=Gtk.CheckButton(active=True)
 full_effect=Gtk.CheckButton(active=True)
 def get_fulleffect():
 	return full_effect.get_active()
-distance=Gtk.EntryBuffer(text=(2*point.const).__str__())
+distance=Gtk.EntryBuffer(text="10")
+#(2*point.const).__str__() was good but will confilct with the example
 
 def add(bx,tx,x,n):
 	return adder(bx,tx,colorEntry(x),n)
