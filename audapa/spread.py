@@ -24,13 +24,14 @@ def open(b,combo):
 	box.attach(reduce,1,1,1,1)
 	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,2,2,1)
 	box.attach(sets.colorButton("Done",done,"Apply",combo),0,3,2,1)
-	global pointsorig,samplesorig,distancebutton
 	try:
+		global pointsorig,samplesorig
 		#if from previous compress
 		del pointsorig
 		del samplesorig
 	except:
 		pass
+	global distancebutton
 	distancebutton=None
 	combo[0].set_child(box)
 
