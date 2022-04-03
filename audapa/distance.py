@@ -1,6 +1,10 @@
 
 import math
 
+import decimal
+decimal.getcontext().prec=1
+decimal.getcontext().rounding = decimal.ROUND_DOWN
+
 from . import draw
 from . import sets
 from . import point
@@ -19,7 +23,8 @@ def check(a,b,d):
 	y=a[1]+point.const-b[1]
 	c=math.sqrt(pow(x,2)+pow(y,2))
 	if c<d: #<= can be another way
-		return c
+		e=decimal.Decimal(c%1)
+		return int(c)+e.normalize().__float__()
 	return -1
 
 def recurse(x,y,p,a,d):
