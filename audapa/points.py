@@ -124,6 +124,7 @@ def write(f_in):
 			a=play.wavefile
 			d=[d,(a.getsampwidth(),a.getnchannels(),a.getframerate(),draw.length)]
 			json.dump(d,f)
+			print(f_out)
 	elif os.path.exists(f_out):
 		os.remove(f_out)
 def read(f_in):
