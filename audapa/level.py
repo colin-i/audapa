@@ -173,25 +173,24 @@ def modify():
 						#at positiv loud need to go like sibling if it's 0 not plus only
 						if i>0:
 							psign(points.points[i-1],p,a,sz)
-						elif i+1<rng:
+						else:
 							psign(points.points[i+1],p,a,sz)
 					else:
 						psign(p,p,a,sz)
 		else:
 			rng=len(points.points)
 			for i in range(0,rng):
-				if anchor(i):
-					p=points.points[i]
-					if p._height_>=0:
-						if a>=p._height_:
-							p._height_=0
-						else:
-							p._height_-=a
+				p=points.points[i]
+				if p._height_>=0:
+					if a>=p._height_:
+						p._height_=0
 					else:
-						if a>=-p._height_:
-							p._height_=0
-						else:
-							p._height_+=a
+						p._height_-=a
+				else:
+					if a>=-p._height_:
+						p._height_=0
+					else:
+						p._height_+=a
 		resolve(pauses)
 		maxlabel._set_text_(maximum())
 		save.apply()
