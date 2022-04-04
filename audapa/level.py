@@ -41,16 +41,14 @@ def open(b,combo):
 	b3.append(middlerate)
 	b3.append(calculated)
 	box.append(b3)
-	b4=Gtk.Box()
-	b4.append(sets.colorLabel("Keep pauses"))
+	b4=Gtk.Grid()
+	b4.attach(left_label("Keep pauses"),0,0,1,1)
 	pausesbool=Gtk.CheckButton(active=True)
-	b4.append(pausesbool)
-	box.append(b4)
-	b5=Gtk.Box()
-	b5.append(sets.colorLabel("Keep anchor points"))
+	b4.attach(pausesbool,1,0,1,1)
+	b4.attach(left_label("Keep anchor points"),0,1,1,1)
 	anchorbool=Gtk.CheckButton(active=True)
-	b5.append(anchorbool)
-	box.append(b5)
+	b4.attach(anchorbool,1,1,1,1)
+	box.append(b4)
 	#Calculate
 	calc=sets.colorButton("Set",calcs,"Calculate")
 	box.append(calc)
@@ -71,6 +69,10 @@ def open(b,combo):
 	distancebutton=None
 	#and set
 	combo[0].set_child(box)
+def left_label(a):
+	b=sets.colorLabel(a)
+	b.set_halign(Gtk.Align.START)
+	return b
 
 def click(b,combo):
 	finish(combo)
