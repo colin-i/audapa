@@ -9,6 +9,8 @@ from . import draw
 from . import seloff
 from . import points
 from . import build
+from . import forms
+from . import drawscroll
 
 wavefile=None
 output=0x25B6
@@ -59,6 +61,8 @@ def launch():
 	points.read(f)
 	#samples from file
 	draw.get_samples(sampwidth,channels,data)
+	#only if size is less than the screen
+	forms.drawpoints(drawscroll.win.get_width(),drawscroll.win.get_height())
 def open(sampwidth,channels,rate):
 	global audio,stream
 	# create pyaudio stream

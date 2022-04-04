@@ -5,7 +5,7 @@ from . import sets
 from . import draw
 from . import points
 from . import save
-from . import graph
+from . import move
 from . import point
 from . import distance
 
@@ -17,7 +17,7 @@ sign_positive="+"
 #box,distancebutton,pointsorig,pointsorigh,samplesorig
 
 def open(b,combo):
-	global signbutton,maxlabel,calculated,middlerate,pausesbool
+	global signbutton,maxlabel,calculated,middlerate,pausesbool,anchorbool
 	global box,distancebutton,pointsorig,samplesorig,pointsorigh #since pauses can be more points
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	#+/- button or not   entry   maxim
@@ -46,6 +46,11 @@ def open(b,combo):
 	pausesbool=Gtk.CheckButton(active=True)
 	b4.append(pausesbool)
 	box.append(b4)
+	b5=Gtk.Box()
+	b5.append(sets.colorLabel("Keep anchor points"))
+	anchorbool=Gtk.CheckButton(active=True)
+	b5.append(anchorbool)
+	box.append(b5)
 	#Calculate
 	calc=sets.colorButton("Set",calcs,"Calculate")
 	box.append(calc)
@@ -79,12 +84,11 @@ def finish(combo):
 		if not a:
 			box.append(distancebutton)
 def conclude(combo):
-	done(combo) #this here, else problems at get_native().get_surface()
+	move.saved(combo) #this here, else problems at get_native().get_surface()
 	if sets.get_fulleffect():
 		save.saved()
 	else:
 		abort_samples()
-	graph.redraw()
 def callback(b,combo):
 	conclude(combo)
 
@@ -136,6 +140,15 @@ def maximum():
 def not_a_digit(buf):
 	buf.set_text("0",-1) #isdigit failed
 
+def psign(r,p,a,sz):
+	if r._height_>=0:
+		p._height_+=a
+		if p._height_>=sz:
+			p._height_=sz-1
+	else:
+		p._height_-=a
+		if p._height_<-sz:
+			p._height_=-sz
 def calcs(b,d):
 	modify()
 def modify():
@@ -145,52 +158,54 @@ def modify():
 		b=int(maxlabel.get_text())
 		if a>b:
 			dif.set_text(b.__str__(),-1)
-			return
+			return False
 		restore() #need no more points or points tend to flat
 		sz,sgn=size_sign()
 		pauses=[]
 		if sgn:
 			rng=len(points.points)
 			for i in range(0,rng):
-				if pause(i,pauses):
+				if pause(i,pauses) and anchor(i):
 					p=points.points[i]
-					if p._height_>=0:
-						p._height_+=a
-						if p._height_>=sz:
-							p._height_=sz-1
+					if p._height_==0 and rng>1:
+						#at positiv loud need to go like sibling if it's 0 not plus only
+						if i>0:
+							psign(points.points[i-1],p,a,sz)
+						elif i+1<rng:
+							psign(points.points[i+1],p,a,sz)
 					else:
-						p._height_-=a
-						if p._height_<-sz:
-							p._height_=-sz
+						psign(p,p,a,sz)
 		else:
 			rng=len(points.points)
 			for i in range(0,rng):
-				p=points.points[i]
-				if p._height_>=0:
-					if a>=p._height_:
-						p._height_=0
+				if anchor(i):
+					p=points.points[i]
+					if p._height_>=0:
+						if a>=p._height_:
+							p._height_=0
+						else:
+							p._height_-=a
 					else:
-						p._height_-=a
-				else:
-					if a>=-p._height_:
-						p._height_=0
-					else:
-						p._height_+=a
+						if a>=-p._height_:
+							p._height_=0
+						else:
+							p._height_+=a
 		resolve(pauses)
 		maxlabel._set_text_(maximum())
 		save.apply()
 		cdata,mdata=calculate()
 		calculated._set_text_(cdata)
 		middlerate._set_text_(mdata)
-		return
+		return True
 	not_a_digit(dif)
+	return False
 
 def done(combo):
 	combo[0].set_child(combo[1])
 
 def ready(b,combo):
-	modify()
-	finish(combo)
+	if modify():
+		finish(combo)
 
 def calculate():
 	s=len(points.points)
@@ -214,11 +229,11 @@ def pause(i,lst):
 		a=points.points[i]
 		if a._height_==0:
 			j=i+1
+			first=len(lst)==0
 			if j!=len(points.points):
 				b=points.points[j]
 				if b._height_==0:
 					#here is a sound pause
-					first=len(lst)==0
 					if first or lst[len(lst)-1]!=i:
 						#is new
 						lst.append(i)
@@ -230,9 +245,15 @@ def pause(i,lst):
 						#extend only
 						lst[len(lst)-1]=j
 						return False
-			elif lst[len(lst)-1]==i:
-				#last needs false
+			elif (not first) and lst[len(lst)-1]==i:
+				#last that is in pause needs false
 				return False
+	return True
+def anchor(i):
+	if anchorbool.get_active():
+		if i>0 and i+1<len(points.points) and points.points[i]._height_==0 and points.points[i-1]._height_!=0 and \
+		points.points[i+1]._height_!=0 and ((points.points[i-1]._height_^points.points[i+1]._height_)<0):
+			return False
 	return True
 
 def resolve(pauses):

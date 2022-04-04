@@ -65,6 +65,8 @@ def clear():
 		x=y
 def redraw(w,h):
 	clear()
+	drawpoints(w,h)
+def drawpoints(w,h):
 	sz=len(points.points)
 	for i in range (0,sz):
 		if points.points[i]._offset_<draw.offset:
