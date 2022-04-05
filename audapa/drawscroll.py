@@ -8,7 +8,7 @@ from . import point
 from . import step
 
 #size,landscape,win
-#size here is 3 times
+#size here is "f" times
 
 def set_landscape():
 	global landscape
@@ -17,7 +17,7 @@ def calculate(n):
 	w=win.get_width()
 	h=win.get_height()
 	d=draw.area
-	f=3
+	f=2
 	global size
 	if landscape:
 		#30000 maximum size of an X window
