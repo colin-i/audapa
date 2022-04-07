@@ -9,6 +9,7 @@ from . import step
 
 #size,landscape,win
 #size here is "f" times
+factor=2
 
 def set_landscape():
 	global landscape
@@ -17,11 +18,10 @@ def calculate(n):
 	w=win.get_width()
 	h=win.get_height()
 	d=draw.area
-	f=2
 	global size
 	if landscape:
 		#30000 maximum size of an X window
-		if n>(size:=(w*f)):
+		if n>(size:=(w*factor)):
 			n=size
 		elif n<=w:#cannot go back at overshot/scroll without this
 			if draw.length>w:
@@ -33,7 +33,7 @@ def calculate(n):
 			r_offset.cnged(win.get_hadjustment(),w)
 			return True
 	else:
-		if n>(size:=(h*f)):
+		if n>(size:=(h*factor)):
 			n=size
 		elif n<=h:
 			if draw.length>h:
