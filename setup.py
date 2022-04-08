@@ -1,5 +1,9 @@
 pkname='audapa'
 
+import pathlib
+HERE = pathlib.Path(__file__).parent
+README = (HERE / "info.md").read_text()
+
 from setuptools import setup
 setup(name=pkname,
 	version='1.0.0',
@@ -10,7 +14,9 @@ setup(name=pkname,
 		"pycairo>=1.20.0","PyGObject>=3.40",
 		"appdirs>=1.4.3",
 		"PyAudio>=0.2.11"],
-	description='Audio',
+	description='Audio wave file manipulator',
+	long_description=README,
+	long_description_content_type="text/markdown",
 	url='https://github.com/colin-i/audapa',
 	author='colin-i',
 	author_email='costin.botescu@gmail.com',

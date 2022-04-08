@@ -1,6 +1,13 @@
-# Audaparta
-Not ready \
-python3.8 \
-PortAudio and c lib (with libportaudio2) \
-these will be with ${python3:Depends}: python3-pyaudio, python3-appdirs, python3-cairo, python3-gi \
-gir1.2-gtk-4.0, gir1.2-glib-2.0
+# Audapa
+
+## Install
+
+## From source
+Using python3.8.\
+With setuptools package (setup.py or the other python setup script).
+
+## [Info](https://github.com/colin-i/audapa/blob/master/info.md)
+
+## Donations
+The *donations* section is here
+*https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6*

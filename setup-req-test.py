@@ -25,4 +25,4 @@ if test.returncode:
 import appdirs
 
 if len(sys.argv)<2:
-	subprocess.run([sys.executable,'-m','pip','install','--user','.'])
+	subprocess.run([sys.executable,'setup.py','install','--user'])
