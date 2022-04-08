@@ -6,6 +6,7 @@ from . import sets
 from . import drawscroll
 from . import draw
 from . import level
+from . import r_offset
 
 def open(b,d):
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -19,29 +20,52 @@ def open(b,d):
 	bx.append(sets.colorEntry(buf))
 	bx.append(sets.colorButton("Go",go,"Proceed",[max,buf]))
 	box.append(bx)
-	box.append(sets.colorButton("First",cancel,"Start"))
-	box.append(sets.colorButton("Previous",cancel,"0" if cur==0 else (cur-1).__str__()))
-	box.append(sets.colorButton("Next",cancel,x if cur==max else (cur+1).__str__(),max))
-	box.append(sets.colorButton("Last",cancel,"End",max))
+	box.append(sets.colorButton("First",callback,"Start",0))
+	a=0 if cur==0 else (cur-1)
+	box.append(sets.colorButton("Previous",callback,a.__str__(),a))
+	a=x if cur==max else (cur+1)
+	box.append(sets.colorButton("Next",callback,a.__str__(),a))
+	box.append(sets.colorButton("Last",callback,"End",max))
 	box.append(sets.colorButton("Cancel",cancel,"Abort"))
 	info.win.set_child(box)
 
 def cancel(b,combo):
+	finish()
+def finish():
 	info.win.set_child(info.box)
+def done(a):
+	draw.offset=page()*a
+	finish()
+	r_offset.cged(adjust())
+	draw.redraw()
+
+def callback(b,a):
+	done(a)
+
+def page():
+	if drawscroll.landscape:
+		return drawscroll.win.get_width()*drawscroll.factor
+	return drawscroll.win.get_width()*drawscroll.factor
+def adjust():
+	if drawscroll.landscape:
+		return drawscroll.win.get_hadjustment()
+	return drawscroll.win.get_vadjustment()
 
 def get_vals():
 	of=draw.offset
-	if drawscroll.landscape:
-		page=drawscroll.win.get_width()*drawscroll.factor
-	else:
-		page=drawscroll.win.get_width()*drawscroll.factor
-	cur=int(of/page)
-	max=int(draw.length/page)
+	p=page()
+	cur=int(of/p)
+	max=int(draw.length/p)
 	return (cur,max)
 
 def go(b,d):
 	max,buf=d
 	a=buf.get_text()
 	if a.isdigit():
-		pass
+		b=int(a)
+		if b>max:
+			buf.set_text(max.__str__(),-1)
+			return
+		done(b)
+		return
 	level.not_a_digit(buf)
