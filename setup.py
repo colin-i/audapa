@@ -3,6 +3,7 @@
 #	apt download audapa
 #	sudo dpkg --ignore-depends=python3-pyaudio -i audapa.......deb
 #but then, to not see broken count now and then, must remove python3-pyaudio at audapa package dependencies from /var/lib/dpkg/status
+#A SOLUTION: overwrite ./build/lib.linux-x86_64-3.10/_portaudio.cpython-310-x86_64-linux-gnu.so at python3-pyaudio equivalent
 
 pkname='audapa'
 
