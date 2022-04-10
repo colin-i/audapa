@@ -1,3 +1,8 @@
+
+#if there is the problam like in info.md with python10:
+#	apt download audapa
+#	sudo dpkg --ignore-depends=python3-pyaudio -i audapa.......deb
+
 pkname='audapa'
 
 import pathlib
@@ -6,7 +11,7 @@ README = (HERE / "info.md").read_text()
 
 from setuptools import setup
 setup(name=pkname,
-	version='1.0.0',
+	version='1.0.1',
 	packages=[pkname],
 	#optionals
 	python_requires='>=3.8',
