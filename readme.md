@@ -1,6 +1,10 @@
 # Audapa
 
 ## Install
+From pypi:
+```sh
+pip install audapa
+```
 
 ## From source
 Using python3.8.\
