@@ -11,6 +11,7 @@ from . import points
 from . import build
 from . import forms
 from . import drawscroll
+from . import error
 
 wavefile=None
 output=0x25B6
@@ -22,8 +23,8 @@ def activate(en,d):
 	launch()
 def toggle(b,d):
 	if not wavefile:
-		launch()
-		start()
+		if launch():
+			start()
 		return
 	if stream.is_stopped():
 		start()
@@ -47,22 +48,27 @@ def waveopen(f):
 	build.button.set_sensitive(False)
 
 def launch():
-	f=entry.get_text()
-	waveopen(f)
-	sampwidth=wavefile.getsampwidth()
-	rate = wavefile.getframerate()
-	channels = wavefile.getnchannels()
-	draw.length=wavefile.getnframes()
-	data = wavefile.readframes(draw.length)
-	wavefile.rewind()#for playing
-	#pyaudio/draw/bar
-	open(sampwidth,channels,rate)
-	#points
-	points.read(f)
-	#samples from file
-	draw.get_samples(sampwidth,channels,data)
-	#only if size is less than the screen
-	forms.drawpoints(drawscroll.win.get_width(),drawscroll.win.get_height())
+	try:
+		f=entry.get_text()
+		waveopen(f)
+		sampwidth=wavefile.getsampwidth()
+		rate = wavefile.getframerate()
+		channels = wavefile.getnchannels()
+		draw.length=wavefile.getnframes()
+		data = wavefile.readframes(draw.length)
+		wavefile.rewind()#for playing
+		#pyaudio/draw/bar
+		open(sampwidth,channels,rate)
+		#points
+		points.read(f)
+		#samples from file
+		draw.get_samples(sampwidth,channels,data)
+		#only if size is less than the screen
+		forms.drawpoints(drawscroll.win.get_width(),drawscroll.win.get_height())
+	except Exception as e:
+		error.open(e.__str__())
+		return False
+	return True
 def open(sampwidth,channels,rate):
 	global audio,stream
 	# create pyaudio stream
