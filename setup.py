@@ -13,7 +13,7 @@ README = (HERE / "info.md").read_text()
 
 from setuptools import setup
 setup(name=pkname,
-	version='1.0.5',
+	version='1.0.6',
 	packages=[pkname],
 	#optionals
 	python_requires='>=3.8',

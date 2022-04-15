@@ -12,17 +12,18 @@ def init():
 	return button
 
 def create(b,d):
-	f=play.entry.get_text()
-	#read points and build info
-	info=points.read(f)
-	if info:
-		sampwidth,channels,rate,draw.length=info
-		play.open(sampwidth,channels,rate)
-		#samples
-		draw.samples=[0] * draw.length # [0 for i in range(draw.length)]
-		save.apply()
-		#for playback
-		play.save_file(f,sampwidth,channels,rate)
-		play.waveopen(f)
-	else:
-		error.open("The file "+f+" does not exist.")
+	try:
+		f=play.entry.get_text()
+		#read points and build info
+		info=points.read(f,True)
+		if info:
+			sampwidth,channels,rate,draw.length=info
+			play.open(sampwidth,channels,rate)
+			#samples
+			draw.samples=[0] * draw.length # [0 for i in range(draw.length)]
+			save.apply()
+			#for playback
+			play.save_file(f,sampwidth,channels,rate)
+			play.waveopen(f)
+	except Exception as e:
+		error.open(e.__str__())

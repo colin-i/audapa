@@ -127,9 +127,11 @@ def write(f_in):
 			print(f_out)
 	elif os.path.exists(f_out):
 		os.remove(f_out)
-def read(f_in):
+def read(f_in,fast):
 	f_out=fpath(f_in,fpath_js)
-	if os.path.exists(f_out):
+	if not fast:
+		fast=os.path.exists(f_out)
+	if fast:
 		with open(f_out) as f:
 			if data:=f.read():
 				d=json.loads(data)

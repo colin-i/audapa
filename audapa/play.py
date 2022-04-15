@@ -60,7 +60,7 @@ def launch():
 		#pyaudio/draw/bar
 		open(sampwidth,channels,rate)
 		#points
-		points.read(f)
+		points.read(f,False)
 		#samples from file
 		draw.get_samples(sampwidth,channels,data)
 		#only if size is less than the screen
