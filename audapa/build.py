@@ -4,6 +4,7 @@ from . import play
 from . import draw
 from . import save
 from . import sets
+from . import error
 
 def init():
 	global button
@@ -23,3 +24,5 @@ def create(b,d):
 		#for playback
 		play.save_file(f,sampwidth,channels,rate)
 		play.waveopen(f)
+	else:
+		error.open("The file "+f+" does not exist.")
