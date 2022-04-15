@@ -21,7 +21,10 @@ def redraw():
 	draw.area.queue_draw()
 
 def set(i,v):
-	draw.samples[i]=int(v) #there are troubles at write file without int
+	try:
+		draw.samples[i]=int(v) #there are troubles at write file without int
+	except:
+		pass #this can be ignored
 def apply():
 	s=len(points.points)
 	if s>=2:
