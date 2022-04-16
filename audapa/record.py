@@ -30,6 +30,7 @@ def start(b,ready):
 		wavefile.setframerate(rate)
 		#visual
 		b._set_text_(chr(0x23F9))
+		print(w)
 		return
 	stop()
 	b._set_text_(chr(ready))
