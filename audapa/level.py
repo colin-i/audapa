@@ -214,6 +214,8 @@ def calculate():
 		n=0
 		start=points.points[0]._offset_
 		stop=points.points[s-1]._offset_
+		if stop>draw.length: #here and 2 more places (about samples length vs points length)
+			stop=draw.length
 		for i in range(start,stop):
 			n+=abs(draw.samples[i])
 		med=n/(stop-start)

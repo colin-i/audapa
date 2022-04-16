@@ -75,7 +75,7 @@ def drawpoints(w,h):
 			p=points.points[j]
 			if draw.offset+(w if drawscroll.landscape
 				 else h)<p._offset_:
-				if i>0:
+				if j>0:
 					graph.put(j,p,w,h)
 				return
 			p._put_(w,h,j)

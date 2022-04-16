@@ -40,6 +40,8 @@ def cgd(a,d):
 def calculate(pos):
 	#pos is is relative to draw
 	pos+=draw.offset
+	if pos>draw.length: #here and 2 more places (about samples length vs points length)
+		pos=draw.length
 	st=seloff.start._get_()
 	en=seloff.end._get_()
 	if st==0 and en==0:
