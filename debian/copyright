@@ -1,0 +1,51 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: audapa
+Upstream-Contact: <preferred name and address to reach the upstream project>
+Source: <url://example.com>
+#
+# Please double check copyright with the licensecheck(1) command.
+
+Files:     _audapacache_/example.wav.json
+           a
+           audapa/arc.py
+           audapa/arcbutton.py
+           audapa/bar.py
+           audapa/blank.py
+           audapa/build.py
+           audapa/delete.py
+           audapa/distance.py
+           audapa/draw.py
+           audapa/drawscroll.py
+           audapa/forms.py
+           audapa/goto.py
+           audapa/graph.py
+           audapa/info.py
+           audapa/level.py
+           audapa/loop.py
+           audapa/main.py
+           audapa/move.py
+           audapa/pbox.py
+           audapa/play.py
+           audapa/point.py
+           audapa/points.py
+           audapa/r_offset.py
+           audapa/record.py
+           audapa/reload.py
+           audapa/save.py
+           audapa/seloff.py
+           audapa/sets.py
+           audapa/snap.py
+           audapa/spread.py
+           audapa/step.py
+           b
+           c
+           info.md
+           readme.md
+           setup-req-test.py
+           setup.py
+Copyright: __NO_COPYRIGHT_NOR_LICENSE__
+License:   __NO_COPYRIGHT_NOR_LICENSE__
+
+#----------------------------------------------------------------------------
+# Files marked as NO_LICENSE_TEXT_FOUND may be covered by the following
+# license/copyright files.
