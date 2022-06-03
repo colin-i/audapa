@@ -1,5 +1,5 @@
 
-#if there is the problam like in info.md with python10:
+#if there is the problem like in info.md with python10:
 #	apt download audapa
 #	sudo dpkg --ignore-depends=python3-pyaudio -i audapa.......deb
 #but then, to not see broken count now and then, must remove python3-pyaudio at audapa package dependencies from /var/lib/dpkg/status
