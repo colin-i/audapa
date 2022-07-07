@@ -1,3 +1,9 @@
+audapa (1-9) jammy; urgency=medium
+
+  * python3-audio is not ok on jammy
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 07 Jul 2022 15:13:48 +0300
+
 audapa (1-8) jammy; urgency=medium
 
   * record print
