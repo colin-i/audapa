@@ -40,6 +40,9 @@ jobs:
        OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} amd64)
        wget ${OUTPUT}/+files/${name}_${version}_all.deb -O ${name}.deb
        dpkg -x ${name}.deb AppDir
+       OUTPUT=$(python3 lp2.py ppa pyaudioo 1-2 amd64)
+       wget ${OUTPUT}/+files/pyaudioo_1-2_all.deb -O pyaudio.deb
+       dpkg -x pyaudio.deb AppDir
       fi
       #dependencies
       downdeb () {
@@ -61,7 +64,7 @@ jobs:
       }
       downdeb libportaudio2 universe
       downdeb python3-appdirs main
-      downdeb python3-pyaudio universe
+      #downdeb python3-pyaudio universe
       #
       apd=AppDir
       cd ${apd}
