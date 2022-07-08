@@ -10,10 +10,11 @@ pkname='audapa'
 import pathlib
 HERE = pathlib.Path(__file__).parent
 README = (HERE / "info.md").read_text()
+ver=(HERE / "v2").read_text()
 
 from setuptools import setup
 setup(name=pkname,
-	version='1.0.8',
+	version=ver,
 	packages=[pkname],
 	#optionals
 	python_requires='>=3.8',
