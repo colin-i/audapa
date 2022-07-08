@@ -1,5 +1,8 @@
 
 #if there is the problem like in info.md with python10:
+# now: rpm modified pyaudio is at releases at my pyaudioo project. deb and appimage are ok
+#
+# for pypi and source:
 #	apt download audapa
 #	sudo dpkg --ignore-depends=python3-pyaudio -i audapa.......deb
 #but then, to not see broken count now and then, must remove python3-pyaudio at audapa package dependencies from /var/lib/dpkg/status

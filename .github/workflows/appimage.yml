@@ -42,7 +42,7 @@ jobs:
        wget ${OUTPUT}/+files/${name}_${version}_all.deb -O ${name}.deb
        dpkg -x ${name}.deb AppDir
        mv AppDir/usr/lib/python3.10 AppDir/usr/lib/python3 #it's ok on jammy
-       pya=1-3
+       pya=`wget -q https://raw.githubusercontent.com/colin-i/pyaudioo/master/debian/changelog -O - | head -1 | grep -Poe "[^\(]*(?=\))"`
        OUTPUT=$(python3 lp2.py ppa-staging pyaudioo ${pya} amd64)
        wget ${OUTPUT}/+files/pyaudioo_${pya}_all.deb -O pyaudio.deb
        dpkg -x pyaudio.deb AppDir
