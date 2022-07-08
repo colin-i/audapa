@@ -14,6 +14,7 @@ jobs:
      run: |
       name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
       name2=Audapa
+      sname=auda
       #
       mkdir -p AppDir
       file=runtime
@@ -93,7 +94,6 @@ jobs:
        ln -s ${pngfile} .DirIcon
       fi
       #launcher
-      sname=dico
       if [ ! -e "usr/bin/${sname}" ]; then
        echo launcher
        cd usr/bin
@@ -104,7 +104,7 @@ jobs:
       cd "\$(dirname "\$0")"
       cd ../
       unset PYTHONHOME
-      LD_LIBRARY_PATH="\$(pwd)/lib:\$(pwd)/lib/x86_64-linux-gnu" \
+      LD_LIBRARY_PATH="\$(pwd)/lib/x86_64-linux-gnu" \
        PYTHONPATH="\$(pwd)/lib/python3/dist-packages" \
        python3 bin/${sname}
       EOF
