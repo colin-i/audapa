@@ -11,6 +11,8 @@ Package: audapa
 Architecture: all
 Multi-Arch: foreign
 Depends: libportaudio2, gir1.2-gtk-4.0, gir1.2-glib-2.0, pyaudioo, python3-appdirs, python3-cairo, python3-gi, python3:any (>= 3.8~)
-#                                                                , ${misc:Depends}, ${python3:Depends}
-#                                                                , python3-pyaudio
+Provides:                                                python3-pyaudio (= 0.2.11-1.3ubuntu1)
+Conflicts:                                               python3-pyaudio (= 0.2.11-1.3ubuntu1)
+Replaces:                                                python3-pyaudio (= 0.2.11-1.3ubuntu1)
+#                                                        , ${misc:Depends}, ${python3:Depends}
 Description: Audio wave file manipulator
