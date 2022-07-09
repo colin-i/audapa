@@ -25,7 +25,7 @@ pip install audapa
 ```
 
 ## From source
-Using python3.8.\
+Requiring python >= 3.8 .\
 With setuptools package (setup.py or the other python setup script).
 
 ## [Info](https://github.com/colin-i/audapa/blob/master/info.md)
