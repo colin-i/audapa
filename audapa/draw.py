@@ -1,4 +1,3 @@
-import pyaudio
 import wave
 
 from gi.repository import Gtk,Gdk
