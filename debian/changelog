@@ -1,3 +1,9 @@
+audapa (1-16) lunar; urgency=medium
+
+  * pyaudio for 3.10 is fixed at lunar
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Mon, 13 Feb 2023 07:24:28 +0200
+
 audapa (1-15) jammy; urgency=medium
 
   * extra dependency/import

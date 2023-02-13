@@ -44,6 +44,7 @@ jobs:
        OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} amd64)
        wget ${OUTPUT}/+files/${name}_${version}_all.deb -O ${name}.deb
        dpkg -x ${name}.deb AppDir
+       #
        mv AppDir/usr/lib/python3.10 AppDir/usr/lib/python3 #it's ok on jammy
        pyanm=pyaudio
        pya=`wget -q https://raw.githubusercontent.com/colin-i/${pyanm}/master/debian/changelog -O - | head -1 | grep -Poe "[^\(]*(?=\))"`
@@ -51,6 +52,7 @@ jobs:
        OUTPUT=$(python3 lp2.py ppa ${pyanme} ${pya} amd64)
        wget ${OUTPUT}/+files/${pyanme}_${pya}_all.deb -O ${pyanm}.deb
        dpkg -x ${pyanm}.deb AppDir
+       #
       fi
       #dependencies
       downdeb () {
