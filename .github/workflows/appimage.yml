@@ -45,7 +45,7 @@ jobs:
        wget ${OUTPUT}/+files/${name}_${version}_all.deb -O ${name}.deb
        dpkg -x ${name}.deb AppDir
        #
-       mv AppDir/usr/lib/python3.10 AppDir/usr/lib/python3 #it's ok on jammy
+       mv AppDir/usr/lib/python3.11 AppDir/usr/lib/python3 #it's ok on jammy
        pyanm=pyaudio
        pya=`wget -q https://raw.githubusercontent.com/colin-i/${pyanm}/master/debian/changelog -O - | head -1 | grep -Poe "[^\(]*(?=\))"`
        pyanme=${pyanm}o
