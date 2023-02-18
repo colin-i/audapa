@@ -24,17 +24,4 @@ last=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^H
 ~/test/keyring && \
 ~/test/del x ${last} && \
 ~/test/arh2 ${last} && \
-echo pypi.org \? y \? && \
-read -n1 -t $((60*60*24)) ans && \
-if [ "${ans}" = "y" ]; then
-\
-#version at v2
-\
-~/test/pyin && \
-~/test/pyout && \
-~/test/pyin x
-# && \ yank
-else
-echo no
-fi
-# && \
+~/test/pypi
