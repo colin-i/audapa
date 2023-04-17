@@ -1,40 +1,10 @@
 
-#optional 2 dist
-
-last=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^Homepage" | grep -o [^/]*$)/releases/latest -s | jq .tag_name -r) && \
-~/test/debinit "${1}" ${2} && \
+~/test/debinit "${1}" && \
 ~/test/pub deb && \
 ~/test/keyring2 && \
 ~/test/deb && \
 ~/test/publp && \
-~/test/ai && \
-~/test/rpm && \
-~/test/pub appimage rpm && \
-~/test/rerpm && \
-~/test/del && \
-~/test/rel && \
-~/test/pub rel && \
-~/test/upapp && \
-~/test/uprpm && \
-~/test/pub upapp && \
-~/test/pub2 && \
 ~/test/publp2 && \
-~/test/lp && \
-~/test/lp x && \
-~/test/keyring && \
-~/test/del x ${last} && \
-~/test/arh2 ${last} && \
-echo pypi.org \? y \? && \
-read -n1 -t $((60*60*24)) ans && \
-if [ "${ans}" = "y" ]; then
-\
-#version at v2
-\
-~/test/pyin && \
-~/test/pyout && \
-~/test/pyin x
-# && \ yank
-else
-echo no
-fi
-# && \
+~/test/lp 0 kinetic && \
+~/test/lp x kinetic
+# && ~/test/pypi
