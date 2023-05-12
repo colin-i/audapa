@@ -8,6 +8,9 @@
 #but then, to not see broken count now and then, must remove python3-pyaudio at audapa package dependencies from /var/lib/dpkg/status
 #A SOLUTION: overwrite ./build/lib.linux-x86_64-3.10/_portaudio.cpython-310-x86_64-linux-gnu.so at python3-pyaudio equivalent
 
+#pip install --user .
+#pip uninstall audapa
+
 pkname='audapa'
 
 import pathlib
@@ -15,11 +18,26 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "info.md").read_text()
 ver=(HERE / "v2").read_text()
 
+#import subprocess
+#import setuptools.command.build_py
+#class BuildPyCommand(setuptools.command.build_py.build_py):
+#  """Custom build command."""
+#  def run(self):
+#    subprocess.run(['touch','qwerty.so'])
+#    subprocess.run(['mv','qwerty.so','audapa'])
+#    #MANIFEST.in include audapa/qwerty.so
+#    #and include_package_data=True
+#    setuptools.command.build_py.build_py.run(self)
+
 from setuptools import setup
 setup(name=pkname,
 	version=ver,
 	packages=[pkname],
 	#optionals
+	#cmdclass={
+	#	'build_py': BuildPyCommand
+	#},
+	#include_package_data=True,
 	python_requires='>=3.8',
 	install_requires=[
 		"pycairo>=1.20.0","PyGObject>=3.40",
