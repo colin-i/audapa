@@ -1,6 +1,8 @@
 
 from gi.repository import Gtk
 
+import math
+
 from . import sets
 from . import play
 from . import draw
@@ -38,10 +40,10 @@ def done(b,combo):
 		elif b==0:
 			mdist.set_text("1",-1)
 		else:
-			a=pow(2,8*play.wavefile.getsampwidth())*a/1000;
+			a=math.ceil(pow(2,8*play.wavefile.getsampwidth())*a/1000);
 
 			points.points.clear()
-			calculate(draw.samples,draw.length,int(a),b)
+			calculate(draw.samples,draw.length,a,b)
 
 			combo[0].set_child(combo[1])
 	else:
