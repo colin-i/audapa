@@ -18,7 +18,7 @@ sign_positive="+"
 
 def open(b,combo):
 	global signbutton,maxlabel,calculated,middlerate,pausesbool,anchorbool
-	global box,distancebutton,pointsorig,samplesorig,pointsorigh #since pauses can be more points
+	global box,distancebutton,pointsorig,pointsorigh,samplesorig #since pauses can be more points
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	#+/- button or not   entry   maxim
 	b2=Gtk.Box()
@@ -59,12 +59,14 @@ def open(b,combo):
 	box.append(bt)
 	bt=sets.colorButton("Done",ready,"Set & Return",combo)
 	box.append(bt)
+
 	#copies
 	#.copy() => it is not deep, _height_ same
 	pointsorig=points.points.copy()
 	pointsorigh=[]
 	for p in points.points:
 		pointsorigh.append(p._height_)
+
 	samplesorig=draw.samples.copy()
 	distancebutton=None
 	#and set

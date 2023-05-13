@@ -2,13 +2,13 @@
 from gi.repository import Gtk
 
 from . import sets
-from . import level
 from . import play
 from . import draw
+from . import points
 
 default_toler="1"
 toler=Gtk.EntryBuffer(text=default_toler)
-default_mdist="1"
+default_mdist="2"
 mdist=Gtk.EntryBuffer(text=default_mdist)
 
 def open(b,combo):
@@ -39,7 +39,10 @@ def done(b,combo):
 			mdist.set_text("1",-1)
 		else:
 			a=pow(2,8*play.wavefile.getsampwidth())*a/1000;
+
+			points.points.clear()
 			calculate(draw.samples,draw.length,int(a),b)
+
 			combo[0].set_child(combo[1])
 	else:
 		if not abool:
@@ -48,4 +51,14 @@ def done(b,combo):
 			mdist.set_text(default_mdist,-1)
 
 def calculate(samples,length,tolerance,min_dist):
-	pass
+	#exclude blank extremes
+	for i in range(0,length):
+		if samples[i]!=0:
+			break
+	for j in range(length-1,-1,-1):
+		if samples[j]!=0:
+			break
+	for k in range(i,j,min_dist):
+		#print(str(samples[k]))
+		#points.add(off,h,False,True,0)
+		pass
