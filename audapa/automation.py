@@ -8,7 +8,7 @@ from . import draw
 
 default_toler="1"
 toler=Gtk.EntryBuffer(text=default_toler)
-default_mdist="5"
+default_mdist="1"
 mdist=Gtk.EntryBuffer(text=default_mdist)
 
 def open(b,combo):
@@ -36,7 +36,7 @@ def done(b,combo):
 		if a>1000:
 			toler.set_text("1000",-1)
 		elif b==0:
-			mdist.set_text(default_mdist,-1)
+			mdist.set_text("1",-1)
 		else:
 			a=pow(2,8*play.wavefile.getsampwidth())*a/1000;
 			calculate(draw.samples,draw.length,int(a),b)
