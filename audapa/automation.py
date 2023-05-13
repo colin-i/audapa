@@ -58,7 +58,8 @@ def calculate(samples,length,tolerance,min_dist):
 	for j in range(length-1,-1,-1):
 		if samples[j]!=0:
 			break
-	for k in range(i,j,min_dist):
+	j=j+1
+	for k in range(i+min_dist,j):
 		#print(str(samples[k]))
 		#points.add(off,h,False,True,0)
 		pass
