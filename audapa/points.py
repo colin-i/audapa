@@ -120,7 +120,7 @@ def write(f_in):
 		with open(f_out,"w") as f:
 			d=[]
 			for po in points:
-				d.append([po._offset_,po._height_,po._inter_,po._convex_])
+				d.append([po._offset_,po._height_,po._inter_,po._concav_])
 			a=play.wavefile
 			d=[d,(a.getsampwidth(),a.getnchannels(),a.getframerate(),draw.length)]
 			json.dump(d,f)
@@ -144,5 +144,5 @@ def add(o,h,i,c,pos):
 	po._offset_=o
 	po._height_=h
 	po._inter_=i
-	po._convex_=c
+	po._concav_=c
 	points.insert(pos,po)

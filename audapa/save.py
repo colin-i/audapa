@@ -36,7 +36,7 @@ def apply():
 			x1=cur._offset_
 			y1=cur._height_
 			if cur._inter_ or prev._inter_:
-				apply_arc(x0,y0,x1,y1,prev._convex_)
+				apply_arc(x0,y0,x1,y1,prev._concav_)
 			else:
 				apply_line(x0,y0,x1,y1)
 

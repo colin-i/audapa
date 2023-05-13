@@ -277,4 +277,4 @@ def resolve(pauses):
 
 def insert(ix,more):
 	p=points.points[ix]
-	points.add(p._offset_,0,False,point.default_convex,ix+more)
+	points.add(p._offset_,0,False,point.default_concav,ix+more)
