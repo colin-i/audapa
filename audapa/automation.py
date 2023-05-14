@@ -23,6 +23,8 @@ stop=Gtk.CheckButton()
 default_stop="100"
 stop_after=Gtk.EntryBuffer(text=default_stop)
 
+print_test=Gtk.CheckButton()
+
 def open(b,combo):
 	box=Gtk.Grid(hexpand=True)
 	box.attach(sets.colorLabel("Tolerance"),0,0,1,1)
@@ -35,8 +37,10 @@ def open(b,combo):
 	bx.append(stop)
 	box.attach(bx,0,2,1,1)
 	box.attach(sets.colorEntry(stop_after),1,2,2,1)
-	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,3,3,1)
-	box.attach(sets.colorButton("Done",done,"Apply",combo),0,4,3,1)
+	box.attach(sets.colorLabel("Print test"),0,3,1,1)
+	box.attach(print_test,1,3,2,1)
+	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,4,3,1)
+	box.attach(sets.colorButton("Done",done,"Apply",combo),0,5,3,1)
 	combo[0].set_child(box)
 
 def cancel(b,combo):
@@ -69,7 +73,7 @@ def done(b,combo):
 
 			if not sets.get_fulleffect():
 				samplesorig=draw.samples.copy() #for line/arc effects from save, but is corrected step by step
-			calculate(draw.samples,draw.length,a,b,c)
+			calculate(draw.samples,draw.length,a,b,c,samplesorig)
 			if not sets.get_fulleffect():
 				draw.samples=samplesorig
 
@@ -84,7 +88,7 @@ def done(b,combo):
 		if not cbool:
 			stop_after.set_text(default_stop,-1)
 
-def calculate(samples,length,tolerance,min_dist,max):
+def calculate(samples,length,tolerance,min_dist,max,samplesorig):
 	#exclude blank extremes
 	for i in range(0,length): #not including length element
 		if samples[i]!=0:
@@ -101,7 +105,8 @@ def calculate(samples,length,tolerance,min_dist,max):
 		points.add(0,0,False,True,0) #p1
 		points.add(0,0,False,True,1) #p2
 
-		#tests=0
+		if print_test.get_active():
+			tests=0
 
 		while (i+min_dist)<j:  #can be i<j and to add below, but k=k+1 can still be on j
 			sum=0
@@ -112,8 +117,8 @@ def calculate(samples,length,tolerance,min_dist,max):
 			k=k+1
 			#apply min distance
 			points.points[1]._offset_=k
-			h=samples[k]
-			points.points[1]._height_=h
+			#h=samples[k]
+			points.points[1]._height_=samples[k]
 			save.apply() #or save.apply_line, will exclude at right
 
 			oldsum=0
@@ -133,22 +138,26 @@ def calculate(samples,length,tolerance,min_dist,max):
 					#get back if tolerance was better before
 					if olddif<newdif:
 						k=k-1
+						samples[k]=samplesorig[k]  #and restore the sample for next on it
 						points.points[1]._offset_=k
-						points.points[1]._height_=h
+						points.points[1]._height_=samples[k]
 						save.apply()
-					#	tests+=olddif
-					#else:
-					#	tests+=newdif
+						if print_test.get_active():
+							tests+=olddif
+					elif print_test.get_active():
+						tests+=newdif
 					break
 				olddif=newdif
-				h=samples[k]
-				sum+=h
-			pnts.append(points.newp(k,h,False,True))
+
+				#h=samples[k]  #h is lost elseway for olddif
+				sum+=samples[k]
+			pnts.append(points.newp(k,samples[k],False,True)) #points.points[1]._height_
 			if stop.get_active():
 				if len(pnts)==max:
 					break
 			i=k
-		#print(tests) #without olddif: 2071975. with: 1630990
+		if print_test.get_active():
+			print(tests) #without olddif: 1920903. with: 1592485 (at 4 861989)
 
 		#phase 2 apply arcs for better match
 		points.add(0,0,False,True,2) #p3
