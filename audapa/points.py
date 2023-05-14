@@ -139,10 +139,13 @@ def read(f_in,fast):
 					add(p[0],p[1],p[2],p[3],len(points))
 				return d[1]
 
-def add(o,h,i,c,pos):
+def newp(o,h,i,c):
 	po=point.struct()
 	po._offset_=o
 	po._height_=h
 	po._inter_=i
 	po._concav_=c
-	points.insert(pos,po)
+	return po
+
+def add(o,h,i,c,pos):
+	points.insert(pos,newp(o,h,i,c))

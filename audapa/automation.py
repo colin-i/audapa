@@ -7,10 +7,16 @@ from . import sets
 from . import play
 from . import draw
 from . import points
+from . import save
+from . import point
+from . import move
+from . import pbox
 
 default_toler="1"
 toler=Gtk.EntryBuffer(text=default_toler)
-default_mdist="2"
+
+#there is a min dist in Settigs, why another one? That is for manually placed points.
+default_mdist="5"
 mdist=Gtk.EntryBuffer(text=default_mdist)
 
 def open(b,combo):
@@ -43,9 +49,19 @@ def done(b,combo):
 			a=math.ceil(pow(2,8*play.wavefile.getsampwidth())*a/1000);
 
 			points.points.clear()
-			calculate(draw.samples,draw.length,a,b)
+			if point.lastselect:
+				pbox.close()
+				point.lastselect=None
 
-			combo[0].set_child(combo[1])
+			if not sets.get_fulleffect():
+				samplesorig=draw.samples.copy() #for line/arc effects from save, but is corrected step by step
+			calculate(draw.samples,draw.length,a,b)
+			if not sets.get_fulleffect():
+				draw.samples=samplesorig
+
+			move.saved(combo)
+			if sets.get_fulleffect():
+				save.effect()
 	else:
 		if not abool:
 			toler.set_text(default_toler,-1)
@@ -54,14 +70,49 @@ def done(b,combo):
 
 def calculate(samples,length,tolerance,min_dist):
 	#exclude blank extremes
-	for i in range(0,length):
+	for i in range(0,length): #not including length element
 		if samples[i]!=0:
 			break
 	for j in range(length-1,-1,-1):
 		if samples[j]!=0:
 			break
 	j=j+1
-	for k in range(i+min_dist,j):
-		#print(str(samples[k]))
-		#points.add(off,h,False,True,0)
-		pass
+
+	if (i+min_dist)<j: #only if there is a length of min 2 points
+		pnts=[]
+		pnts.append(points.newp(i,samples[i],False,True))
+
+		points.add(0,0,False,True,0) #p1
+		points.add(0,0,False,True,1) #p2
+
+		while (i+min_dist)<j:  #can be i<j and to add below, but k=k+1 can still be on j
+			sum=0
+			points.points[0]._offset_=i
+			points.points[0]._height_=samples[i]
+			for k in range(i,i+min_dist):
+				sum+=samples[k]
+			k=k+1
+			#apply min distance
+			points.points[1]._offset_=k
+			h=samples[k]
+			points.points[1]._height_=h
+			save.apply() #or save.apply_line, will exclude at right
+			for k in range(k+1,j):
+				points.points[1]._offset_=k
+				points.points[1]._height_=samples[k]
+				save.apply()
+				newsum=0
+				for l in range(i,k):
+					newsum+=samples[l]
+				if abs(newsum-sum)>tolerance:
+					#get back when tolerance was fine
+					k=k-1
+					points.points[1]._offset_=k
+					points.points[1]._height_=h
+					save.apply()
+					break
+				h=samples[k]
+				sum+=h
+			pnts.append(points.newp(k,h,False,True))
+			i=k
+		points.points=pnts
