@@ -98,7 +98,7 @@ def calculate(samples,length,tolerance,min_dist,max,samplesorig):
 			break
 	j=j+1
 
-	if (i+min_dist)<j: #only if there is a length of min 2 points
+	if (i+min_dist+1)<j: #only if there is a length of min 2 points
 		pnts=[]
 		pnts.append(points.newp(i,samples[i],False,True))
 
@@ -108,56 +108,48 @@ def calculate(samples,length,tolerance,min_dist,max,samplesorig):
 		if print_test.get_active():
 			tests=0
 
-		while (i+min_dist)<j:  #can be i<j and to add below, but k=k+1 can still be on j
+		while (i+min_dist+1)<j:  #j can be length
 			sum=0
 			points.points[0]._offset_=i
-			points.points[0]._height_=samples[i]
-			for k in range(i,i+min_dist):
-				sum+=samples[k]
-			k=k+1
-			#apply min distance
-			points.points[1]._offset_=k
-			#h=samples[k]
-			points.points[1]._height_=samples[k]
-			save.apply() #or save.apply_line, will exclude at right
+			points.points[0]._height_=samplesorig[i]
+			for l in range(i,i+min_dist): #apply min distance
+				sum+=samplesorig[l]
 
-			oldsum=0
-			for l in range(i,k):
-				oldsum+=samples[l]
-			olddif=abs(oldsum-sum)
+			for k in range(i+min_dist+1,j):
+				sum+=samplesorig[k-1]
 
-			for k in range(k+1,j):
 				points.points[1]._offset_=k
-				points.points[1]._height_=samples[k]
-				save.apply()
+				points.points[1]._height_=samplesorig[k]
+				save.apply() #or save.apply_line, will exclude at right
 				newsum=0
 				for l in range(i,k):
 					newsum+=samples[l]
-				newdif=abs(newsum-sum)
-				if newdif>tolerance:
-					#get back if tolerance was better before
-					if olddif<newdif:
-						k=k-1
-						samples[k]=samplesorig[k]  #and restore the sample for next on it
-						points.points[1]._offset_=k
-						points.points[1]._height_=samples[k]
-						save.apply()
-						if print_test.get_active():
-							tests+=olddif
-					elif print_test.get_active():
-						tests+=newdif
-					break
-				olddif=newdif
 
-				#h=samples[k]  #h is lost elseway for olddif
-				sum+=samples[k]
-			pnts.append(points.newp(k,samples[k],False,True)) #points.points[1]._height_
+				newdif=abs(newsum-sum)
+				if newdif>tolerance: #get back one place
+					k=k-1
+					samples[k]=samplesorig[k]  #and restore the sample in case it is last
+					points.points[1]._offset_=k
+					points.points[1]._height_=samplesorig[k]
+					save.apply()
+					if print_test.get_active():
+						sum-=samplesorig[k]
+						newsum=0
+						for l in range(i,k):
+							newsum+=samples[l]
+						newdif=abs(newsum-sum)
+					break
+			pnts.append(points.newp(k,samplesorig[k],False,True)) #points.points[1]._height_
+			i=k
+
+			if print_test.get_active():
+				tests+=newdif
+
 			if stop.get_active():
 				if len(pnts)==max:
 					break
-			i=k
 		if print_test.get_active():
-			print(tests) #without olddif: 1920903. with: 1592485 (at 4 861989)
+			print(tests)  #the two tolerances at start will trade precision for more code
 
 		#phase 2 apply arcs for better match
 		points.add(0,0,False,True,2) #p3
