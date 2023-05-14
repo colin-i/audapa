@@ -136,9 +136,9 @@ def calculate(samples,length,tolerance,min_dist,max):
 						points.points[1]._offset_=k
 						points.points[1]._height_=h
 						save.apply()
-					#	tests+=newdif
-					#else:
 					#	tests+=olddif
+					#else:
+					#	tests+=newdif
 					break
 				olddif=newdif
 				h=samples[k]
@@ -148,7 +148,7 @@ def calculate(samples,length,tolerance,min_dist,max):
 				if len(pnts)==max:
 					break
 			i=k
-		#print(tests) #without olddif: 2784363. with: 2609571
+		#print(tests) #without olddif: 2071975. with: 1630990
 
 		#phase 2 apply arcs for better match
 		points.add(0,0,False,True,2) #p3
