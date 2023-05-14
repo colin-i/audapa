@@ -12,7 +12,7 @@ def effect():
 	apply()
 	saved()
 def saved():
-	reload.file()
+	reload.file() #for playback , there is a wavefile.readframes at the callback
 	redraw()
 
 def redraw():

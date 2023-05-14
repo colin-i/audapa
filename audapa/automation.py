@@ -61,7 +61,7 @@ def done(b,combo):
 
 			move.saved(combo)
 			if sets.get_fulleffect():
-				save.effect()
+				save.saved()
 	else:
 		if not abool:
 			toler.set_text(default_toler,-1)
