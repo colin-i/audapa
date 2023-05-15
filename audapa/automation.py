@@ -1,5 +1,5 @@
 
-from gi.repository import Gtk,GLib
+from gi.repository import Gtk
 
 from . import sets   #colorLabel,...
 from . import play   #wavefile
@@ -22,7 +22,11 @@ default_stop="100"
 stop_after=Gtk.EntryBuffer(text=default_stop)
 
 print_test=Gtk.CheckButton()
+
 skip_phase2=Gtk.CheckButton()
+pause=Gtk.CheckButton()
+default_pause="100"
+pause_points=Gtk.EntryBuffer(text=default_pause)
 
 def open(b,combo):
 	box=Gtk.Grid(hexpand=True)
@@ -46,8 +50,14 @@ def open(b,combo):
 	box.attach(sets.colorLabel("Skip phase 2"),0,4,1,1)
 	box.attach(skip_phase2,1,4,2,1)
 
-	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,5,3,1)
-	box.attach(sets.colorButton("Done",done,"Apply",combo),0,6,3,1)
+	bx=Gtk.Box()
+	bx.append(sets.colorLabel("At phase 2, pause every N points"))
+	bx.append(pause)
+	box.attach(bx,0,5,1,1)
+	box.attach(sets.colorEntry(pause_points),1,5,2,1)
+
+	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,6,3,1)
+	box.attach(sets.colorButton("Done",done,"Apply",combo),0,7,3,1)
 	combo[0].set_child(box)
 
 def cancel(b,combo):
@@ -60,24 +70,29 @@ def done(b,combo):
 	bbool=b.isdigit()
 	c=stop_after.get_text()
 	cbool=c.isdigit()
-	if abool and bbool and cbool:
+	d=pause_points.get_text()
+	dbool=d.isdigit()
+	if abool and bbool and cbool and dbool:
 		a=int(a)
 		b=int(b)
 		c=int(c)
+		d=int(d)
 		if a>1000:
 			toler.set_text("1000",-1)
 		elif b==0:
 			mdist.set_text("1",-1)
 		elif c<2:
 			stop_after.set_text("2",-1)
+		elif d<1:
+			pause_points.set_text("1",-1)
 		else:
 			a=round(pow(2,8*play.wavefile.getsampwidth())*a/1000)
 
 			points.points.clear()
 
-			#samplesorig= #used to not store height on another var at phase1, and at phase2
-			waiter(combo)
-			GLib.timeout_add(0,worker,[a,b,c,draw.samples.copy(),combo])
+			bigpack=worker(a,b,c,d,draw.samples.copy(),combo)
+			if bigpack!=None:
+				waiter(combo,bigpack)
 	else:
 		if not abool:
 			toler.set_text(default_toler,-1)
@@ -85,8 +100,11 @@ def done(b,combo):
 			mdist.set_text(default_mdist,-1)
 		if not cbool:
 			stop_after.set_text(default_stop,-1)
+		if not dbool:
+			pause_points.set_text(default_pause,-1)
 
-def calculate(samples,length,tolerance,min_dist,max,samplesorig):
+#None/continue_pack
+def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 	#exclude blank extremes
 	for i in range(0,length): #not including length element
 		if samples[i]!=0:
@@ -145,57 +163,29 @@ def calculate(samples,length,tolerance,min_dist,max,samplesorig):
 			print("dif sum "+str(tests))  #the two tolerances at start will trade precision for more code
 			print("points len "+str(len(pnts)))
 			print("avg dist "+str(tests2/len(pnts)))
-			tests=0
+			global tests3
+			tests3=0
 
 		#phase 2 apply arcs for better match
 		pnts2=pnts.copy()
 		if skip_phase2.get_active()==False:
 			points.add(0,0,False,True,2) #p3
 			points.points[1]._inter_=True
-			aux=points.points[1]
-			ix=0
-			sz=len(pnts)-1
-			for i in range(0,sz):
-				xleft=pnts[i]._offset_;xright=pnts[i+1]._offset_
-				ystart=pnts[i]._height_;yend=pnts[i+1]._height_
-				points.points[0]._offset_=xleft;points.points[0]._height_=ystart
-				points.points[2]._offset_=xright;points.points[2]._height_=yend
 
-				#calculate current dif
-				startdif=0
-				for k in range(xleft,xright):
-					startdif+=abs(samples[k]-samplesorig[k])
+			i,ix,is_done=calculate_resume(0,0,pnts,pnts2,samples,samplesorig,pause_after)
+			if is_done==False:
+				return [i,ix,pnts,pnts2,samples,samplesorig,pause_after]
 
-				bestmatch=[startdif]+([None]*4)
-				arc(True,True  ,xleft,xright,ystart,yend,bestmatch,samples,samplesorig)
-				arc(True,False ,xleft,xright,ystart,yend,bestmatch,samples,samplesorig)
-				arc(False,True ,xleft,xright,ystart,yend,bestmatch,samples,samplesorig)
-				arc(False,False,xleft,xright,ystart,yend,bestmatch,samples,samplesorig)
-
-				if bestmatch[0]!=startdif:
-					points.points[0]._concav_=bestmatch[1];points.points[1]._concav_=bestmatch[2]
-					points.points[1]._offset_=bestmatch[3];points.points[1]._height_=bestmatch[4]
-					save.apply()
-
-					pnts2[ix]._concav_=points.points[0]._concav_
-					ix+=1
-					pnts2.insert(ix,points.newp(points.points[1]._offset_,points.points[1]._height_,True,points.points[1]._concav_))
-				else: #restore the line
-					points.points[1]=points.points[2]
-					points.points.pop()
-					save.apply()
-					points.points.insert(1,aux)
-				ix+=1
-
-				if print_test.get_active():
-					tests+=bestmatch[0]
-					print(" "+str(i),end='',flush=True)
 			if print_test.get_active():
-				print()
-				print("dif sum "+str(tests))
-				print("points len "+str(len(pnts2)))
+				tests_phase2(pnts2)
 
 		points.points=pnts2
+	return None
+
+def tests_phase2(pnts2):
+	print()
+	print("dif sum "+str(tests3))
+	print("points len "+str(len(pnts2)))
 
 def arc(a,b,xleft,xright,ystart,yend,bestmatch,samples,samplesorig):
 	points.points[0]._concav_=a;points.points[1]._concav_=b
@@ -216,34 +206,83 @@ def arc(a,b,xleft,xright,ystart,yend,bestmatch,samples,samplesorig):
 				bestmatch[3]=x
 				bestmatch[4]=y
 
-def waiter(combo):
+def waiter(combo,bigpack):
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-	box.append(sets.colorLabel("Working..."))
-	b=sets.colorButton("Resume",resume,"Continue",None)
-	b.set_sensitive(False)
+	box.append(sets.colorLabel("Paused..."))
+	b=sets.colorButton("Resume",resume,"Continue",bigpack)
 	box.append(b)
 	combo[0].set_child(box)
 
-def resume(b,d):
-	pass
+def resume(b,bigpack):
+	pnts2=bigpack[3]
+	bigpack[0],bigpack[1],is_done=calculate_resume(bigpack[0],bigpack[1],bigpack[2],pnts2,bigpack[4],bigpack[5],bigpack[6])
+	if is_done:
+		if print_test.get_active():
+			tests_phase2(pnts2)
+		points.points=pnts2
+		finish(bigpack[7],bigpack[8])
 
-def worker(data):
-	samplesorig=data[3]
-	combo=data[4]
+#same as calculate+for finish
+def worker(tolerance,min_dist,max,pause_after,samplesorig,combo): #used to not store height on another var at phase1, and at phase2
+	pack=calculate(draw.samples,draw.length,tolerance,min_dist,max,pause_after,samplesorig)
+	if pack!=None:
+		return pack+[samplesorig,combo]
+	finish(samplesorig,combo)
+	return None
 
-	calculate(draw.samples,draw.length,data[0],data[1],data[2],samplesorig)
-	#from time import sleep
-	#sleep(2)
-
+def finish(samplesorig,combo):
 	if point.lastselect:
 		pbox.close()
 		point.lastselect=None
-
 	if not sets.get_fulleffect():
 		draw.samples=samplesorig
-
 	move.saved(combo)
 	if sets.get_fulleffect():
 		save.saved()
 
-	return False
+#i,ix,is_done
+def calculate_resume(i,ix,pnts,pnts2,samples,samplesorig,pause_after):
+	aux=points.points[1]
+	sz=len(pnts)-1
+	for i in range(i,sz):
+		xleft=pnts[i]._offset_;xright=pnts[i+1]._offset_
+		ystart=pnts[i]._height_;yend=pnts[i+1]._height_
+		points.points[0]._offset_=xleft;points.points[0]._height_=ystart
+		points.points[2]._offset_=xright;points.points[2]._height_=yend
+
+		#calculate current dif
+		startdif=0
+		for k in range(xleft,xright):
+			startdif+=abs(samples[k]-samplesorig[k])
+
+		bestmatch=[startdif]+([None]*4)
+		arc(True,True  ,xleft,xright,ystart,yend,bestmatch,samples,samplesorig)
+		arc(True,False ,xleft,xright,ystart,yend,bestmatch,samples,samplesorig)
+		arc(False,True ,xleft,xright,ystart,yend,bestmatch,samples,samplesorig)
+		arc(False,False,xleft,xright,ystart,yend,bestmatch,samples,samplesorig)
+
+		if bestmatch[0]!=startdif:
+			points.points[0]._concav_=bestmatch[1];points.points[1]._concav_=bestmatch[2]
+			points.points[1]._offset_=bestmatch[3];points.points[1]._height_=bestmatch[4]
+			save.apply()
+
+			pnts2[ix]._concav_=points.points[0]._concav_
+			ix+=1
+			pnts2.insert(ix,points.newp(points.points[1]._offset_,points.points[1]._height_,True,points.points[1]._concav_))
+		else: #restore the line
+			points.points[1]=points.points[2]
+			points.points.pop()
+			save.apply()
+			points.points.insert(1,aux)
+		ix+=1
+
+		if print_test.get_active():
+			global tests3
+			tests3+=bestmatch[0]
+			print(" "+str(i),end='',flush=True)
+
+		if pause.get_active():
+			if ((i+1)%pause_after)==0:
+				if (i+1)<sz: #not if was last
+					return (i+1,ix,False)
+	return (i,ix,True)
