@@ -1,15 +1,14 @@
 
 from gi.repository import Gtk,GLib
 
-from . import sets
-from . import play
-from . import draw
-from . import points
-from . import save
-from . import point
-from . import move
-from . import pbox
-from . import loop
+from . import sets   #colorLabel,...
+from . import play   #wavefile
+from . import draw   #samples,...
+from . import points #points,...
+from . import save   #apply,...
+from . import point  #lastselect
+from . import move   #saved
+from . import pbox   #close
 
 default_toler="1"
 toler=Gtk.EntryBuffer(text=default_toler)
