@@ -163,8 +163,9 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 			print("dif sum "+str(tests))  #the two tolerances at start will trade precision for more code
 			print("points len "+str(len(pnts)))
 			print("avg dist "+str(tests2/len(pnts)))
-			global tests3
-			tests3=0
+			testspack=[0]
+		else:
+			testspack=[]
 
 		#phase 2 apply arcs for better match
 		pnts2=pnts.copy()
@@ -172,19 +173,19 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 			points.add(0,0,False,True,2) #p3
 			points.points[1]._inter_=True
 
-			i,ix,is_done=calculate_resume(0,0,pnts,pnts2,samples,samplesorig,pause_after)
+			i,ix,is_done=calculate_resume(0,0,pnts,pnts2,samples,samplesorig,pause_after,testspack)
 			if is_done==False:
-				return [i,ix,pnts,pnts2,samples,samplesorig,pause_after]
+				return [i,ix,pnts,pnts2,samples,samplesorig,pause_after,testspack]
 
 			if print_test.get_active():
-				tests_phase2(pnts2)
+				tests_phase2(pnts2,testspack)
 
 		points.points=pnts2
 	return None
 
-def tests_phase2(pnts2):
+def tests_phase2(pnts2,testspack):
 	print()
-	print("dif sum "+str(tests3))
+	print("dif sum "+str(testspack[0]))
 	print("points len "+str(len(pnts2)))
 
 def arc(a,b,xleft,xright,ystart,yend,bestmatch,samples,samplesorig):
@@ -214,13 +215,13 @@ def waiter(combo,bigpack):
 	combo[0].set_child(box)
 
 def resume(b,bigpack):
-	pnts2=bigpack[3]
-	bigpack[0],bigpack[1],is_done=calculate_resume(bigpack[0],bigpack[1],bigpack[2],pnts2,bigpack[4],bigpack[5],bigpack[6])
+	pnts2=bigpack[3];testspack=bigpack[7]
+	bigpack[0],bigpack[1],is_done=calculate_resume(bigpack[0],bigpack[1],bigpack[2],pnts2,bigpack[4],bigpack[5],bigpack[6],testspack)
 	if is_done:
 		if print_test.get_active():
-			tests_phase2(pnts2)
+			tests_phase2(pnts2,testspack)
 		points.points=pnts2
-		finish(bigpack[7],bigpack[8])
+		finish(bigpack[8],bigpack[9])
 
 #same as calculate+for finish
 def worker(tolerance,min_dist,max,pause_after,samplesorig,combo): #used to not store height on another var at phase1, and at phase2
@@ -241,7 +242,7 @@ def finish(samplesorig,combo):
 		save.saved()
 
 #i,ix,is_done
-def calculate_resume(i,ix,pnts,pnts2,samples,samplesorig,pause_after):
+def calculate_resume(i,ix,pnts,pnts2,samples,samplesorig,pause_after,testspack):
 	aux=points.points[1]
 	sz=len(pnts)-1
 	for i in range(i,sz):
@@ -277,9 +278,8 @@ def calculate_resume(i,ix,pnts,pnts2,samples,samplesorig,pause_after):
 		ix+=1
 
 		if print_test.get_active():
-			global tests3
-			tests3+=bestmatch[0]
-			print(" "+str(i),end='',flush=True)
+			testspack[0]+=bestmatch[0]
+			print(" "+str(i+1),end='',flush=True)  #at least on 50 will be 1,2,...,49
 
 		if pause.get_active():
 			if ((i+1)%pause_after)==0:
