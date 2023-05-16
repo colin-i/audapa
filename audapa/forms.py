@@ -37,7 +37,7 @@ def init(combo):
 	box.append(bt)
 	bt=sets.colorButton(chr(0x2422),blank.open,"Blanks",combo)
 	box.append(bt)
-	bt=sets.colorButton(chr(0x1F3E7),automation.open,"Automation",combo)
+	bt=sets.colorButton(chr(0x1F3E7),automation.data,"Automation",combo)
 	box.append(bt)
 	for bt in box:
 		bt.set_sensitive(False)

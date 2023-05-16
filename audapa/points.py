@@ -149,3 +149,14 @@ def newp(o,h,i,c):
 
 def add(o,h,i,c,pos):
 	points.insert(pos,newp(o,h,i,c))
+
+def serialize(pnts):
+	s=[]
+	for p in pnts:
+		s.append([p._offset_,p._height_,p._inter_,p._concav_])
+	return s
+def deserialize(arr):
+	pnts=[]
+	for a in arr:
+		pnts.append(newp(a[0],a[1],a[2],a[3]))
+	return pnts

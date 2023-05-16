@@ -40,13 +40,13 @@ def apply():
 			else:
 				apply_line(x0,y0,x1,y1)
 
-def apply_arc(x0,y0,x1,y1,conv):
+def apply_arc(x0,y0,x1,y1,conc):
 	x=x1-x0
 	y=abs(y1-y0)
 	#get radius
 	radius,rads=arc.radius(x,y)
 	#get center
-	_,yc,rstart,rend=arc.center(x0,y0,x1,y1,conv,x,y,radius,rads)
+	_,yc,rstart,rend=arc.center(x0,y0,x1,y1,conc,x,y,radius,rads)
 	#iterate
 	if rstart==0 or rend==math.pi or rstart==math.pi or rend==0:
 	#x axis

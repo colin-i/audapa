@@ -1,8 +1,12 @@
 
 from gi.repository import Gtk
 
+import os
+import pathlib
+import json
+
 from . import sets   #colorLabel,...
-from . import play   #wavefile
+from . import play   #wavefile,entry
 from . import draw   #samples,...
 from . import points #points,...
 from . import save   #apply,...
@@ -28,7 +32,7 @@ pause=Gtk.CheckButton()
 default_pause="100"
 pause_points=Gtk.EntryBuffer(text=default_pause)
 
-def open(b,combo):
+def data(b,combo):
 	box=Gtk.Grid(hexpand=True)
 
 	box.attach(sets.colorLabel("Tolerance"),0,0,1,1)
@@ -56,8 +60,13 @@ def open(b,combo):
 	box.attach(bx,0,5,1,1)
 	box.attach(sets.colorEntry(pause_points),1,5,2,1)
 
-	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,6,3,1)
-	box.attach(sets.colorButton("Done",done,"Apply",combo),0,7,3,1)
+	pos=6
+	if fastpath(False):
+		box.attach(sets.colorButton("Fast Resume",restore,"Restore",combo),0,pos,3,1)
+		pos+=1
+
+	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,pos,3,1)
+	box.attach(sets.colorButton("Done",done,"Apply",combo),0,pos+1,3,1)
 	combo[0].set_child(box)
 
 def cancel(b,combo):
@@ -90,9 +99,9 @@ def done(b,combo):
 
 			points.points.clear()
 
-			bigpack=worker(a,b,c,d,draw.samples.copy(),combo)
-			if bigpack!=None:
-				waiter(combo,bigpack)
+			pack=worker(a,b,c,d,draw.samples.copy(),combo)
+			if pack!=None:
+				waiter(combo,pack)
 	else:
 		if not abool:
 			toler.set_text(default_toler,-1)
@@ -102,6 +111,13 @@ def done(b,combo):
 			stop_after.set_text(default_stop,-1)
 		if not dbool:
 			pause_points.set_text(default_pause,-1)
+
+def precalculate1():
+	points.add(0,0,False,True,0) #p1
+	points.add(0,0,False,True,1) #p2
+def precalculate2():
+	points.add(0,0,False,True,2) #p3
+	points.points[1]._inter_=True
 
 #None/continue_pack
 def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
@@ -118,8 +134,7 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 		pnts=[]
 		pnts.append(points.newp(i,samples[i],False,True))
 
-		points.add(0,0,False,True,0) #p1
-		points.add(0,0,False,True,1) #p2
+		precalculate1()
 
 		if print_test.get_active():
 			tests=0
@@ -174,12 +189,11 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 		#phase 2 apply arcs for better match
 		pnts2=pnts.copy()
 		if skip_phase2.get_active()==False:
-			points.add(0,0,False,True,2) #p3
-			points.points[1]._inter_=True
+			precalculate2()
 
-			i,ix,is_done=calculate_resume(0,0,pnts,pnts2,samples,samplesorig,pause_after,testspack)
+			i,ix,is_done=calculate_resume(pnts,pnts2,samples,samplesorig,0,0,pause_after,testspack)
 			if is_done==False:
-				return [i,ix,pnts,pnts2,samples,samplesorig,pause_after,testspack]
+				return [pnts,pnts2,samples,samplesorig,i,ix,pause_after,testspack]
 
 			if print_test.get_active():
 				tests_phase2(pnts2,testspack)
@@ -212,28 +226,38 @@ def arc(a,b,xleft,xright,ystart,yend,bestmatch,samples,samplesorig):
 				bestmatch[3]=x
 				bestmatch[4]=y
 
-def waiter(combo,bigpack):
+def waiter(combo,pack):
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-	box.append(sets.colorLabel("Paused..."))
-	b=sets.colorButton("Resume",resume,"Continue",bigpack)
-	box.append(b)
+	box.append(sets.colorLabel("Resume Screen"))
+	box.append(sets.colorButton("Fast Resume Save &amp; Done",fastsavedone,"Restore Save",[pack,combo]))
+	box.append(sets.colorButton("Fast Resume Save &amp; Resume",fastsaveresume,"Restore Save",[pack,combo]))
+	box.append(sets.colorButton("Resume",resumefn,"Continue",[pack,combo]))
 	combo[0].set_child(box)
 
-def resume(b,bigpack):
-	pnts2=bigpack[3];testspack=bigpack[7]
-	bigpack[0],bigpack[1],is_done=calculate_resume(bigpack[0],bigpack[1],bigpack[2],pnts2,bigpack[4],bigpack[5],bigpack[6],testspack)
+def resumefn(b,bigpack):
+	pack,combo=bigpack
+	resume(combo,pack)
+
+def terminate(combo,pnts2,samplesorig,testspack):
+	if print_test.get_active():
+		tests_phase2(pnts2,testspack)
+	points.points=pnts2
+	finish(samplesorig,combo)
+
+def resume(combo,pack):
+	pnts2=pack[1];samplesorig=pack[3];testspack=pack[7]
+	pack[4],pack[5],is_done=calculate_resume(pack[0],pnts2,pack[2],samplesorig,pack[4],pack[5],pack[6],testspack)
 	if is_done:
-		if print_test.get_active():
-			tests_phase2(pnts2,testspack)
-		points.points=pnts2
-		finish(bigpack[8],bigpack[9])
+		terminate(combo,pnts2,samplesorig,testspack)
+		fastsavefinish()
 
 #same as calculate+for finish
 def worker(tolerance,min_dist,max,pause_after,samplesorig,combo): #used to not store height on another var at phase1, and at phase2
 	pack=calculate(draw.samples,draw.length,tolerance,min_dist,max,pause_after,samplesorig)
 	if pack!=None:
-		return pack+[samplesorig,combo]
+		return pack
 	finish(samplesorig,combo)
+	fastsavefinish()
 	return None
 
 def finish(samplesorig,combo):
@@ -247,7 +271,7 @@ def finish(samplesorig,combo):
 		save.saved()
 
 #i,ix,is_done
-def calculate_resume(i,ix,pnts,pnts2,samples,samplesorig,pause_after,testspack):
+def calculate_resume(pnts,pnts2,samples,samplesorig,i,ix,pause_after,testspack):
 	aux=points.points[1]
 	sz=len(pnts)-1
 	for i in range(i,sz):
@@ -293,3 +317,46 @@ def calculate_resume(i,ix,pnts,pnts2,samples,samplesorig,pause_after,testspack):
 				if (i+1)<sz: #not if was last
 					return (i+1,ix,False)
 	return (i,ix,True)
+
+def fastsave(pack):
+	fp=fastpath(True)
+	with open(fp,"w") as f:
+		pk=[points.serialize(pack[0]),points.serialize(pack[1])]+pack[2:] #pack is needed outside
+		json.dump(pk,f)
+
+def fastpath(is_save):
+	f_in=play.entry.get_text()
+	p=points.dpath(f_in)
+	f=points.fpath(f_in,"fastresume")
+	if is_save:
+		pathlib.Path(p).mkdir(exist_ok=True)
+		return f
+	return os.path.exists(f)
+
+def restore(b,combo):
+	with open(fastpath(True)) as f:
+		if d:=f.read():
+			pack=json.loads(d)
+
+			points.points.clear()
+			precalculate1()
+			precalculate2()
+
+			pack[0]=points.deserialize(pack[0])
+			pack[1]=points.deserialize(pack[1])
+			draw.samples=pack[2]
+
+			waiter(combo,pack)
+
+def fastsavedone(b,bigpack):
+	pack,combo=bigpack
+	fastsave(pack)
+	terminate(combo,pack[1],pack[3],pack[7])
+def fastsaveresume(b,bigpack):
+	pack,combo=bigpack
+	fastsave(pack)
+	resume(combo,pack)
+
+def fastsavefinish():
+	if fastpath(False):
+		os.remove(fastpath(True))
