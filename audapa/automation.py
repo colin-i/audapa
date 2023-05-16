@@ -124,6 +124,7 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 		if print_test.get_active():
 			tests=0
 			tests2=0
+			tests3=0
 
 		while (i+min_dist+1)<j:  #j can be length
 			points.points[0]._offset_=i
@@ -153,6 +154,8 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 			if print_test.get_active():
 				tests+=newdif
 				tests2+=k-i
+				for l in range(i,k):
+					tests3+=abs(samplesorig[l])
 
 			if stop.get_active():
 				if len(pnts)==max:
@@ -163,7 +166,8 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 			print("dif sum "+str(tests))  #the two tolerances at start will trade precision for more code
 			print("points len "+str(len(pnts)))
 			print("avg dist "+str(tests2/len(pnts)))
-			testspack=[0]
+			print("dif/orig "+str(tests/tests3))
+			testspack=[0,0]
 		else:
 			testspack=[]
 
@@ -187,6 +191,7 @@ def tests_phase2(pnts2,testspack):
 	print()
 	print("dif sum "+str(testspack[0]))
 	print("points len "+str(len(pnts2)))
+	print("dif/orig "+str(testspack[0]/testspack[1]))
 
 def arc(a,b,xleft,xright,ystart,yend,bestmatch,samples,samplesorig):
 	points.points[0]._concav_=a;points.points[1]._concav_=b
@@ -279,6 +284,8 @@ def calculate_resume(i,ix,pnts,pnts2,samples,samplesorig,pause_after,testspack):
 
 		if print_test.get_active():
 			testspack[0]+=bestmatch[0]
+			for l in range(xleft,xright):
+				testspack[1]+=abs(samplesorig[l])
 			print(" "+str(i+1),end='',flush=True)  #at least on 50 will be 1,2,...,49
 
 		if pause.get_active():
