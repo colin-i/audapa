@@ -35,6 +35,7 @@ def apply():
 			y0=prev._height_
 			x1=cur._offset_
 			y1=cur._height_
+			#print(str(i-1)+"="+str(x0)+","+str(i)+"="+str(x1))
 			if cur._inter_ or prev._inter_:
 				apply_arc(x0,y0,x1,y1,prev._concav_)
 			else:
@@ -54,9 +55,11 @@ def apply_arc(x0,y0,x1,y1,conc):
 		if rstart==0 or rend==0:
 			startpoint=0
 			stoppoint=x
+			#print(4 if rend==0 else 1)
 		else:
 			startpoint=1
 			stoppoint=x+1
+			#print(2 if rstart==math.pi else 3)
 		for i in range(startpoint,stoppoint):
 			#supra radius
 			a=xpos/radius
@@ -77,11 +80,13 @@ def apply_arc(x0,y0,x1,y1,conc):
 	else:
 	#y axis
 		if rstart==math.pi*3/2 or rend==math.pi/2:
-			startpoint=x
-			stoppoint=0
-		else:
 			startpoint=x-1
 			stoppoint=-1
+			#print(6 if rstart==math.pi*3/2 else 7)
+		else:
+			startpoint=x
+			stoppoint=0
+			#print(5 if rstart==math.pi/2 else 8)
 		for i in range(startpoint,stoppoint,-1):
 			a=i/radius
 			a=math.asin(a)
