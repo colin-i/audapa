@@ -239,8 +239,8 @@ def arc(a,b,xleft,xright,ystart,yend,bestmatch,samples,samplesorig):
 def waiter(combo,pack):
 	box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 	box.append(sets.colorLabel("Resume Screen"))
-	box.append(sets.colorButton("Fast Resume Save &amp; Done",fastsavedone,"Restore Save",[pack,combo]))
-	box.append(sets.colorButton("Fast Resume Save &amp; Resume",fastsaveresume,"Restore Save",[pack,combo]))
+	box.append(sets.colorButton("Fast Resume Save &amp; Done",fastsavedone,"Restore Save & Stop",[pack,combo]))
+	box.append(sets.colorButton("Fast Resume Save &amp; Resume",fastsaveresume,"Restore Save & Resume",[pack,combo]))
 	box.append(sets.colorButton("Resume",resumefn,"Continue",[pack,combo]))
 	combo[0].set_child(box)
 
