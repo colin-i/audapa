@@ -5,6 +5,7 @@ from . import play
 from . import points
 
 def file():
+	global temp
 	temp=loc()
 	play.save_opened(temp)
 	play.wavefile.close()
@@ -14,6 +15,6 @@ def loc():
 	return points.fpath(play.entry.get_text(),"temp")
 
 def close():
-	temp=loc()
+	#temp=loc()
 	if os.path.exists(temp):
 		os.remove(temp)
