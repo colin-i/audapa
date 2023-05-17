@@ -16,5 +16,8 @@ def loc():
 
 def close():
 	#temp=loc()
-	if os.path.exists(temp):
-		os.remove(temp)
+	try:  #can change the entry and temp need to be the last one, but then can be nothing, then use try
+		if os.path.exists(temp):
+			os.remove(temp)
+	except:
+		pass
