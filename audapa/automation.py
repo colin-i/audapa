@@ -4,6 +4,7 @@ from gi.repository import Gtk
 import os
 import pathlib
 import json
+import time
 
 from . import sets   #colorLabel,...
 from . import play   #wavefile,entry
@@ -26,47 +27,48 @@ default_stop="100"
 stop_after=Gtk.EntryBuffer(text=default_stop)
 
 print_test=Gtk.CheckButton()
+tests_str1="dif sum "
+tests_str2="points len "
+tests_str3="phase1/orig "
 
 skip_phase2=Gtk.CheckButton()
 pause=Gtk.CheckButton()
 default_pause="100"
 pause_points=Gtk.EntryBuffer(text=default_pause)
 
+#tests_time
+
 def data(b,combo):
 	box=Gtk.Grid(hexpand=True)
 
-	box.attach(sets.colorLabel("Tolerance"),0,0,1,1)
-	box.attach(sets.colorEntry(toler),1,0,1,1)
-	box.attach(sets.colorLabel("‰"),2,0,1,1)
+	box.attach(sets.colorLabel("Tolerance"),0,0,2,1)
+	box.attach(sets.colorEntry(toler),2,0,1,1)
+	box.attach(sets.colorLabel("‰"),3,0,1,1)
 
-	box.attach(sets.colorLabel("Min distance"),0,1,1,1)
-	box.attach(sets.colorEntry(mdist),1,1,2,1)
+	box.attach(sets.colorLabel("Min distance"),0,1,2,1)
+	box.attach(sets.colorEntry(mdist),2,1,2,1)
 
-	bx=Gtk.Box()
-	bx.append(sets.colorLabel("Stop after N non-inter points"))
-	bx.append(stop)
-	box.attach(bx,0,2,1,1)
-	box.attach(sets.colorEntry(stop_after),1,2,2,1)
+	box.attach(sets.colorLabel("Stop after N non-inter points"),0,2,1,1)
+	box.attach(stop,1,2,1,1)
+	box.attach(sets.colorEntry(stop_after),2,2,2,1)
 
-	box.attach(sets.colorLabel("Verbosity"),0,3,1,1)
-	box.attach(print_test,1,3,2,1)
+	box.attach(sets.colorLabel("Verbosity"),0,3,2,1)
+	box.attach(print_test,2,3,2,1)
 
-	box.attach(sets.colorLabel("Skip phase 2"),0,4,1,1)
-	box.attach(skip_phase2,1,4,2,1)
+	box.attach(sets.colorLabel("Skip phase 2"),0,4,2,1)
+	box.attach(skip_phase2,2,4,2,1)
 
-	bx=Gtk.Box()
-	bx.append(sets.colorLabel("At phase 2, pause every N points"))
-	bx.append(pause)
-	box.attach(bx,0,5,1,1)
-	box.attach(sets.colorEntry(pause_points),1,5,2,1)
+	box.attach(sets.colorLabel("At phase 2, pause every N points"),0,5,1,1)
+	box.attach(pause,1,5,1,1)
+	box.attach(sets.colorEntry(pause_points),2,5,2,1)
 
 	pos=6
 	if fastpath(False):
-		box.attach(sets.colorButton("Fast Resume",restore,"Restore",combo),0,pos,3,1)
+		box.attach(sets.colorButton("Fast Resume",restore,"Restore",combo),0,pos,4,1)
 		pos+=1
 
-	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,pos,3,1)
-	box.attach(sets.colorButton("Done",done,"Apply",combo),0,pos+1,3,1)
+	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,pos,4,1)
+	box.attach(sets.colorButton("Done",done,"Apply",combo),0,pos+1,4,1)
 	combo[0].set_child(box)
 
 def cancel(b,combo):
@@ -178,11 +180,11 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 
 			i=k
 		if print_test.get_active():
-			print("dif sum "+str(tests))  #the two tolerances at start will trade precision for more code
-			print("points len "+str(len(pnts)))
+			print(tests_str1+str(tests))  #the two tolerances at start will trade precision for more code
+			print(tests_str2+str(len(pnts)))
+			print(tests_str3+str(tests/tests3))
 			print("avg dist "+str(tests2/len(pnts)))
-			print("dif/orig "+str(tests/tests3))
-			testspack=[0,0]
+			testspack=[0,0,0,0,0]
 		else:
 			testspack=[]
 
@@ -195,17 +197,25 @@ def calculate(samples,length,tolerance,min_dist,max,pause_after,samplesorig):
 			if is_done==False:
 				return [pnts,pnts2,samples,samplesorig,i,ix,pause_after,testspack]
 
-			if print_test.get_active():
-				tests_phase2(pnts2,testspack)
-
 		points.points=pnts2
 	return None
 
-def tests_phase2(pnts2,testspack):
+def tests_phase2(pnts2,testspack,remainings):
 	print()
-	print("dif sum "+str(testspack[0]))
-	print("points len "+str(len(pnts2)))
-	print("dif/orig "+str(testspack[0]/testspack[1]))
+	print(tests_str1+str(testspack[0]))
+	print(tests_str2+str(len(pnts2)))
+	p1_o=testspack[2]/testspack[1]
+	print(tests_str3+str(p1_o))
+	d_o=testspack[0]/testspack[1]
+	print("dif/orig "+str(d_o))
+	print(" change "+str(d_o-p1_o))
+
+	t=time.time()-tests_time
+	testspack[3]+=1
+	testspack[4]+=t
+	print("seconds/pauses "+str(int(testspack[4]/testspack[3]))) #time.time() is float
+	if remainings:
+		print("remaining points "+str(remainings))
 
 def arc(a,b,xleft,xright,ystart,yend,bestmatch,samples,samplesorig):
 	points.points[0]._concav_=a;points.points[1]._concav_=b
@@ -239,8 +249,6 @@ def resumefn(b,bigpack):
 	resume(combo,pack)
 
 def terminate(combo,pnts2,samplesorig,testspack):
-	if print_test.get_active():
-		tests_phase2(pnts2,testspack)
 	points.points=pnts2
 	finish(samplesorig,combo)
 
@@ -272,6 +280,10 @@ def finish(samplesorig,combo):
 
 #i,ix,is_done
 def calculate_resume(pnts,pnts2,samples,samplesorig,i,ix,pause_after,testspack):
+	if print_test.get_active():
+		global tests_time
+		tests_time=time.time()
+
 	aux=points.points[1]
 	sz=len(pnts)-1
 	for i in range(i,sz):
@@ -310,12 +322,17 @@ def calculate_resume(pnts,pnts2,samples,samplesorig,i,ix,pause_after,testspack):
 			testspack[0]+=bestmatch[0]
 			for l in range(xleft,xright):
 				testspack[1]+=abs(samplesorig[l])
-			print(" "+str(i+1),end='',flush=True)  #at least on 50 will be 1,2,...,49
+			print(" "+str(i+1),end='',flush=True)  #+1? at least on 50 will be 1,2,...,49
+			testspack[2]+=startdif    #again, for changes
 
 		if pause.get_active():
-			if ((i+1)%pause_after)==0:
+			if ((i+2)%pause_after)==0:  #example: stop after 3, pase after 2, will stop at 2
 				if (i+1)<sz: #not if was last
+					if print_test.get_active():
+						tests_phase2(pnts2,testspack,len(pnts)-(i+2))
 					return (i+1,ix,False)
+	if print_test.get_active():
+		tests_phase2(pnts2,testspack,0)
 	return (i,ix,True)
 
 def fastsave(pack):
