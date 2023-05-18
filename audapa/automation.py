@@ -35,6 +35,7 @@ skip_phase2=Gtk.CheckButton()
 pause=Gtk.CheckButton()
 default_pause="100"
 pause_points=Gtk.EntryBuffer(text=default_pause)
+pause_points_minimum=1
 
 #tests_time
 
@@ -52,15 +53,10 @@ def data(b,combo):
 	box.attach(stop,1,2,1,1)
 	box.attach(sets.colorEntry(stop_after),2,2,2,1)
 
-	box.attach(sets.colorLabel("Verbosity"),0,3,2,1)
-	box.attach(print_test,2,3,2,1)
+	box.attach(sets.colorLabel("Skip phase 2"),0,3,2,1)
+	box.attach(skip_phase2,2,3,2,1)
 
-	box.attach(sets.colorLabel("Skip phase 2"),0,4,2,1)
-	box.attach(skip_phase2,2,4,2,1)
-
-	box.attach(sets.colorLabel("At phase 2, pause every N points"),0,5,1,1)
-	box.attach(pause,1,5,1,1)
-	box.attach(sets.colorEntry(pause_points),2,5,2,1)
+	common_options(box,4)
 
 	pos=6
 	if fastpath(False):
@@ -70,6 +66,15 @@ def data(b,combo):
 	box.attach(sets.colorButton("Cancel",cancel,"Abort",combo),0,pos,4,1)
 	box.attach(sets.colorButton("Done",done,"Apply",combo),0,pos+1,4,1)
 	combo[0].set_child(box)
+
+def common_options(box,column):
+	box.attach(sets.colorLabel("Verbosity"),0,column,2,1)
+	box.attach(print_test,2,column,2,1)
+	column+=1
+
+	box.attach(sets.colorLabel("At phase 2, pause every N points"),0,column,1,1)
+	box.attach(pause,1,column,1,1)
+	box.attach(sets.colorEntry(pause_points),2,column,2,1)
 
 def cancel(b,combo):
 	combo[0].set_child(combo[1])
@@ -94,8 +99,8 @@ def done(b,combo):
 			mdist.set_text("1",-1)
 		elif c<2:
 			stop_after.set_text("2",-1)
-		elif d<1:
-			pause_points.set_text("1",-1)
+		elif d<pause_points_minimum:
+			pause_points.set_text(str(pause_points_minimum),-1)
 		else:
 			a=round(pow(2,8*play.wavefile.getsampwidth())*a/1000)
 
@@ -355,15 +360,24 @@ def restore(b,combo):
 		if d:=f.read():
 			pack=json.loads(d)
 
-			points.points.clear()
-			precalculate1()
-			precalculate2()
+			box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+			box.append(sets.colorLabel("Fast Resume Continue"))
 
-			pack[0]=points.deserialize(pack[0])
-			pack[1]=points.deserialize(pack[1])
-			draw.samples=pack[2]
+			print_test.get_parent().remove(print_test) #gtk critical without this
+			pause.get_parent().remove(pause)
+			bx=Gtk.Grid(hexpand=True)
+			common_options(bx,0)
+			box.append(bx)
+			if not len(pack[7]):
+				print_test.set_active(False)
+				print_test.set_sensitive(False) #can't resume verbosity when was not
+			else:
+				print_test.set_active(True) #in case is not
+			pause.set_active(True) #in case is not
+			pause_points.set_text(str(pack[6]),-1)
 
-			waiter(combo,pack)
+			box.append(sets.colorButton("Continue",fastresumefn,"Start",[pack,combo]))
+			combo[0].set_child(box)
 
 def fastsavedone(b,bigpack):
 	pack,combo=bigpack
@@ -377,3 +391,31 @@ def fastsaveresume(b,bigpack):
 def fastsavefinish():
 	if fastpath(False):
 		os.remove(fastpath(True))
+
+def fastresumefn(b,bigpack):
+	d=pause_points.get_text()
+	dbool=d.isdigit()
+	if dbool:
+		d=int(d)
+		if d<pause_points_minimum:
+			pause_points.set_text(str(pause_points_minimum),-1)
+		else:
+			pack,combo=bigpack
+
+			pack[6]=d
+			if not print_test.get_sensitive():
+				print_test.set_sensitive(True) #for another use at this
+			elif not print_test.get_active():
+				pack[7]=[] #user wants to unset verbosity from now
+
+			points.points.clear()
+			precalculate1()
+			precalculate2()
+
+			pack[0]=points.deserialize(pack[0])
+			pack[1]=points.deserialize(pack[1])
+			draw.samples=pack[2]
+
+			waiter(combo,pack)
+	else:
+		pause_points.set_text(default_pause,-1)
