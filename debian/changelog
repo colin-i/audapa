@@ -1,3 +1,9 @@
+audapa (1-j16) jammy; urgency=medium
+
+  * automation
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Thu, 18 May 2023 12:53:28 +0300
+
 audapa (1-15) jammy; urgency=medium
 
   * extra dependency/import
