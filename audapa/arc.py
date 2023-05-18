@@ -5,7 +5,7 @@ from . import point
 
 import math
 
-def draw(cr,x0,y0,x1,y1,convex):
+def draw(cr,x0,y0,x1,y1,concav):
 	land=drawscroll.landscape
 	if land:
 		x=x1-x0
@@ -14,12 +14,12 @@ def draw(cr,x0,y0,x1,y1,convex):
 		x=abs(x1-x0)
 		y=y1-y0
 	c,raddif=radius(x,y)
-	xc,yc,rstart,rend=center(x0,y0,x1,y1,convex,x,y,c,raddif,land)
+	xc,yc,rstart,rend=center(x0,y0,x1,y1,concav,x,y,c,raddif,land)
 	#will be a heavy cpu load with radsmall when moveing an inter up a stable at angle 0 cr.arc(xc,yc,c,rstart+radsmall,rend-radsmall)
 	cr.arc(xc,yc,c,rstart,rend)
-def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
+def center(x0,y0,x1,y1,concav,x,y,c,raddif,land=True):
 	if land:
-		if convex: #convex on land
+		if concav: #concav on land
 			if x>y:
 				if y0<y1:
 					#...
@@ -91,7 +91,7 @@ def center(x0,y0,x1,y1,convex,x,y,c,raddif,land=True):
 					a=0
 					b=raddif
 	else:
-		if convex:
+		if concav:
 			if x>y:
 				if x0<x1:
 					#...

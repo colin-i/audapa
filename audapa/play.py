@@ -18,7 +18,7 @@ output=0x25B6
 #23F5
 timer=0
 
-def activate(en,d):
+def activate(wd,d):
 	terminate()
 	launch()
 def toggle(b,d):
@@ -32,8 +32,9 @@ def toggle(b,d):
 		pause()
 
 def init():
-	global entry,button
+	global entry,button,openbutton
 	entry=sets.colorEntry()
+	openbutton=sets.colorButton(chr(0x1f4d6), activate, "Open")
 	button=sets.colorButton(chr(output), toggle, "Play")
 	entry.connect('activate',activate,None)
 

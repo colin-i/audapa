@@ -30,51 +30,55 @@ def autodrag(p,x,y):
 def left(b,d):
 	leftk()
 def leftk():
-	if drawscroll.landscape:
-		limit=left_type()
-	else:
-		limit=-point.const
 	p=point.lastselect
-	x,y=draw.cont.get_child_position(p)
-	x-=1 #on height is double
-	if x>limit:
-		autodrag(p,x,y)
+	if p.get_parent(): #only if in current cont, else will be an error, visible and gtk error
+		if drawscroll.landscape:
+			limit=left_type()
+		else:
+			limit=-point.const
+		x,y=draw.cont.get_child_position(p)
+		x-=1 #on height is double
+		if x>limit:
+			autodrag(p,x,y)
 
 def right(b,d):
 	rightk()
 def rightk():
-	if drawscroll.landscape:
-		limit=right_type()
-	else:
-		limit=draw.area.get_width()-point.const
 	p=point.lastselect
-	x,y=draw.cont.get_child_position(p)
-	x+=1
-	if x<limit:
-		autodrag(p,x,y)
+	if p.get_parent():
+		if drawscroll.landscape:
+			limit=right_type()
+		else:
+			limit=draw.area.get_width()-point.const
+		x,y=draw.cont.get_child_position(p)
+		x+=1
+		if x<limit:
+			autodrag(p,x,y)
 
 def up(b,d):
 	upk()
 def upk():
-	if drawscroll.landscape:
-		limit=-point.const
-	else:
-		limit=left_type()
 	p=point.lastselect
-	x,y=draw.cont.get_child_position(p)
-	y-=1
-	if y>limit:
-		autodrag(p,x,y)
+	if p.get_parent():
+		if drawscroll.landscape:
+			limit=-point.const
+		else:
+			limit=left_type()
+		x,y=draw.cont.get_child_position(p)
+		y-=1
+		if y>limit:
+			autodrag(p,x,y)
 
 def down(b,d):
 	downk()
 def downk():
-	if drawscroll.landscape:
-		limit=draw.area.get_height()-point.const
-	else:
-		limit=right_type()
 	p=point.lastselect
-	x,y=draw.cont.get_child_position(p)
-	y+=1
-	if y<limit:
-		autodrag(p,x,y)
+	if p.get_parent():
+		if drawscroll.landscape:
+			limit=draw.area.get_height()-point.const
+		else:
+			limit=right_type()
+		x,y=draw.cont.get_child_position(p)
+		y+=1
+		if y<limit:
+			autodrag(p,x,y)

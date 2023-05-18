@@ -11,11 +11,13 @@ from . import arcbutton
 from . import distance
 
 const=6 #this is the radius
-default_convex=True
+default_concav=True
 
 class struct(Gtk.DrawingArea):
 	_drag_=False
-	#offset,height,inter,convex
+	#offset,height,inter,concav
+	#                    here is like the Arc Orientation button that at start is /\ that is concav
+	#                    https://math.stackexchange.com/questions/2364116/how-to-remember-which-function-is-concave-and-which-one-is-convex
 	#control
 	def __init__(self,*args):
 		Gtk.DrawingArea.__init__(self)
@@ -27,7 +29,7 @@ class struct(Gtk.DrawingArea):
 			self.set_draw_func(self._draw_none_,None,None)
 			return
 		self._inter_=False
-		self._convex_=default_convex
+		self._concav_=default_concav
 		self._pos_(args[0],args[1])
 		ix=points.insert(self)
 		puts,dels=self._take_(ix)

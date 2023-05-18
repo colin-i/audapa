@@ -19,6 +19,7 @@ def init(combo):
 	box.append(sets.colorButton(chr(0x2699), sets.sets, "Settings", combo))
 	box.append(sets.colorButton("X", cl, "Exit"))
 	box.append(play.entry)
+	box.append(play.openbutton)
 	box.append(play.button)
 	box.append(build.init())
 	return box

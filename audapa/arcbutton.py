@@ -17,15 +17,16 @@ def conv_conc(b,d):
 	p=point.lastselect
 	pnts=points.points
 	ix=pnts.index(p)
-	b._set_text_(set(p))
 	if pnts[ix]._inter_ or (ix<(len(pnts)-1) and pnts[ix+1]._inter_):
 		if p.get_parent() or pnts[ix+1].get_parent():
 			arc_change(p,pnts[ix+1])
+			b._set_text_(set(p))
 			return
-	p._convex_=False if p._convex_ else True
+	p._concav_=False if p._concav_ else True
+	b._set_text_(set(p))
 
 def set(p):
-	if p._convex_:
+	if p._concav_:
 		return chr(0x23dc)
 	else:
 		return chr(0x23dd)
@@ -39,7 +40,7 @@ def arc_change(p0,p1):
 	graph.clearline(cr,p0,p1,w,h)
 	cr.set_operator(ope)
 	#
-	p0._convex_=False if p0._convex_ else True
+	p0._concav_=False if p0._concav_ else True
 	#
 	co=Gdk.RGBA()
 	if co.parse(sets.get_fgcolor2()):

@@ -41,7 +41,7 @@ def line_draw(cr,c0,c1,w,h):
 	a0=c0._coord_(w,h)
 	a1=c1._coord_(w,h)
 	if c0._inter_ or c1._inter_:
-		arc.draw(cr,a0[0],a0[1],a1[0],a1[1],c0._convex_)
+		arc.draw(cr,a0[0],a0[1],a1[0],a1[1],c0._concav_)
 	else:
 		#don't let line width corners to intersect
 		p0,p1=coords(a0[0],a0[1],a1[0],a1[1])
@@ -81,7 +81,7 @@ def clearline(cr,a0,a1,w,h):
 	c1=a1._coord_(w,h)
 	#arc is lineing to circle start, not convenient
 	if a0._inter_ or a1._inter_:
-		arc.draw(cr,c0[0],c0[1],c1[0],c1[1],a0._convex_)
+		arc.draw(cr,c0[0],c0[1],c1[0],c1[1],a0._concav_)
 		lw=cr.get_line_width()
 		cr.set_line_width(lw+1)  #only this here
 		cr.stroke()

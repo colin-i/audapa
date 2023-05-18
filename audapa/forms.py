@@ -14,6 +14,7 @@ from . import spread
 from . import blank
 from . import move
 from . import distance
+from . import automation
 
 #button
 control=None
@@ -35,6 +36,8 @@ def init(combo):
 	bt=sets.colorButton(chr(0x2194),move.open,"Move Points",combo)
 	box.append(bt)
 	bt=sets.colorButton(chr(0x2422),blank.open,"Blanks",combo)
+	box.append(bt)
+	bt=sets.colorButton(chr(0x1F3E7),automation.data,"Automation",combo)
 	box.append(bt)
 	for bt in box:
 		bt.set_sensitive(False)

@@ -120,7 +120,7 @@ def write(f_in):
 		with open(f_out,"w") as f:
 			d=[]
 			for po in points:
-				d.append([po._offset_,po._height_,po._inter_,po._convex_])
+				d.append([po._offset_,po._height_,po._inter_,po._concav_])
 			a=play.wavefile
 			d=[d,(a.getsampwidth(),a.getnchannels(),a.getframerate(),draw.length)]
 			json.dump(d,f)
@@ -139,10 +139,24 @@ def read(f_in,fast):
 					add(p[0],p[1],p[2],p[3],len(points))
 				return d[1]
 
-def add(o,h,i,c,pos):
+def newp(o,h,i,c):
 	po=point.struct()
 	po._offset_=o
 	po._height_=h
 	po._inter_=i
-	po._convex_=c
-	points.insert(pos,po)
+	po._concav_=c
+	return po
+
+def add(o,h,i,c,pos):
+	points.insert(pos,newp(o,h,i,c))
+
+def serialize(pnts):
+	s=[]
+	for p in pnts:
+		s.append([p._offset_,p._height_,p._inter_,p._concav_])
+	return s
+def deserialize(arr):
+	pnts=[]
+	for a in arr:
+		pnts.append(newp(a[0],a[1],a[2],a[3]))
+	return pnts
