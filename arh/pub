@@ -1,6 +1,7 @@
 
 #must run master that will do a release first, then here with the jammy appimage, at N appimage will be on master
 
+~/test/pyver && \
 ~/test/debinit "${1}" && \
 ~/test/pub deb && \
 ~/test/keyring2 && \
@@ -10,6 +11,7 @@
 ~/test/pub appimage && \
 ~/test/upapp && \
 ~/test/pub upapp && \
+~/test/pub2 && \
 ~/test/publp2 && \
 ~/test/lp 0 kinetic && \
 ~/test/lp x kinetic
