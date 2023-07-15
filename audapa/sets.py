@@ -57,13 +57,11 @@ from . import point
 
 def get_config_dir():
 	return pathlib.Path(appdirs.user_config_dir(pkgname))
-get_config_dir().mkdir(exist_ok=True)
 def get_config_file():
 	return os.path.join(get_config_dir(),'config.ini')
 
 def get_data_dir():
 	return pathlib.Path(appdirs.user_data_dir(pkgname))
-get_data_dir().mkdir(exist_ok=True)
 def get_data_file(f):
 	return os.path.join(get_data_dir(),f)
 
@@ -113,6 +111,8 @@ def sets(b,combo):
 	combo[0].set_child(bx)
 
 def init():
+	get_config_dir().mkdir(exist_ok=True)
+	get_data_dir().mkdir(exist_ok=True)
 	config = configparser.ConfigParser()
 	if(config.read(get_config_file())):
 		c=config['conf']
