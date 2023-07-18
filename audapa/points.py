@@ -105,9 +105,18 @@ def move_inter_end(forward,ix,dels):
 	elif ix>0:
 		dels.append([points[ix-1],points[ix]])
 fpath_js='json'
-def dpath(f_in):
+cachefolder='_'+sets.pkgname+'cache_'
+def dpath(f_in):  #f_in can be ../x.wav
 	p=os.path.dirname(f_in)
-	return os.path.join(p,'_'+sets.pkgname+'cache_')
+	if sets.cache_at_home.get_active():
+		rootfolder=os.path.abspath(os.sep)  #this is tested also on windows
+		#os.path.abspath('.').split(os.sep)[0]+os.sep
+
+		relp=os.path.relpath(p,rootfolder)
+		p=os.path.join(pathlib.Path.home(),cachefolder,relp)
+	else:
+		p=os.path.join(p,cachefolder)
+	return p
 def fpath(f_in,ext):
 	return os.path.join(dpath(f_in),os.path.basename(f_in)+'.'+ext)
 def fpath_full(d_in,f_in):
@@ -116,7 +125,8 @@ def write(f_in):
 	p=dpath(f_in)
 	f_out=fpath_full(p,f_in)
 	if len(points):
-		pathlib.Path(p).mkdir(exist_ok=True)#parents=False, FileExistsError exceptions will be ignored
+		pathlib.Path(p).mkdir(exist_ok=True,parents=True) #FileExistsError exceptions will be ignored with exist_ok
+		#parents False is ok when is one folder but when cache is in home option, must create to there
 		with open(f_out,"w") as f:
 			d=[]
 			for po in points:

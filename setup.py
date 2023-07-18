@@ -38,7 +38,7 @@ setup(name=pkname,
 	#	'build_py': BuildPyCommand
 	#},
 	#include_package_data=True,
-	python_requires='>=3.8',
+	python_requires='>=3.8',   #for :=
 	install_requires=[
 		"pycairo>=1.20.0","PyGObject>=3.40",
 		"appdirs>=1.4.3",

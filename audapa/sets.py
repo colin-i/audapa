@@ -86,6 +86,7 @@ def get_fulleffect():
 	return full_effect.get_active()
 distance=Gtk.EntryBuffer(text="10")
 #(2*point.const).__str__() was good but will confilct with the example
+cache_at_home=Gtk.CheckButton(active=False)
 
 def add(bx,tx,x,n):
 	return adder(bx,tx,colorEntry(x),n)
@@ -105,6 +106,7 @@ def sets(b,combo):
 	n=adder(bx,"Turn the page at margin touch",turn_page,n)
 	n=adder(bx,forms.formal_write+" after a points effect",full_effect,n)
 	n=add(bx,"Minimum distance between points",distance,n)
+	n=adder(bx,"Cache dir for points in home folder",cache_at_home,n)
 	b=colorButton("Done", reset, "Return", {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
 	bx.attach(b,0,n,2,1)
@@ -124,6 +126,7 @@ def init():
 		init_c(c,'turn',turn_page)
 		init_c(c,'effect',full_effect)
 		init_t(c,'distance',distance)
+		init_c(c,'homecache',cache_at_home)
 def init_t(src,key,dst):
 	if key in src: #this is not checking values
 		dst.set_text(src[key],-1)
@@ -143,6 +146,7 @@ def reset(b,di):
 	c['turn']=turn_page.get_active().__str__()
 	c['effect']=full_effect.get_active().__str__()
 	c['distance']=distance.get_text()
+	c['homecache']=cache_at_home.get_active().__str__()
 	with open(get_config_file(), "w") as configfile:
 		config.write(configfile)
 	win=di['c'][0]
