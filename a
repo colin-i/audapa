@@ -1,8 +1,9 @@
 
 if [ -n "$1" ]; then
-z=$1
+	z=$1
+	shift
 else
-z="python"
+	z="python"
 fi
 
-${z} -m audapa.main
+${z} -m audapa.main ${1}
