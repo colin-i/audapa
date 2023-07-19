@@ -37,22 +37,24 @@ def main():
 import os
 import sys
 
+def cleanup_dir(d):
+	if os.path.isdir(d):
+		return d
+	return None
+def cleanup_dir_rm(d):
+	if len(os.listdir(path=d))==0:
+		os.rmdir(d)   #OSError if not empty, the check was already
+		print(d.__str__()+" removed")
+	else:
+		print(d.__str__()+" is not empty.")
 def cleanup():
 	#remove config and exit
-	c=sets.get_config_dir()
-	if os.path.isdir(c):
+	c=cleanup_dir(sets.get_config_dir())
+	if c:
 		f=sets.get_config_file()
 		if not os.path.isfile(f):
 			f=None
-	else:
-		c=None
-	p=sets.get_data_dir()
-	if os.path.isdir(p):
-		if len(os.listdir(path=p))>0:
-			print(p.__str__()+" is not empty.")
-			p=None
-	else:
-		p=None
+	p=cleanup_dir(sets.get_data_dir())
 	if c or p:
 		print("Would remove:");
 		if c:
@@ -69,16 +71,13 @@ def cleanup():
 				break
 			str += x
 		if str=="yes":
-			r=" removed"
 			if c:
 				if f:
 					os.remove(f)
-					print(f+r)
-				os.rmdir(c)
-				print(c.__str__()+r)
+					print(f+" removed")
+				cleanup_dir_rm(c)
 			if p:
-				os.rmdir(p)
-				print(p.__str__()+r)
+				cleanup_dir_rm(p)
 		else:
 			print("expecting \"yes\"")
 
