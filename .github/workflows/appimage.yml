@@ -5,13 +5,24 @@ on:
    ppa:
     description: "ppa sufix"
 
+#if not having 24.04 on github or from act, take from -P ubuntu-24.04=ubuntu:noble it is a minimum image (can add --pull=false)
+#here if artifact!='' is for minimum image and without artifact upload
+
 jobs:
  build:
-  runs-on: ubuntu-22.04
+  runs-on: ubuntu-24.04
   steps:
    - uses: actions/checkout@v3
    - name: Run a multi-line script
      run: |
+      if [ -n "${{ env.artifact }}" ]; then
+       apt update
+       #rm /var/lib/dpkg/lock-frontend
+       #rm /var/lib/dpkg/lock
+       #rm /var/cache/apt/archives/lock
+       export DEBIAN_FRONTEND=noninteractive
+       TZ=Etc/UTC apt install -y wget python3-minimal python3-launchpadlib xz-utils squashfs-tools
+      fi
       name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
       name2=Audapa
       sname=auda
@@ -39,20 +50,11 @@ jobs:
        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
        if [ ! -e "lp2.py" ]; then
         wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
-        #is already sudo apt install python3-launchpadlib
+        #is already apt install python3-launchpadlib
        fi
        OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} amd64)
        wget ${OUTPUT}/+files/${name}_${version}_all.deb -O ${name}.deb
        dpkg -x ${name}.deb AppDir
-       #
-       mv AppDir/usr/lib/python3.11 AppDir/usr/lib/python3 #it's ok on jammy
-       pyanm=pyaudio
-       pya=`wget -q https://raw.githubusercontent.com/colin-i/${pyanm}/master/debian/changelog -O - | head -1 | grep -Poe "[^\(]*(?=\))"`
-       pyanme=${pyanm}o
-       OUTPUT=$(python3 lp2.py ppa ${pyanme} ${pya} amd64)
-       wget ${OUTPUT}/+files/${pyanme}_${pya}_all.deb -O ${pyanm}.deb
-       dpkg -x ${pyanm}.deb AppDir
-       #
       fi
       #dependencies
       downdeb () {
@@ -62,7 +64,7 @@ jobs:
        inter=Packages
        fullinter=${inter}${repo}
        if [ ! -e "${fullinter}" ]; then
-        wget http://${src}/ubuntu/dists/jammy/${repo}/binary-amd64/${inter}.xz -O ${fullinter}.xz
+        wget http://${src}/ubuntu/dists/noble/${repo}/binary-amd64/${inter}.xz -O ${fullinter}.xz
         xz -d ${fullinter}.xz
        fi
        debfilename=`grep "^Filename.*/${pkg}_" ${fullinter}`
@@ -74,7 +76,7 @@ jobs:
       }
       downdeb libportaudio2 universe
       downdeb python3-appdirs main
-      #downdeb python3-pyaudio universe
+      downdeb python3-pyaudio universe
       #
       apd=AppDir
       cd ${apd}
@@ -165,6 +167,7 @@ jobs:
       #glibc=`readelf -V ${apd}/usr/bin/${name} | grep -Po "(?<= GLIBC_)[^ ]*" | sort -Vr | head -1 | sed "s/\./-/g"`
       #echo -n ${glibc} > version #"glibc" will not be ok for upload-artifact
    - name: artifact
+     if: ${{ env.artifact == '' }}
      uses: actions/upload-artifact@v3
      with:
       name: appimage
