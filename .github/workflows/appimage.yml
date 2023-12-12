@@ -5,8 +5,10 @@ on:
    ppa:
     description: "ppa sufix"
 
-#if not having 24.04 on github or from act, take from -P ubuntu-24.04=ubuntu:noble it is a minimum image (can add --pull=false)
+#if not having 24.04 on github or from act, take from ubuntu:noble a minimum image
+#sudo gh act -r -j build workflow_dispatch -W .github/workflows/appimage.yml -P ubuntu-24.04=ubuntu:noble --pull=false --env artifact=x
 #here if artifact!='' is for minimum image and without artifact upload
+#for audapa (not torra,not dicopp) watch https://launchpad.net/ubuntu/+source/python3-defaults , now is 3.11, here and at ./arh/re
 
 jobs:
  build:
@@ -55,6 +57,9 @@ jobs:
        OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} amd64)
        wget ${OUTPUT}/+files/${name}_${version}_all.deb -O ${name}.deb
        dpkg -x ${name}.deb AppDir
+       #
+       #PYTHONPATH is set to python3 (in this yml) (,and python3-* are going there too), mv was ok from 3.10
+       mv AppDir/usr/lib/python3.11 AppDir/usr/lib/python3
       fi
       #dependencies
       downdeb () {
