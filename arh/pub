@@ -7,11 +7,11 @@
 ~/test/keyring2 && \
 ~/test/deb && \
 ~/test/publp && \
-~/test/ai && \
-~/test/pub appimage && \
-~/test/upapp && \
-~/test/pub upapp && \
-~/test/pub2 && \
+#~/test/ai && \
+#~/test/pub appimage && \
+#~/test/upapp && \
+#~/test/pub upapp && \
+#~/test/pub2 && \
 ~/test/publp2
 #~/test/lp 0 kinetic
 #~/test/lp x kinetic
