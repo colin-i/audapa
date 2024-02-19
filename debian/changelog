@@ -1,3 +1,9 @@
+audapa (1-j23) jammy; urgency=medium
+
+  * gi-cairo
+
+ -- bc <bc@bc-Type1ProductConfigId>  Mon, 19 Feb 2024 15:52:56 +0200
+
 audapa (1-j22) jammy; urgency=medium
 
   * cleanup
