@@ -41,6 +41,10 @@ setup(name=pkname,
 	python_requires='>=3.8',   #for :=
 	install_requires=[
 		"pycairo>=1.20.0","PyGObject>=3.40",
+		#this combination will work from pip, with ubuntu pygobject(python3-gi)+pycairo(python3-cairo) it is also required for python3-gi-cairo there
+		#                                                 if these are on the system pip is saying requirements ok but will not work
+		#to retest this take PyGObject from https://pypi.org/project/PyGObject/#files , install local, and will work
+
 		"appdirs>=1.4.3",
 		"PyAudio>=0.2.11"],
 	description='Audio wave file manipulator',
