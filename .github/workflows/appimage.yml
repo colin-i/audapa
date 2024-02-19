@@ -82,6 +82,7 @@ jobs:
       downdeb libportaudio2 universe
       downdeb python3-appdirs main
       downdeb python3-pyaudio universe
+      #python3-gi-cairo is already on live try
       #
       apd=AppDir
       cd ${apd}
