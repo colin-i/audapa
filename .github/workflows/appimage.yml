@@ -8,7 +8,7 @@ on:
 #if not having 24.04 on github or from act, take from ubuntu:noble a minimum image
 #sudo gh act -r -j build workflow_dispatch -W .github/workflows/appimage.yml -P ubuntu-24.04=ubuntu:noble --pull=false --env artifact=x
 #here if artifact!='' is for minimum image and without artifact upload
-#for audapa (not torra,not dicopp) watch https://launchpad.net/ubuntu/+source/python3-defaults , now is 3.11, here and at ./arh/re
+#for audapa (not torra,not dicopp,because of setup.py python>=3.8?) watch https://launchpad.net/ubuntu/+source/python3-defaults , 3.12 here and at ./arh/re
 
 jobs:
  build:
@@ -59,7 +59,7 @@ jobs:
        dpkg -x ${name}.deb AppDir
        #
        #PYTHONPATH is set to python3 (in this yml) (,and python3-* are going there too), mv was ok from 3.10
-       mv AppDir/usr/lib/python3.11 AppDir/usr/lib/python3
+       mv AppDir/usr/lib/python3.12 AppDir/usr/lib/python3
       fi
       #dependencies
       downdeb () {
