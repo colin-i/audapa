@@ -15,7 +15,7 @@ On linux distributions, <i>.AppImage</i> file from [releases](https://github.com
 \
 On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/audapa/releases).
 ```sh
-yum install audapa-*.*.rpm
+dnf install audapa-*.*.rpm
 ```
 If there is a problem with pyaudio playback, see the *Info* section at this page.\
 \
