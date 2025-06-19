@@ -19,7 +19,7 @@ dnf install audapa-*.*.rpm
 ```
 If there is a problem with pyaudio playback, see the *Info* section at this page.\
 \
-From pypi:
+From [PyPI](https://pypi.org/project/audapa):
 ```sh
 pip install audapa
 ```
