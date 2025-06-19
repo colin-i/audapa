@@ -11,22 +11,23 @@ Install:
 sudo apt-get install audapa
 ```
 \
-On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/audapa/releases).
-\
-On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/audapa/releases).
+On Fedora, run the following as __root__:
 ```sh
-dnf install audapa-*.*.rpm
+dnf copr enable colin/project
+dnf install python-audapa
 ```
-If there is a problem with pyaudio playback, see the *Info* section at this page.\
 \
 From [PyPI](https://pypi.org/project/audapa):
 ```sh
 pip install audapa
 ```
+\
+On other linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/audapa/releases).
 
 ## From source
 Requiring python >= 3.8 .\
-With setuptools package (setup.py or the other python setup script).
+More info at setup.pre.py file.\
+If there is a problem with pyaudio playback, see the *Info* section at this page.
 
 ## [Info](https://github.com/colin-i/audapa/blob/master/info.md)
 
