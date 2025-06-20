@@ -10,17 +10,23 @@ Install:
 ```sh
 sudo apt-get install audapa
 ```
+Will also install libgtk-4-1 if is not already installed.\
+\
 \
 On Fedora, run the following as __root__:
 ```sh
 dnf copr enable colin/project
-dnf install python-audapa
+dnf install python3-audapa
 ```
+And having gtk4.\
+\
 \
 From [PyPI](https://pypi.org/project/audapa):
 ```sh
 pip install audapa
 ```
+And having gtk4.\
+\
 \
 On other linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/audapa/releases).
 
