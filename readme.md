@@ -13,6 +13,20 @@ sudo apt-get install audapa
 Will also install libgtk-4-1 if is not already installed.\
 \
 \
+On openSUSE, run the following as __root__:\
+For openSUSE Tumbleweed:
+```sh
+zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Tumbleweed/home:costin.repo
+```
+And:
+```sh
+zypper refresh
+zypper install python313-audapa
+```
+Replace *python313* with *python312* or *python311* if needed.\
+Will also install libgtk-4-1 if is not already installed.\
+\
+\
 On Fedora, run the following as __root__:
 ```sh
 dnf copr enable colin/project
