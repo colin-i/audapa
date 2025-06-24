@@ -56,7 +56,7 @@ from . import forms
 from . import point
 
 def get_config_dir():
-	return pathlib.Path(appdirs.user_config_dir(pkgname))
+	return pathlib.Path(appdirs.user_config_dir(pkgname,roaming=True)) #roaming for windows to not be the same as data
 def get_config_file():
 	return os.path.join(get_config_dir(),'config.ini')
 
