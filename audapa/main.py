@@ -13,8 +13,11 @@ from . import info
 
 def main():
 	if len(sys.argv)>1:
-		cleanup()
-		return
+		if sys.argv[1]=="--remove-config":
+			cleanup()
+			return
+		sys.stdout.write("ENTRY_DEBUG marker\n")
+		sys.stdout.flush()
 	sets.init()
 	win = Gtk.Window()
 	win.set_decorated(False)#such a heavy load here if True
@@ -41,12 +44,33 @@ def cleanup_dir(d):
 	if os.path.isdir(d):
 		return d
 	return None
-def cleanup_dir_rm(d):
+def cleanup_base(a):
+	basepath=os.path.dirname(a)
+	basepathname=os.path.basename(basepath)
+	if basepathname[0]=='.' or basepathname==sets.pkgname:
+		print(basepath)
+		return (basepath,None)
+	return (None,basepath)
+def cleanup_dir_rm(d,dd,ddd):
+	e=" is not empty."
 	if len(os.listdir(path=d))==0:
 		os.rmdir(d)   #OSError if not empty, the check was already
-		print(d.__str__()+" removed")
+		r=" removed"
+		print(d.__str__()+r)
+		if dd:
+			if len(os.listdir(path=dd))==0:
+				os.rmdir(dd)
+				print(dd.__str__()+r)
+				if ddd:
+					if len(os.listdir(path=ddd))==0:
+						os.rmdir(ddd)
+						print(ddd.__str__()+r)
+					else:
+						print(ddd.__str__()+e)
+			else:
+				print(dd.__str__()+e)
 	else:
-		print(d.__str__()+" is not empty.")
+		print(d.__str__()+e)
 def cleanup():
 	#remove config and exit
 	c=cleanup_dir(sets.get_config_dir())
@@ -56,13 +80,23 @@ def cleanup():
 			f=None
 	p=cleanup_dir(sets.get_data_dir())
 	if c or p:
-		print("Would remove:");
+		print("Would remove(dirs only if empty):");
 		if c:
 			if f:
 				print(f)
 			print(c)
+			cc,ccc=cleanup_base(c)
 		if p:
 			print(p)
+			pp,paux=cleanup_base(p)
+			if pp==None:
+				ppp=os.path.dirname(paux)
+				if (os.path.basename(ppp))[0]=='.': #.local/share/audapa
+					pp=paux
+					print(pp)
+					print(ppp)
+			else:
+				ppp=None
 		print("yes ?");
 		str = ""
 		while True:
@@ -75,9 +109,9 @@ def cleanup():
 				if f:
 					os.remove(f)
 					print(f+" removed")
-				cleanup_dir_rm(c)
+				cleanup_dir_rm(c,cc,None)
 			if p:
-				cleanup_dir_rm(p)
+				cleanup_dir_rm(p,pp,ppp)
 		else:
 			print("expecting \"yes\"")
 

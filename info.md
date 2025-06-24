@@ -1,4 +1,4 @@
-To remove configuration files launch the program with one argument.\
+To remove configuration launch ```audapa --remove-config```.\
 PortAudio can ask for portaudio.h (the file is in portaudio19-dev(ubuntu),portaudio-devel(fedora)).\
 PyAudio and python 3.10 can report playback errors (install from [here](https://github.com/colin-i/pyaudio) and add libportaudio2 package).\
 The audio records are saved where *appdirs.user_data_dir("audapa")* points at (example: ~/.local/share/audapa/1650089398.wav).\

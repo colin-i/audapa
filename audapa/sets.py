@@ -47,7 +47,7 @@ class colorEntry(Gtk.Entry):
 
 pkgname='audapa'
 import appdirs
-import os.path
+import os
 import pathlib
 from html import escape
 
@@ -113,8 +113,8 @@ def sets(b,combo):
 	combo[0].set_child(bx)
 
 def init():
-	get_config_dir().mkdir(exist_ok=True)
-	get_data_dir().mkdir(exist_ok=True)
+	os.makedirs(get_config_dir(),exist_ok=True)
+	os.makedirs(get_data_dir(),exist_ok=True)
 	config = configparser.ConfigParser()
 	if(config.read(get_config_file())):
 		c=config['conf']
