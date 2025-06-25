@@ -87,6 +87,10 @@ def get_fulleffect():
 distance=Gtk.EntryBuffer(text="10")
 #(2*point.const).__str__() was good but will confilct with the example
 cache_at_home=Gtk.CheckButton(active=False)
+decorated=Gtk.CheckButton(active=False)
+maximize=Gtk.CheckButton(active=True)
+default_width=Gtk.EntryBuffer(text="-1")
+default_height=Gtk.EntryBuffer(text="-1")
 
 def add(bx,tx,x,n):
 	return adder(bx,tx,colorEntry(x),n)
@@ -107,6 +111,15 @@ def sets(b,combo):
 	n=adder(bx,forms.formal_write+" after a points effect",full_effect,n)
 	n=add(bx,"Minimum distance between points",distance,n)
 	n=adder(bx,"Cache dir for points in home folder",cache_at_home,n)
+
+	n=adder(bx,"Decorated window at start",decorated,n)
+	n=adder(bx,"Maximize window at start",maximize,n)
+	n=add(bx,"Default window width at start",default_width,n)
+	n=add(bx,"Default window height at start",default_height,n)
+	b=colorButton("Get default window size", new_dim, "Set width/height at start for default window", combo[0])
+	bx.attach(b,0,n,2,1)
+	n=n+1
+
 	b=colorButton("Done", reset, "Return", {'c':combo,'t':
 		{'cl':color.get_text(),'fcl':fgcolor.get_text()}})
 	bx.attach(b,0,n,2,1)
@@ -127,6 +140,10 @@ def init():
 		init_c(c,'effect',full_effect)
 		init_t(c,'distance',distance)
 		init_c(c,'homecache',cache_at_home)
+		init_c(c,'decorated',decorated)
+		init_c(c,'maximize',maximize)
+		init_t(c,'default_width',default_width)
+		init_t(c,'default_height',default_height)
 def init_t(src,key,dst):
 	if key in src: #this is not checking values
 		dst.set_text(src[key],-1)
@@ -147,6 +164,11 @@ def reset(b,di):
 	c['effect']=full_effect.get_active().__str__()
 	c['distance']=distance.get_text()
 	c['homecache']=cache_at_home.get_active().__str__()
+	c['decorated']=decorated.get_active().__str__()
+	c['maximize']=maximize.get_active().__str__()
+	c['default_width']=default_width.get_text()
+	c['default_height']=default_height.get_text()
+
 	with open(get_config_file(), "w") as configfile:
 		config.write(configfile)
 	win=di['c'][0]
@@ -169,3 +191,7 @@ def search(p):
 		else:
 			search(x)
 		x=x.get_next_sibling()
+def new_dim(b,win):
+	dim=win.get_default_size()
+	default_width.set_text(str(dim.width),-1)
+	default_height.set_text(str(dim.height),-1)

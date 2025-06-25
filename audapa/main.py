@@ -20,8 +20,14 @@ def main():
 		sys.stdout.flush()
 	sets.init()
 	win = Gtk.Window()
-	win.set_decorated(False)#such a heavy load here if True
-	win.maximize()
+	if sets.decorated.get_active()==False:
+		win.set_decorated(False)#such a heavy load here if True
+		win.maximize()
+	else:
+		win.set_default_size(int(sets.default_width.get_text()),int(sets.default_height.get_text()))
+		if sets.maximize.get_active():
+			win.maximize()
+		win.connect('close-request', quit)
 	win.show()
 	#while loop.n:
 	play.init()
@@ -36,6 +42,8 @@ def main():
 	info.win=win
 	info.box=box
 	loop.main.run()
+def quit(win):
+	loop.stop()
 
 import os
 import sys

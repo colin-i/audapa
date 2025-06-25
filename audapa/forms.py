@@ -31,9 +31,9 @@ def init(combo):
 	box.append(bt)
 	bt=sets.colorButton(chr(0x1F4E3),level.open,"Loudness",combo) #0x2021
 	box.append(bt)
-	bt=sets.colorButton(chr(0x1FA97),spread.open,"Spread",combo)
+	bt=sets.colorButton(chr(0x2194),spread.open,"Spread",combo) # 1FA97  Accordion - not windows
 	box.append(bt)
-	bt=sets.colorButton(chr(0x2194),move.open,"Move Points",combo)
+	bt=sets.colorButton(chr(0x21B9),move.open,"Move Points",combo)
 	box.append(bt)
 	bt=sets.colorButton(chr(0x2422),blank.open,"Blanks",combo)
 	box.append(bt)
