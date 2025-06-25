@@ -39,7 +39,7 @@ From [PyPI](https://pypi.org/project/audapa):
 ```sh
 pip install audapa
 ```
-And having gtk4.\
+And having gtk4. Also working on Windows MinGW64 MSys2 with the right PyAudio bindings.\
 \
 \
 On other linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/audapa/releases).
