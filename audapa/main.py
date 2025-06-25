@@ -20,13 +20,12 @@ def main():
 		sys.stdout.flush()
 	sets.init()
 	win = Gtk.Window()
-	if sets.decorated.get_active()==False:
-		win.set_decorated(False)#such a heavy load here if True
+	win.set_default_size(int(sets.default_width.get_text()),int(sets.default_height.get_text()))
+	if sets.maximize.get_active():
 		win.maximize()
+	if sets.decorated.get_active()==False:
+		win.set_decorated(False)
 	else:
-		win.set_default_size(int(sets.default_width.get_text()),int(sets.default_height.get_text()))
-		if sets.maximize.get_active():
-			win.maximize()
 		win.connect('close-request', quit)
 	win.show()
 	#while loop.n:
