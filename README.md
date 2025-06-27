@@ -35,6 +35,13 @@ dnf install python3-audapa
 And having gtk4.\
 \
 \
+On Arch Linux, <i>.zst</i> file from [releases](https://github.com/colin-i/audapa/releases). Or:
+```sh
+yay -Sy python-audapa
+```
+Will also install gtk4 if is not already installed.\
+\
+\
 From [PyPI](https://pypi.org/project/audapa):
 ```sh
 pip install audapa

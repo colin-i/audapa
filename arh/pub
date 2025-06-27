@@ -14,8 +14,11 @@ last=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^H
 ~/test/pub appimage rpm rel && \
 ~/test/ai/upapp && \
 ~/test/pyp/pypi && \
+~/test/pkg/onb && \
+~/test/pub upapp pkg && \
+py=x ~/test/pkg/aur && \
 py=x ~/test/rpm/copr && \
-~/test/pub upapp && \
+py=x ~/test/rpm/suse && \
 ~/test/pub2 && \
 ~/test/publp2 && \
 ~/test/lp && \
