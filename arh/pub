@@ -12,7 +12,7 @@ py=x afterversion=~/test/pyp/pypre ~/test/debinit "${1}" ${2} && \
 ~/test/del && \
 ~/test/rel && \
 ~/test/pub appimage rpm rel && \
-~/test/ai/upapp && \
+p=libgtk-4-1 ~/test/ai/upapppic && \
 ~/test/pyp/pypi && \
 ~/test/pkg/onb && \
 ~/test/pub upapp pkg && \
