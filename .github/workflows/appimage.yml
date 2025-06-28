@@ -95,6 +95,13 @@ jobs:
       downdeb python3-gi-cairo main
       downdeb python3-pyaudio universe
 
+      #and for next python
+      downdeb libpython3.12-minimal main
+      downdeb libpython3.12-stdlib main
+      downdeb python3.12-minimal main
+      #
+      downdeb python3-gi main
+
       apd=AppDir
       cd ${apd}
       file2=AppRun
@@ -127,16 +134,18 @@ jobs:
        cd usr/bin
        mv ${name} ${sname}
        #PYTHONHOME is also set by AppRun wrong, easy to test with echo ${PYTHONHOME}
+       #unset PYTHONHOME
        #is not a risk to expect python-is-python3? will work on >3.12? it is a risk, zypper --provides --match-exact is not knowing
+       #anyway python3-pyaudio/cairo/gi are python dependent(312 so file) and not found at 3.13
        cat > ${name} <<EOF
       #!/bin/sh
       cd "\$(dirname "\$0")"
       cd ../
-      unset PYTHONHOME
       LD_LIBRARY_PATH="\$(pwd)/lib/x86_64-linux-gnu"\
+       PYTHONHOME="\$(pwd)"\
        PYTHONPATH="\$(pwd)/lib/python3/dist-packages"\
        GI_TYPELIB_PATH="\$(pwd)/lib/x86_64-linux-gnu/girepository-1.0"\
-       python3 bin/${sname} "\$@"
+       ./bin/python3.12 bin/${sname} "\$@"
       EOF
        chmod 755 ${name}
        cd ../../
