@@ -1,3 +1,9 @@
+audapa (1-j24) jammy; urgency=medium
+
+  * sync last changes
+
+ -- bc <bc@bc-desktop>  Sat, 28 Jun 2025 13:49:20 +0300
+
 audapa (1-j23) jammy; urgency=medium
 
   * gi-cairo
