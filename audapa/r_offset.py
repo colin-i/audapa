@@ -30,6 +30,9 @@ def cnged(a,visible):
 	atleft._set_text_(str(l))
 	r=max(draw.length-visible-l,0)
 	atright._set_text_(str(r))
+	#Trying to snapshot GtkBox (this b=Gtk.Box) without a current allocation ?
+	#here str(10) for example, str one digit is ok. atright=inttext("9999") and here 3918 and also is a problem, must be something wrong with Gtk.Align.END and homogeneous=True
+	#it is not like is something to do at the moment
 def cged(a):
 	cnged(a,int(a.get_page_size()))
 def cgd(a,d):

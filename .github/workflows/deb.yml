@@ -6,7 +6,7 @@ jobs:
  dbuild:
   runs-on: ubuntu-latest
   steps:
-   - uses: actions/checkout@v3
+   - uses: actions/checkout@master
      with:
       path: in
    - uses: actions/checkout@master
@@ -14,6 +14,10 @@ jobs:
       repository: colin-i/sync
       path: in2
       ref: audapa-jammy
+   - uses: actions/checkout@master
+     with:
+      repository: colin-i/test
+      path: test
    - name: Run a multi-line script
      run: |
       name=`cat in/debian/changelog | head -1 | grep -o ^[^\ ]*`
@@ -30,9 +34,10 @@ jobs:
        ln -s ${origf} ${origln}
       fi
       cd in
-      debuild -S -us -uc
+      temp=../1 ../test/pyp/pypre
+      debuild -S -us -uc -d
    - name: unsigned debs
-     uses: actions/upload-artifact@v3
+     uses: actions/upload-artifact@master
      with:
       name: sdebs
       path: |
