@@ -8,13 +8,12 @@ on:
 #if not having 24.04 on github or from act, take from ubuntu:noble a minimum image
 #sudo gh act -r -j build workflow_dispatch -W .github/workflows/appimage.yml -P ubuntu-24.04=ubuntu:noble --pull=false --env artifact=x
 #here if artifact!='' is for minimum image and without artifact upload
-#for audapa (not torra,not dicopp,because of setup.py python>=3.8?) watch https://launchpad.net/ubuntu/+source/python3-defaults , 3.12 here and at ./arh/re
 
 jobs:
  build:
-  runs-on: ubuntu-24.04
+  runs-on: ubuntu-24.04 #also at downdeb
   steps:
-   - uses: actions/checkout@v3
+   - uses: actions/checkout@master
    - name: Run a multi-line script
      run: |
       if [ -n "${{ env.artifact }}" ]; then
@@ -69,7 +68,7 @@ jobs:
        inter=Packages
        fullinter=${inter}${repo}
        if [ ! -e "${fullinter}" ]; then
-        wget http://${src}/ubuntu/dists/noble/${repo}/binary-amd64/${inter}.xz -O ${fullinter}.xz
+        wget http://${src}/ubuntu/dists/noble${3}/${repo}/binary-amd64/${inter}.xz -O ${fullinter}.xz
         xz -d ${fullinter}.xz
        fi
        debfilename=`grep "^Filename.*/${pkg}_" ${fullinter}`
@@ -79,11 +78,23 @@ jobs:
        wget ${wget_url} -O ${maindeb}
        dpkg -x ${maindeb} AppDir
       }
+
+      downdeb gir1.2-freedesktop main
+      downdeb gir1.2-gdkpixbuf-2.0 main -updates
+      downdeb gir1.2-graphene-1.0 main
+      downdeb gir1.2-gtk-4.0 main -updates
+      downdeb gir1.2-harfbuzz-0.0 main
+      downdeb gir1.2-pango-1.0 main
+      downdeb libharfbuzz-gobject0 main
+      downdeb libjack-jackd2-0 main
+      downdeb libpangoxft-1.0-0 main
       downdeb libportaudio2 universe
+      downdeb libsamplerate0 main
       downdeb python3-appdirs main
+      downdeb python3-cairo main
+      downdeb python3-gi-cairo main
       downdeb python3-pyaudio universe
-      #python3-gi-cairo is already on live try
-      #
+
       apd=AppDir
       cd ${apd}
       file2=AppRun
@@ -115,15 +126,17 @@ jobs:
        echo launcher
        cd usr/bin
        mv ${name} ${sname}
-       #PYTHONHOME is also set by AppRun wrong
+       #PYTHONHOME is also set by AppRun wrong, easy to test with echo ${PYTHONHOME}
+       #is not a risk to expect python-is-python3? will work on >3.12? it is a risk, zypper --provides --match-exact is not knowing
        cat > ${name} <<EOF
       #!/bin/sh
       cd "\$(dirname "\$0")"
       cd ../
       unset PYTHONHOME
-      LD_LIBRARY_PATH="\$(pwd)/lib/x86_64-linux-gnu" \
-       PYTHONPATH="\$(pwd)/lib/python3/dist-packages" \
-       python3 bin/${sname}
+      LD_LIBRARY_PATH="\$(pwd)/lib/x86_64-linux-gnu"\
+       PYTHONPATH="\$(pwd)/lib/python3/dist-packages"\
+       GI_TYPELIB_PATH="\$(pwd)/lib/x86_64-linux-gnu/girepository-1.0"\
+       python3 bin/${sname} "\$@"
       EOF
        chmod 755 ${name}
        cd ../../
@@ -174,9 +187,11 @@ jobs:
       #echo -n ${glibc} > version #"glibc" will not be ok for upload-artifact
    - name: artifact
      if: ${{ env.artifact == '' }}
-     uses: actions/upload-artifact@v3
+     uses: actions/upload-artifact@master
      with:
       name: appimage
       path: |
        ./*.AppImage
       # ./version
+
+##for audapa (not torra,not dicopp,because of setup.py python>=3.8?) watch https://launchpad.net/ubuntu/+source/python3-defaults , 3.12 here and at ./arh/re

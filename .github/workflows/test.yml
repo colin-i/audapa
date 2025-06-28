@@ -1,0 +1,19 @@
+on:
+ workflow_dispatch:
+  inputs:
+   prepack:
+env:
+ #for composite
+ GITHUB_TOKEN: ${{ secrets.PAT }}
+jobs:
+ takescreen:
+  runs-on: ${{ matrix.os }}
+  strategy:
+   matrix:
+    os: [ubuntu-24.04] # matrix.os in composite
+  steps:
+   - uses: colin-i/test/.github/actions/test@main
+     with:
+      prepack: ${{ github.event.inputs.prepack }}
+      pattern: bin/auda
+      gtk: 4

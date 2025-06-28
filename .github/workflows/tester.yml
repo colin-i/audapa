@@ -1,0 +1,16 @@
+on:
+ workflow_dispatch:
+  inputs:
+   ron:
+    default: ubuntu-22.04
+   packs:
+    description: "test packs"
+jobs:
+ aptest1a:
+  runs-on: ${{ github.event.inputs.ron }}
+  steps:
+   - uses: colin-i/test/.github/actions/tester@main
+     with:
+      name: audapa
+      prepack: libgtk-4-1
+      packs: ${{ github.event.inputs.packs }}
