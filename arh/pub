@@ -2,6 +2,5 @@
 py=x afterversion=~/test/pyp/pypre ~/test/debinit "${1}" && \
 ~/test/pub deb && \
 ~/test/deb && \
-~/test/keyring2 && \
 ~/test/publp && \
 ~/test/publp2
