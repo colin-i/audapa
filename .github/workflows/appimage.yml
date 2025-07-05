@@ -16,37 +16,26 @@ jobs:
    - uses: actions/checkout@master
    - name: Run a multi-line script
      run: |
-      if [ -n "${{ env.artifact }}" ]; then
-       apt update
-       #rm /var/lib/dpkg/lock-frontend
-       #rm /var/lib/dpkg/lock
-       #rm /var/cache/apt/archives/lock
-       export DEBIAN_FRONTEND=noninteractive
-       TZ=Etc/UTC apt install -y wget python3-minimal python3-launchpadlib xz-utils squashfs-tools
-      fi
+      #if [ -n "${{ env.artifact }}" ]; then
+      #	apt update
+      #	#rm /var/lib/dpkg/lock-frontend
+      #	#rm /var/lib/dpkg/lock
+      #	#rm /var/cache/apt/archives/lock
+      #	export DEBIAN_FRONTEND=noninteractive
+      #	TZ=Etc/UTC apt install -y wget python3-minimal python3-launchpadlib xz-utils squashfs-tools
+      #fi
       name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
       name2=Audapa
-      sname=auda
-      #
-      mkdir -p AppDir
-      file=runtime
-      arch_ai=-x86_64
-      archfile=${file}${arch_ai}
-      kitpart () {
-       #https://github.com/AppImage/pkg2appimage
-       #in searching for fuse3, was latest
-       #urlpart=`wget -q https://github.com/AppImage/AppImageKit/releases/continuous -O - | grep "${archfile}" | head -n 1 | cut -d '"' -f 2`
-       #this is at o urlpart=AppImage/AppImageKit/releases/latest/download/${archfile}
-       #this is from a browser, not tested at this comment
-       urlpart=AppImage/AppImageKit/releases/download/continuous/${archfile}
-      }
-      if [ ! -e "${file}" ]; then
-       kitpart
-       #"pkg2appimage-.*-x86_64.AppImage"
-       wget -c https://github.com/${urlpart}
-       mv ${archfile} ${file}
-       chmod a+x ${file}
+      apd=AppDir
+      mkdir -p ${apd}
+
+      run=runtime
+      if [ ! -e "${run}" ]; then
+       archfile=runtime-x86_64
+       wget -c https://github.com/AppImage/type2-runtime/releases/download/continuous/${archfile}
+       mv ${archfile} ${run}
       fi
+
       if [ ! -e "${name}.deb" ]; then
        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
        if [ ! -e "lp2.py" ]; then
@@ -60,6 +49,7 @@ jobs:
        #PYTHONPATH is set to python3 (in this yml) (,and python3-* are going there too), mv was ok from 3.10
        mv AppDir/usr/lib/python3.12 AppDir/usr/lib/python3
       fi
+
       #dependencies
       downdeb () {
        pkg=${1}
@@ -102,19 +92,27 @@ jobs:
       #
       downdeb python3-gi main
 
-      apd=AppDir
       cd ${apd}
-      file2=AppRun
-      if [ ! -e "${file2}" ]; then
-       if [ -z "${urlpart}" ]; then
-        kitpart
-       fi
-       archfile2=${file2}${arch_ai}
-       urlpart=${urlpart:0:`echo ${urlpart} | grep -ob '[^/]*$' | cut -d ':' -f 1`}${archfile2}
-       wget -c https://github.com/${urlpart}
-       chmod a+x ${archfile2}
-       mv ${archfile2} ${file2}
+      file=AppRun
+      if [ ! -e "${file}" ]; then
+       #launcher
+       echo launcher
+       #old AppRun: PYTHONHOME is also set by AppRun wrong, easy to test with echo ${PYTHONHOME}
+       #	unset PYTHONHOME
+       #is not a risk to expect python-is-python3? will work on >3.12? it is a risk, zypper --provides --match-exact is not knowing
+       #anyway python3-pyaudio/cairo/gi are python dependent(312 so file) and not found at 3.13
+       cat > ${file} <<EOF
+      #!/bin/sh
+      root_dir="\$(readlink -f "\$(dirname "\$0")"/usr)"
+      LD_LIBRARY_PATH="\${root_dir}"/lib/x86_64-linux-gnu\
+       PYTHONHOME="\${root_dir}"\
+       PYTHONPATH="\${root_dir}"/lib/python3/dist-packages\
+       GI_TYPELIB_PATH="\${root_dir}"/lib/x86_64-linux-gnu/girepository-1.0\
+       "\${root_dir}"/bin/python3.12 "\${root_dir}"/bin/${name} "\$@"
+      EOF
+       chmod 755 ${file}
       fi
+
       pngfile=${name}.png
       if [ ! -e "${pngfile}" ]; then
        wget https://github.com/colin-i/test/releases/download/1.5/${name}.png -O ${pngfile}
@@ -128,28 +126,7 @@ jobs:
       EOF
        ln -s ${pngfile} .DirIcon
       fi
-      #launcher
-      if [ ! -e "usr/bin/${sname}" ]; then
-       echo launcher
-       cd usr/bin
-       mv ${name} ${sname}
-       #PYTHONHOME is also set by AppRun wrong, easy to test with echo ${PYTHONHOME}
-       #unset PYTHONHOME
-       #is not a risk to expect python-is-python3? will work on >3.12? it is a risk, zypper --provides --match-exact is not knowing
-       #anyway python3-pyaudio/cairo/gi are python dependent(312 so file) and not found at 3.13
-       cat > ${name} <<EOF
-      #!/bin/sh
-      cd "\$(dirname "\$0")"
-      cd ../
-      LD_LIBRARY_PATH="\$(pwd)/lib/x86_64-linux-gnu"\
-       PYTHONHOME="\$(pwd)"\
-       PYTHONPATH="\$(pwd)/lib/python3/dist-packages"\
-       GI_TYPELIB_PATH="\$(pwd)/lib/x86_64-linux-gnu/girepository-1.0"\
-       ./bin/python3.12 bin/${sname} "\$@"
-      EOF
-       chmod 755 ${name}
-       cd ../../
-      fi
+
       #metadata file
       mi=usr/share/metainfo
       mif=${mi}/com.colin.${name}.appdata.xml
@@ -183,12 +160,11 @@ jobs:
       </component>
       EOF
       fi
-      #
+
       cd ..
-      #
       if [ ! -e "${name}.AppImage" ]; then
-       mksquashfs AppDir ${name}.squashfs -root-owned -noappend
-       cat runtime >> ${name}.AppImage
+       mksquashfs ${apd} ${name}.squashfs -root-owned -noappend
+       cat ${run} > ${name}.AppImage
        cat ${name}.squashfs >> ${name}.AppImage
        chmod a+x ${name}.AppImage
       fi
