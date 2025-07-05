@@ -108,7 +108,7 @@ jobs:
        PYTHONHOME="\${root_dir}"\
        PYTHONPATH="\${root_dir}"/lib/python3/dist-packages\
        GI_TYPELIB_PATH="\${root_dir}"/lib/x86_64-linux-gnu/girepository-1.0\
-       "\${root_dir}"/bin/python3.12 "\${root_dir}"/bin/${name} "\$@"
+       exec "\${root_dir}"/bin/python3.12 "\${root_dir}"/bin/${name} "\$@"
       EOF
        chmod 755 ${file}
       fi
