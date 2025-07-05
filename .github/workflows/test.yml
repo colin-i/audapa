@@ -15,5 +15,5 @@ jobs:
    - uses: colin-i/test/.github/actions/test@main
      with:
       prepack: ${{ github.event.inputs.prepack }}
-      pattern: bin/auda
+      pattern: 1
       gtk: 4
