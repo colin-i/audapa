@@ -14,7 +14,7 @@ Will also install libgtk-4-1 if is not already installed.\
 \
 \
 On openSUSE, run the following as __root__:\
-For openSUSE Tumbleweed(x86_64 aarch64 i586):
+For openSUSE Tumbleweed(x86_64/i586 aarch64):
 ```sh
 zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Tumbleweed/home:costin.repo
 ```
