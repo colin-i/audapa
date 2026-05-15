@@ -5,7 +5,7 @@ On Ubuntu(jammy noble) from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
-Or the *manual installation step* from this link *https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6* \
+Or the *manual installation step* from this link *https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6#manual-installation-step* \
 Install:
 ```sh
 sudo apt-get install audapa
@@ -60,4 +60,4 @@ If there is a problem with pyaudio playback, see the *Info* section at this page
 
 ## Donations
 The *donations* section is here
-*https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6*
+*https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6#donations*
