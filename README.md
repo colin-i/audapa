@@ -1,7 +1,7 @@
 # Audapa
 
 ## Install
-On Ubuntu(jammy noble) from PPA.
+On Ubuntu(jammy noble resolute) from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
