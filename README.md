@@ -14,16 +14,15 @@ Will also install libgtk-4-1 if is not already installed.\
 \
 \
 On openSUSE, run the following as __root__:\
-For openSUSE Tumbleweed(x86_64/i586 aarch64):
+For openSUSE Tumbleweed(x86_64/i586 aarch64)(313 314):
 ```sh
 zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Tumbleweed/home:costin.repo
 ```
-And:
+And(replace *314* with *313* if needed):
 ```sh
 zypper refresh
-zypper install python313-audapa
+zypper install python314-audapa
 ```
-Replace *python313* with *python312* or *python311* if needed.\
 Will also install libgtk-4-1 if is not already installed.\
 \
 \
