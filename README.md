@@ -10,7 +10,7 @@ Install:
 ```sh
 sudo apt-get install audapa
 ```
-Will also install typelib(Gtk)=4.0 if is not already installed.\
+Will also install gir1.2-gtk-4.0 if is not already installed.\
 \
 \
 On openSUSE, run the following as __root__:\
@@ -23,7 +23,7 @@ And(replace *314* with *313* if needed):
 zypper refresh
 zypper install python314-audapa
 ```
-Will also install libgtk-4-1 if is not already installed.\
+Will also install typelib(Gtk)=4.0 if is not already installed.\
 \
 \
 On Fedora 42/43/44(x86_64 aarch64), run the following as __root__:
