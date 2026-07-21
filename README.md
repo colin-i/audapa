@@ -10,7 +10,7 @@ Install:
 ```sh
 sudo apt-get install audapa
 ```
-Will also install libgtk-4-1 if is not already installed.\
+Will also install typelib(Gtk)=4.0 if is not already installed.\
 \
 \
 On openSUSE, run the following as __root__:\
