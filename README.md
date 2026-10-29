@@ -26,7 +26,7 @@ zypper install python314-audapa
 Will also install typelib(Gtk)=4.0 if is not already installed.\
 \
 \
-On Fedora 42/43/44(x86_64 aarch64), run the following as __root__:
+On Fedora 42/43/44/45(x86_64 aarch64), run the following as __root__:
 ```sh
 dnf copr enable colin/project
 dnf install python3-audapa
