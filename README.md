@@ -18,7 +18,11 @@ For openSUSE Tumbleweed(x86_64/i586 aarch64)(313 314):
 ```sh
 zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Tumbleweed/home:costin.repo
 ```
-And(replace *314* with *313* if needed):
+For openSUSE Leap(x86_64 aarch64)(313):
+```sh
+zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Leap_16.0/home:costin.repo
+```
+And(regarding the above-mentioned versions, replace *313* with *314* if needed):
 ```sh
 zypper refresh
 zypper install python314-audapa
