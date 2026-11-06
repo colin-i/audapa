@@ -20,8 +20,9 @@ zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_T
 ```
 For openSUSE Leap(x86_64 aarch64)(313):
 ```sh
-zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Leap_16.0/home:costin.repo
+zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Leap_16.1/home:costin.repo
 ```
+Replace *16.1* with *16.0* if needed.\
 And(regarding the above-mentioned versions, replace *313* with *314* if needed):
 ```sh
 zypper refresh
